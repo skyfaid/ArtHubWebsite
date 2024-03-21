@@ -11,7 +11,7 @@ class ClientHomeController extends AbstractController
     #[Route('/', name: 'app_client_home')]
     public function index(): Response
     {
-        return $this->render('index.html.twig', [
+        return $this->render('custom.html.twig', [
             'controller_name' => 'ClientHomeController',
         ]);
     }
