@@ -1,66 +1,159 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}ArtHub{% endblock %}</title>
-
-    
-    <!-- favicons -->
-    <link rel="apple-touch-icon" sizes="180x180" href="https://ashik.templatepath.net/muzex-preview-files/assets/images/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="https://ashik.templatepath.net/muzex-preview-files/assets/images/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://ashik.templatepath.net/muzex-preview-files/assets/images/favicon/favicon-16x16.png">
-    <link rel="manifest" href="https://ashik.templatepath.net/muzex-preview-files/assets/images/favicon/site.webmanifest">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>
+			{% block title %}ArtHub-
+			{% endblock %}
+		</title>
 
 
-    <!-- Fonts and CSS -->
-    {% block stylesheets %}
+		<!-- Fonts URL -->
+		<link
+		href="https://fonts.googleapis.com/css?family=Karla:400,700%7CPlayfair+Display:400,500,600,700,800,900%7CWork+Sans:300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+		<!-- Plugins CSS -->
+		<link rel="stylesheet" href="{{ asset('clientHome/css/bootstrap.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/bootstrap-datepicker.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/bootstrap-select.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/fontawesome-all.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/jquery.mCustomScrollbar.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/magnific-popup.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/owl.carousel.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/owl.theme.default.min.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/animate.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/hover-min.css') }}">
+		<link
+		rel="stylesheet" href="{{ asset('clientHome/css/muzex-icons.css') }}">
 
-     <!-- Fonts URL -->
-    <link href="{{ asset('css/css.css') }}" rel="stylesheet">
+		<!-- Custom CSS -->
+		<link rel="stylesheet" href="{{ asset('clientHome/css/style.css') }}">
+		<link rel="stylesheet" href="{{ asset('clientHome/css/responsive.css') }}">
+	</head>
+	<body>
 
-    <!-- Plugins CSS -->
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-datepicker.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap-select.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/fontawesome-all.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/jquery.mCustomScrollbar.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/magnific-popup.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owl.carousel.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/owl.theme.default.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/animate.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/hover-min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/muzex-icons.css') }}">
 
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/responsive.css') }}">
-    {% endblock %}
-</head>
-<body>
-    {% block body %}{% endblock %}
-    {% include 'footer.html.twig' %}
-    {% block javascripts %}
-    <!-- Template JS -->
-    <script src="{{ asset('js/jquery.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
-    <script src="{{ asset('js/isotope.js') }}"></script>
-    <script src="{{ asset('js/jquery.ajaxchimp.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.counterup.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.magnific-popup.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('js/owl.carousel.min.js') }}"></script>
-    <script src="{{ asset('js/TweenMax.min.js') }}"></script>
-    <script src="{{ asset('js/waypoints.min.js') }}"></script>
-    <script src="{{ asset('js/wow.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.lettering.min.js') }}"></script>
-    <script src="{{ asset('js/jquery.circleType.js') }}"></script>
-    <script src="{{ asset('js/theme.js') }}"></script>
-    {% endblock %}
-</body>
+		{% block body %}{% endblock %}
+
+		<footer class="site-footer">
+			<div class="site-footer__upper">
+				<div class="container">
+					<div class="row">
+						<div class="col-lg-4">
+							<div class="footer-widget footer-widget__about">
+								<p>Welcome to ArtHub, your premier destination for exploring diverse artwork. 
+																	    Explore, connect, and be inspired.
+								</p>
+							</div>
+							<!-- /.footer-widget -->
+						</div>
+						<!-- /.col-lg-4 -->
+						<div class="col-lg-2">
+							<div class="footer-widget footer-widget__links">
+								<h3 class="footer-widget__title">Quick Link</h3>
+								<!-- /.footer-widget__title -->
+								<ul class="footer-widget__links-list list-unstyled">
+									<li>
+										<a href="#">About Us</a>
+									</li>
+									<li>
+										<a href="#">Gallery</a>
+									</li>
+									<li>
+										<a href="#">
+											Team</a>
+									</li>
+									<li>
+										<a href="#">FAQ</a>
+									</li>
+								</ul>
+								<!-- /.footer-widget__links-list -->
+							</div>
+							<!-- /.footer-widget -->
+						</div>
+						<!-- /.col-lg-2 -->
+						<div class="col-lg-3">
+							<div class="footer-widget footer-widget__contact">
+								<h3 class="footer-widget__title">Contact</h3>
+								<!-- /.footer-widget__title -->
+								<p>ArtHub 1087 Tunis
+									<br>
+									Street Habib Borguiba, TN</p>
+								<p>
+									<a href="tel:+21640874995">(+216) 71 222 3333</a>
+								</p>
+								<p>
+									<a href="mailto:ArtHubTn@gmail.com">ArtHubTn@gmail.com</a>
+								</p>
+							</div>
+							<!-- /.footer-widget -->
+						</div>
+						<!-- /.col-lg-3 -->
+						<div class="col-lg-3">
+							<div class="footer-widget footer-widget__open-hrs">
+								<h3 class="footer-widget__title">Open Hours</h3>
+								<!-- /.footer-widget__title -->
+								<p>Daily: 9.30 AM–6.00 PM
+									<br>
+									Sunday & Holidays: Closed</p>
+							</div>
+							<!-- /.footer-widget -->
+						</div>
+						<!-- /.col-lg-3 -->
+					</div>
+					<!-- /.row -->
+				</div>
+				<!-- /.container -->
+			</div>
+			<!-- /.site-footer__upper -->
+			<div class="site-footer__bottom">
+				<div class="container">
+					<div class="inner-container">
+						<p>© Copyright 2024 ArtHub. All Rights Reserved</p>
+						<a href="#" class="site-footer__bottom-logo">
+							<img src="{{asset('clientHome/images/logo.png')}}" width="110" height="100">
+						</a>
+						<div class="site-footer__bottom-links">
+							<a href="#">Terms & conditions</a>
+							<a href="#">Privacy policy & Terms of use</a>
+						</div>
+						<!-- /.site-footer__bottom-links -->
+					</div>
+					<!-- /.inner-container -->
+				</div>
+				<!-- /.container -->
+			</div>
+			<!-- /.site-footer__bottom -->
+		</footer>
+		<!-- /.site-footer -->
+		<a href="#" data-target="html" class="scroll-to-target scroll-to-top">
+			<i class="fa fa-angle-up"></i>
+		</a>
+
+
+		
+
+		<!-- Template JS -->
+		<script src="{{ asset('clientHome/js/jquery.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/bootstrap.bundle.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/bootstrap-datepicker.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/bootstrap-select.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/isotope.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.ajaxchimp.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.counterup.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.magnific-popup.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.validate.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/owl.carousel.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/TweenMax.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/waypoints.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/wow.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.lettering.min.js') }}"></script>
+		<script src="{{ asset('clientHome/js/jquery.circleType.js') }}"></script>
+
+		<!-- Custom Scripts -->
+		<script src="{{ asset('clientHome/js/theme.js') }}"></script>
+
+
+	</body>
 </html>
-
