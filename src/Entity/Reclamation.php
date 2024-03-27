@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Reclamation
  *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_oeuvre_id", columns={"id"}), @ORM\Index(name="fk_reclamation_oeuvre", columns={"reference"}), @ORM\Index(name="fk_utilisateur_id", columns={"utilisateur_id"})})
+ * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_reclamation_oeuvre", columns={"reference"}), @ORM\Index(name="fk_utilisateur_id", columns={"utilisateur_id"}), @ORM\Index(name="fk_oeuvre_id", columns={"id"})})
  * @ORM\Entity
  */
 class Reclamation

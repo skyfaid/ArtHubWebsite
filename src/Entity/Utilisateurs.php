@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Entity;
+
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Utilisateurs
  *
- * @ORM\Table(name="utilisateurs", uniqueConstraints={@ORM\UniqueConstraint(name="pseudo", columns={"pseudo"}), @ORM\UniqueConstraint(name="email", columns={"email"})})
+ * @ORM\Table(name="utilisateurs", uniqueConstraints={@ORM\UniqueConstraint(name="email", columns={"email"}), @ORM\UniqueConstraint(name="pseudo", columns={"pseudo"})})
  * @ORM\Entity
  */
 class Utilisateurs

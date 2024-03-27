@@ -91,5 +91,59 @@ class Evenements
      */
     private $videourl;
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function getDatedebut(): ?\DateTime
+    {
+        return $this->datedebut;
+    }
+
+    public function getDatefin(): ?\DateTime
+    {
+        return $this->datefin;
+    }
+
+    public function getLieu(): ?string
+    {
+        return $this->lieu;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getNombreplaces(): ?int
+    {
+        return $this->nombreplaces;
+    }
+
+    public function getNombreparticipants(): ?int
+    {
+        return $this->nombreparticipants;
+    }
+
+    public function getPosterurl(): ?string
+    {
+        return $this->posterurl;
+    }
+
+    public function getVideourl(): ?string
+    {
+        return $this->videourl;
+    }
 
 }
