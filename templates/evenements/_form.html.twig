@@ -1,4 +1,121 @@
-{{ form_start(form) }}
+{#    {{ form_start(form) }}
     {{ form_widget(form) }}
     <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+
+#}
+
+ {# {{ form_start(form) }}
+
+    {{ form_row(form.nom) }}
+    {{ form_errors(form.nom) }}
+
+    {{ form_row(form.datedebut) }}
+    {{ form_errors(form.datedebut) }}
+
+    {{ form_row(form.datefin) }}
+    {{ form_errors(form.datefin) }}
+
+    {{ form_row(form.lieu) }}
+    {{ form_errors(form.lieu) }}
+
+    {{ form_row(form.type) }}
+    {{ form_errors(form.type) }}
+
+    {{ form_row(form.description) }}
+    {{ form_errors(form.description) }}
+
+    {{ form_row(form.nombreplaces) }}
+    {{ form_errors(form.nombreplaces) }}
+
+    {{ form_row(form.nombreparticipants) }}
+    {{ form_errors(form.nombreparticipants) }}
+
+    {{ form_row(form.posterurl) }}
+    {{ form_errors(form.posterurl) }}
+
+    {{ form_row(form.videourl) }}
+    {{ form_errors(form.videourl) }}
+
+
+    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
+#}
+
+
+{{ form_start(form) }}
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.nom) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+</div>
+
+{{ form_row(form.datedebut) }}
+    {{ form_errors(form.datedebut) }}
+
+    {{ form_row(form.datefin) }}
+    {{ form_errors(form.datefin) }}
+
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.lieu) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.lieu, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.lieu) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.type) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.type, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.type) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.description) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.description) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.nombreplaces) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.nombreplaces, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nombreplaces) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.nombreparticipants) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.nombreparticipants, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.nombreparticipants) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.posterurl) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.posterurl, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.posterurl) }}
+    </div>
+</div>
+
+<div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.videourl) }}</label>
+    <div class="col-md-2">
+        {{ form_widget(form.videourl, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(form.videourl) }}
+    </div>
+</div>
+
+<button class="btn">{{ button_label|default('Save') }}</button>
+
 {{ form_end(form) }}

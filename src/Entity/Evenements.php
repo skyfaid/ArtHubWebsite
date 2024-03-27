@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Evenements
@@ -25,6 +27,7 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Event name is required")
      */
     private $nom;
 
@@ -32,6 +35,7 @@ class Evenements
      * @var \DateTime
      *
      * @ORM\Column(name="datedebut", type="date", nullable=false)
+     * @Assert\NotBlank(message="Start date is required")
      */
     private $datedebut;
 
@@ -39,6 +43,7 @@ class Evenements
      * @var \DateTime|null
      *
      * @ORM\Column(name="datefin", type="date", nullable=true)
+     * @Assert\GreaterThanOrEqual(propertyPath="datedebut", message="End date must be after start date")
      */
     private $datefin;
 
@@ -46,6 +51,7 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="lieu", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Location is required")
      */
     private $lieu;
 
@@ -53,6 +59,7 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="type", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Event type is required")
      */
     private $type;
 
@@ -67,6 +74,8 @@ class Evenements
      * @var int|null
      *
      * @ORM\Column(name="nombrePlaces", type="integer", nullable=true)
+     * @Assert\NotBlank(message="Number of places is required")
+     * @Assert\GreaterThanOrEqual(value=0, message="Number of places must be non-negative")
      */
     private $nombreplaces;
 
@@ -74,6 +83,7 @@ class Evenements
      * @var int|null
      *
      * @ORM\Column(name="nombreParticipants", type="integer", nullable=true)
+     * @Assert\GreaterThanOrEqual(value=0, message="Number of participants must be non-negative")
      */
     private $nombreparticipants = '0';
 
@@ -81,6 +91,7 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="posterUrl", type="string", length=255, nullable=true)
+     * @Assert\Url(message="The poster URL '{{ value }}' is not a valid URL")
      */
     private $posterurl;
 
@@ -88,6 +99,7 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="videoUrl", type="string", length=255, nullable=true)
+     * @Assert\Url(message="The video URL '{{ value }}' is not a valid URL")
      */
     private $videourl;
 
@@ -144,6 +156,75 @@ class Evenements
     public function getVideourl(): ?string
     {
         return $this->videourl;
+    }
+
+    public function setNom(?string $nom): self
+{
+    $this->nom = $nom;
+    return $this;
+}
+
+    public function setDatedebut(\DateTimeInterface $datedebut): static
+    {
+        $this->datedebut = $datedebut;
+
+        return $this;
+    }
+
+    public function setDatefin(?\DateTimeInterface $datefin): static
+    {
+        $this->datefin = $datefin;
+
+        return $this;
+    }
+
+    public function setLieu(?string $lieu): static
+    {
+        $this->lieu = $lieu;
+
+        return $this;
+    }
+
+    public function setType(?string $type): static
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function setNombreplaces(?int $nombreplaces): static
+    {
+        $this->nombreplaces = $nombreplaces;
+
+        return $this;
+    }
+
+    public function setNombreparticipants(?int $nombreparticipants): static
+    {
+        $this->nombreparticipants = $nombreparticipants;
+
+        return $this;
+    }
+
+    public function setPosterurl(?string $posterurl): static
+    {
+        $this->posterurl = $posterurl;
+
+        return $this;
+    }
+
+    public function setVideourl(?string $videourl): static
+    {
+        $this->videourl = $videourl;
+
+        return $this;
     }
 
 }
