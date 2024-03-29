@@ -1,53 +1,71 @@
 {% extends 'baseAdmin.html.twig' %}
 
-{% block title %}Evenements index{% endblock %}
+{% block title %}ArtHub - Events{% endblock %}
 
-{% block body %}
-    <h1>Evenements </h1>
+{% block page_name %}Events{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Datedebut</th>
-                <th>Datefin</th>
-                <th>Lieu</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Nombreplaces</th>
-                <th>Nombreparticipants</th>
-               {# <th>Posterurl</th> #}
-               {# <th>Videourl</th>#}
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for evenement in evenements %}
-            <tr>
-                <td>{{ evenement.id }}</td>
-                <td>{{ evenement.nom }}</td>
-                <td>{{ evenement.datedebut ? evenement.datedebut|date('Y-m-d') : '' }}</td>
-                <td>{{ evenement.datefin ? evenement.datefin|date('Y-m-d') : '' }}</td>
-                <td>{{ evenement.lieu }}</td>
-                <td>{{ evenement.type }}</td>
-                <td>{{ evenement.description }}</td>
-                <td>{{ evenement.nombreplaces }}</td>
-                <td>{{ evenement.nombreparticipants }}</td>
-              {# <td>{{ evenement.posterurl }}</td>#}
-               {# <td>{{ evenement.videourl }}</td>#}
-                <td>
-                    <a href="{{ path('app_evenements_show', {'id': evenement.id}) }}">show</a>
-                    <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="12">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+{% block body %} <!-- this is used to override the body in the base admin template -->
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Events table</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead> <!-- thead = table header -->
+                                <tr> <!-- tr = table rows -->
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th> <!-- th represents a column header -->
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Location</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Type</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Description</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Places</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Participants</th>
+                                    <th class="text-secondary opacity-7"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for evenement in evenements %}
+                                <tr> <!-- tr = table rows -->      
+                                    <td>{{ evenement.id }}</td>  <!-- td = table data -->
+                                    <td>{{ evenement.nom }}</td>
+                                    <td class="align-middle text-center">{{ evenement.datedebut ? evenement.datedebut|date('Y-m-d') : '' }}</td>
+                                    <td class="align-middle text-center">{{ evenement.datefin ? evenement.datefin|date('Y-m-d') : '' }}</td>
+                                    <td class="align-middle text-center">{{ evenement.lieu }}</td>
+                                    <td class="align-middle text-center">{{ evenement.type }}</td>
+                                    <td class="align-middle text-center">{{ evenement.description }}</td>
+                                    <td class="align-middle text-center">{{ evenement.nombreplaces }}</td>
+                                    <td class="align-middle text-center">{{ evenement.nombreparticipants }}</td>
+                                    <td class="align-middle">
+                                        <a href="{{ path('app_evenements_show', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View event">
+                                            View
+                                        </a>
+                                        <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit event">
+                                            Edit
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="10" class="text-center">No records found</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <a href="{{ path('app_evenements_new') }}">Create new</a>
+<a href="{{ path('app_evenements_new') }}" class="btn btn-primary" style="margin-left: 30px;">Create new Event</a>
+
+
+ 
 {% endblock %}
