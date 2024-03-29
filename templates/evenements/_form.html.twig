@@ -43,7 +43,9 @@
 #}
 
 
-{{ form_start(form) }}
+
+
+{{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
 
 <div class="form-group row">
     <label class="col-md-2 col-form-label">{{ form_label(form.nom) }}</label>
@@ -53,11 +55,25 @@
     </div>
 </div>
 
-{{ form_row(form.datedebut) }}
-    {{ form_errors(form.datedebut) }}
 
-    {{ form_row(form.datefin) }}
-    {{ form_errors(form.datefin) }}
+  <div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.datedebut) }}</label>
+    <div class="col-md-4">
+       {{ form_widget(form.datedebut, {'attr': {'class': 'form-control js-datepicker'}}) }}
+        {{ form_errors(form.datedebut) }}
+    </div>
+    </div>
+
+    <div class="form-group row">
+    <label class="col-md-2 col-form-label">{{ form_label(form.datefin) }}</label>
+    <div class="col-md-4">
+        {{ form_widget(form.datefin) }}
+        {{ form_errors(form.datefin) }}
+    </div>
+</div>
+
+
+
 
 
 <div class="form-group row">
@@ -92,13 +108,15 @@
     </div>
 </div>
 
+{# 
 <div class="form-group row">
     <label class="col-md-2 col-form-label">{{ form_label(form.nombreparticipants) }}</label>
     <div class="col-md-2">
         {{ form_widget(form.nombreparticipants, {'attr': {'class': 'form-control'}}) }}
         {{ form_errors(form.nombreparticipants) }}
     </div>
-</div>
+</div> 
+#}
 
 <div class="form-group row">
     <label class="col-md-2 col-form-label">{{ form_label(form.posterurl) }}</label>
@@ -116,6 +134,6 @@
     </div>
 </div>
 
-<button class="btn">{{ button_label|default('Save') }}</button>
+<button class="btn btn-primary"style="margin-left: 30px;">{{ button_label|default('Save') }}</button>
 
 {{ form_end(form) }}

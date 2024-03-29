@@ -24,6 +24,9 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{asset('adminDash/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
    
+   <!-- Bootstrap Datepicker CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet">
+
     {% endblock %}
 </head>
 <body class="g-sidenav-show   bg-gray-100">
@@ -163,6 +166,21 @@
         </div>
       </footer>
   </main>
+      <!-- jQuery (Necessary for Bootstrap's JavaScript plugins and Datepicker) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function() {
+        // Initialize datepicker
+        $('.js-datepicker').datepicker({
+            startDate: new Date(),
+            autoclose: true,
+            format: 'yyyy-mm-dd'
+        });
+    });
+</script>
+
+<!-- Bootstrap Datepicker JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 </body>
 </html>
 

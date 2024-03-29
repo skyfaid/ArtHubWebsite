@@ -19,7 +19,6 @@ class EvenementsType extends AbstractType
             ->add('type')
             ->add('description')
             ->add('nombreplaces')
-            ->add('nombreparticipants')
             ->add('posterurl')
             ->add('videourl')
         ;
