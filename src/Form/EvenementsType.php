@@ -6,6 +6,7 @@ use App\Entity\Evenements;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class EvenementsType extends AbstractType
 {
@@ -19,8 +20,8 @@ class EvenementsType extends AbstractType
             ->add('type')
             ->add('description')
             ->add('nombreplaces')
-            ->add('posterurl')
-            ->add('videourl')
+            ->add('posterurl', HiddenType::class)
+            ->add('videourl', HiddenType::class)
         ;
     }
 

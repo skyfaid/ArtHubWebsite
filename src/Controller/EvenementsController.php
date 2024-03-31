@@ -9,6 +9,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 
 #[Route('/evenements')]
 class EvenementsController extends AbstractController
@@ -30,7 +34,7 @@ class EvenementsController extends AbstractController
     {
         $evenement = new Evenements();
         $form = $this->createForm(EvenementsType::class, $evenement);
-        $form->handleRequest($request);
+        $form->handleRequest($request); //this line binds the incoming request data to the form
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($evenement);
@@ -81,4 +85,65 @@ class EvenementsController extends AbstractController
 
         return $this->redirectToRoute('app_evenements_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/upload/poster', name: 'app_evenements_upload_poster', methods: ['POST'])]
+public function uploadPoster(Request $request): JsonResponse
+{
+    /** @var UploadedFile $file */
+    $file = $request->files->get('posterFile'); // Ensure 'posterFile' matches the key used in FormData
+
+    if (!$file) {
+        return new JsonResponse(['error' => 'No file provided'], Response::HTTP_BAD_REQUEST);
+    }
+
+    $uploadDirectory = $this->getParameter('uploads_directory'); // Define this parameter in your services.yaml
+    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    $newFilename = $originalFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+    try {
+        $file->move($uploadDirectory, $newFilename);
+
+        // Generate a URL to the uploaded file
+        $fileUrl = $request->getSchemeAndHttpHost() . '/uploads/' . $newFilename;
+
+        return new JsonResponse(['filePath' => $fileUrl]);
+    } catch (FileException $e) {
+        return new JsonResponse(['error' => 'Failed to upload file'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+}
+#[Route('/upload/video', name: 'app_evenements_upload_video', methods: ['POST'])]
+public function uploadVideo(Request $request): JsonResponse
+{
+    /** @var UploadedFile $file */
+    $file = $request->files->get('videoFile'); // Make sure 'videoFile' matches the key used in your FormData in the JavaScript
+
+    if (!$file) {
+        return new JsonResponse(['error' => 'No file provided'], Response::HTTP_BAD_REQUEST);
+    }
+
+    $uploadDirectory = $this->getParameter('uploads_directory'); // Ensure this parameter is defined in your services.yaml
+    $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+    $newFilename = $originalFilename.'-'.uniqid().'.'.$file->guessExtension(); // You might want to handle extensions more carefully, especially for video files
+
+    try {
+        $file->move($uploadDirectory, $newFilename);
+
+        // Generate a URL to the uploaded file
+        $fileUrl = $request->getSchemeAndHttpHost() . '/uploads/' . $newFilename;
+
+        return new JsonResponse(['filePath' => $fileUrl]);
+    } catch (FileException $e) {
+        return new JsonResponse(['error' => 'Failed to upload file'], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+}
+
+
+
+
+
+
+
+
+
+
 }

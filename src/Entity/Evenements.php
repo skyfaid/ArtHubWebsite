@@ -91,7 +91,6 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="posterUrl", type="string", length=255, nullable=true)
-     * @Assert\Url(message="The poster URL '{{ value }}' is not a valid URL")
      */
     private $posterurl;
 
@@ -99,7 +98,6 @@ class Evenements
      * @var string|null
      *
      * @ORM\Column(name="videoUrl", type="string", length=255, nullable=true)
-     * @Assert\Url(message="The video URL '{{ value }}' is not a valid URL")
      */
     private $videourl;
 
