@@ -3,11 +3,66 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Utilisateurs;
+use App\Form\UserRegistrationFormType;
+use App\Form\LoginFormType;
+
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+
+use Symfony\Component\Validator\Constraints\Length;
 
 class UserController extends AbstractController
 {
+    #[Route('/register', name: 'app_client_register')]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    {
+        $user = new Utilisateurs();
+        $form = $this->createForm(UserRegistrationFormType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Handling the password with UserPasswordHasherInterface
+            $plainPassword = $form->get('motDePasseHash')->get('first')->getData(); // Correctly accessing the password
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $plainPassword
+            );
+            $user->setMotDePasseHash($hashedPassword);
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'User registered successfully.');
+            return $this->redirectToRoute('app_login'); // Adjust as per your routing
+        }
+
+        return $this->render('ClientHome/UserManagement/signup.html.twig', [
+            'registrationForm' => $form->createView(),
+        ]);
+    }
+    #[Route('/login', name: 'app_login')]
+    public function login(Request $request, ): Response
+    {
+        $form = $this->createForm(LoginFormType::class);
+        $form->handleRequest($request);
+    
+    
+        return $this->render('signin.html.twig', [
+            'loginForm' => $form->createView(),
+    
+        ]);
+    }
+    
+    
+    
+
+
+
     #[Route('/dashboard/profile/{pseudo}', name: 'app_profile')]
     public function profile($pseudo): Response
     {
@@ -17,18 +72,11 @@ class UserController extends AbstractController
     }
 
     #[Route('/dashboard/users', name: 'app_users')]
-    public function view(): Response
+    public function view(EntityManagerInterface $entityManager): Response
     {
+        $users = $entityManager->getRepository(Utilisateurs::class)->findAll();
         return $this->render('/AdminDash/UserManagement/users.html.twig', [
-            'controller_name' => 'UserController',
+            'users' => $users,
         ]);
     }
-    #[Route('/dashboard/users', name: 'app_users')]
-    public function ajouter(): Response
-    {
-        return $this->render('/AdminDash/UserManagement/users.html.twig', [
-            'controller_name' => 'UserController',
-        ]);
-    }
-
 }

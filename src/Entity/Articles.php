@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Utilisateurs;
+
 
 /**
  * Articles
@@ -59,5 +61,63 @@ class Articles
      */
     private $utilisateur;
 
+    public function getArticleId(): ?int
+    {
+        return $this->articleId;
+    }
 
+    public function getTitre(): ?string
+    {
+        return $this->titre;
+    }
+
+    public function setTitre(string $titre): self
+    {
+        $this->titre = $titre;
+        return $this;
+    }
+
+    public function getContenu(): ?string
+    {
+        return $this->contenu;
+    }
+
+    public function setContenu(string $contenu): self
+    {
+        $this->contenu = $contenu;
+        return $this;
+    }
+
+    public function getDateCreation(): ?\DateTimeInterface
+    {
+        return $this->dateCreation;
+    }
+
+    public function setDateCreation(\DateTimeInterface $dateCreation): self
+    {
+        $this->dateCreation = $dateCreation;
+        return $this;
+    }
+
+    public function getDerniereModification(): ?\DateTimeInterface
+    {
+        return $this->derniereModification;
+    }
+
+    public function setDerniereModification(\DateTimeInterface $derniereModification): self
+    {
+        $this->derniereModification = $derniereModification;
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateurs
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateurs $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
+        return $this;
+    }
 }

@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login - ArtHub{% endblock %}
+
+{% block body %}
+<section style="padding-top: 50px; padding-bottom: 150px;">
+    <img src="{{ asset('clientHome/images/signup/status.png') }}" style="bottom: 5px; position: absolute; left: 90px; -webkit-animation: ImgBounce 5s ease-in-out 0s infinite alternate; animation: ImgBounce 5s ease-in-out 0s infinite alternate;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                {{ form_start(loginForm, {'attr': {'class': 'donate-one__form', 'id': 'loginForm','novalidate': 'novalidate'}}) }}
+                    <h3 class="donate-one__title text-center">Login to Your Account</h3>
+                    {{ form_row(loginForm.email, {'label': 'Email Address'}) }}
+                    {{ form_row(loginForm.password, {'label': 'Password'}) }}
+                    <div class="text-left" style="margin-top: 10px;">
+                        <a href="">Forgot Password?</a>
+                    </div>
+
+                    <div class="text-center" style="margin-top: 20px;">
+                        {{ form_row(loginForm.login) }}
+                    </div>
+                    <div class="text-left" style="margin-top: 20px;">
+                        Don't have an account?<a href=""> Sign Up</a>
+                    </div>
+                {{ form_end(loginForm) }}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-one"></section>
+{% endblock %}

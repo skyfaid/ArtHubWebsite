@@ -22,29 +22,8 @@ class ClientHomeController extends AbstractController
             'controller_name' => 'ClientHomeController',
         ]);
     }
-    #[Route('/register', name: 'app_client_register')]
-    public function register(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
+  
 
-    #[Route('/login', name: 'app_client_login')]
-    public function login(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-
-    #[Route('/home/blog', name: 'app_client_blog')]
-    public function blog(): Response
-    {
-        return $this->render('ClientHome/BlogManagement/blog.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
 
     #[Route('/home/events', name: 'app_client_event')]
     public function events(): Response

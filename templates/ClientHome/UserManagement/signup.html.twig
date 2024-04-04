@@ -1,0 +1,116 @@
+{% extends 'base.html.twig' %}
+{% block title %}Signup - ArtHub
+{% endblock %}
+
+{% block body %}
+	<section style="padding-top: 50px; padding-bottom: 150px;">
+		<img src="{{ asset('clientHome/images/signup/status.png') }}" style="bottom: 5px; position: absolute; left: 90px; -webkit-animation: ImgBounce 5s ease-in-out 0s infinite alternate; animation: ImgBounce 5s ease-in-out 0s infinite alternate;">
+		<div class="container">
+			<div class="row">
+				<div class="col-xl-4">
+					<div class="donate-one__block">
+						<div class="block-title">
+							<p>Sign Up</p>
+							<h3>Join Us</h3>
+						</div>
+						<p>"Discover a vibrant art community at ArtHub – where creativity knows no bounds! Join us today and embark on a journey through a kaleidoscope of artistic expressions. With a plethora of captivating artworks awaiting your exploration, you'll find inspiration in every corner. Register now and immerse yourself in a world where every stroke tells a story. Your artistic adventure starts here at ArtHub."</p>
+					</div>
+				</div>
+				<div class="col-xl-8">
+					{{ form_start(registrationForm, {'attr': {'id': 'registrationForm','novalidate': 'novalidate'}}) }}
+					<div class="donate-one__form" id="pseudoAndPasswordSection">
+						<h3 class="donate-one__title">Welcome Mate</h3>
+						<div class="row">
+							<div class="col-lg-12">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.pseudo) }}
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.motDePasseHash.first, {'label': 'Password'}) }}
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.motDePasseHash.second, {'label': 'Confirm Password'}) }}
+								</div>
+							</div>
+							<div class="col-lg-12" style="margin-top: 10px;">
+								<button type="button" class="thm-btn donate-one__btn" onclick="showPersonalInfoSection()">Next</button>
+							</div>
+						</div>
+					</div>
+					<!-- Personal Info Section -->
+					<div class="donate-one__form" style="margin-top: 20px; display: none;" id="personalInfoSection">
+						<h3 class="donate-one__title">
+							<span onclick="showPseudoAndPasswordSection()" style="cursor:pointer;">&#8592;</span>
+							Personal Info</h3>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.prenom, {'label': 'First Name'}) }}
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.nom, {'label': 'Last Name'}) }}
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.email) }}
+								</div>
+							</div>
+							<div class="col-lg-12">
+								<div class="donate-one__input">
+									{{ form_row(registrationForm.gender) }}
+								</div>
+							</div>
+							<div class="col-lg-12">
+							 <div class="donate-one__input">
+                                <label>Phone Number</label>
+								<div class="donate-one__input" style="display: flex; align-items: baseline;">
+									{{ form_row(registrationForm.countryCode) }}
+									{{ form_row(registrationForm.phoneNumber) }}
+								</div>
+								</div>
+							</div>
+							<div class="col-lg-12" style="margin-top: 10px;">
+								{{ form_row(registrationForm.register, {'label': 'Register Now', 'attr': {'class': 'thm-btn donate-one__btn'}}) }}
+							</div>
+						</div>
+					</div>
+					<!-- Verification Code Section (Initially Hidden) -->
+					<div class="donate-one__form" style="display:none;" id="verificationSection">
+						<h3 class="donate-one__title">Verification Code</h3>
+						<p>Please enter the code sent to your email.</p>
+						<div class="donate-one__input">
+							{{ form_row(registrationForm.resetCode) }}
+
+						</div>
+						<button type="submit" class="thm-btn donate-one__btn">Verify</button>
+					</div>
+					{{ form_end(registrationForm) }}
+				</div>
+			</div>
+		</div>
+	</section>
+	<script>
+		function showPersonalInfoSection() {
+document.getElementById('pseudoAndPasswordSection').style.display = 'none';
+document.getElementById('personalInfoSection').style.display = 'block';
+}
+
+function showPseudoAndPasswordSection() {
+document.getElementById('personalInfoSection').style.display = 'none';
+document.getElementById('pseudoAndPasswordSection').style.display = 'block';
+}
+
+function showVerificationSection() {
+document.getElementById('personalInfoSection').style.display = 'none';
+document.getElementById('verificationSection').style.display = 'block';
+}
+	</script>
+	<section class="cta-one"></section>
+{% endblock %}
