@@ -35,8 +35,6 @@ class Articles
     #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "utilisateur_id")]
     private ?Utilisateurs $utilisateur = null;
 
-
-
     // Getters and setters ...
 
     public function getArticleId(): ?int
