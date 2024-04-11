@@ -22,7 +22,7 @@ class ArticleController extends AbstractController
             'articles' => $articles,
         ]);
     }
-    #[Route('/blog/{articleId}', name: 'article_details')]
+    #[Route('home/blog/{articleId}', name: 'article_details')]
     public function articleDetails(int $articleId, EntityManagerInterface $entityManager): Response
     {
         $article = $entityManager->getRepository(Articles::class)->find($articleId);
@@ -31,7 +31,7 @@ class ArticleController extends AbstractController
             'article' => $article,
         ]);
     }
-    #[Route('/blog/add', name: 'article_new')]
+    #[Route('home/blog/article/add', name: 'article_new')]
     public function add_article(): Response
     {
         return $this->render('ClientHome/BlogManagement/add-article.html.twig', [

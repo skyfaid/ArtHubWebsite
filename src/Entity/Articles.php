@@ -28,9 +28,14 @@ class Articles
     #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
     private \DateTimeInterface $derniereModification;
 
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $imagePath = null;
+
     #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
     #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "utilisateur_id")]
     private ?Utilisateurs $utilisateur = null;
+
+
 
     // Getters and setters ...
 
@@ -99,4 +104,15 @@ class Articles
         return $this;
     }
 
+    public function getImagePath(): ?string
+    {
+        return $this->imagePath;
+    }
+
+    public function setImagePath(?string $imagePath): self
+    {
+        $this->imagePath = $imagePath;
+
+        return $this;
+    }
 }
