@@ -10,58 +10,70 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateurs;
 use App\Form\UserRegistrationFormType;
-use App\Form\LoginFormType;
-
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-
-use Symfony\Component\Validator\Constraints\Length;
+use App\Form\LoginFormType;
 
 class UserController extends AbstractController
 {
-    #[Route('/register', name: 'app_client_register')]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+  /*  #[Route(path: '/login', name: 'login')]
+public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
+{
+    // This dumps request data; ensure it's showing your expected fields
+    $error = $authenticationUtils->getLastAuthenticationError();
+    $lastUsername = $authenticationUtils->getLastUsername();
+
+    $form = $this->createForm(LoginFormType::class);
+    $form->handleRequest($request); // This line is crucial
+
+    return $this->render('signin.html.twig', [
+        'last_username' => $lastUsername,
+        'error'         => $error,
+        'loginForm' => $form->createView(),
+    ]);
+
+}
+
+    #[Route(path: '/logout', name: 'app_logout')]
+    public function logout()
+    {
+        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }*/
+
+    #[Route('/register', name: 'user_registration')]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new Utilisateurs();
         $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handling the password with UserPasswordHasherInterface
-            $plainPassword = $form->get('motDePasseHash')->get('first')->getData(); // Correctly accessing the password
-            $hashedPassword = $passwordHasher->hashPassword(
-                $user,
-                $plainPassword
-            );
+            // Hash the password
+            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('motDePasseHash')->getData());
             $user->setMotDePasseHash($hashedPassword);
-
+            // Set additional user data
+            $user->setEstactif(true);
+            $user->setDateInscription(new \DateTime());
+            // Save the user to the database
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
-
-            $this->addFlash('success', 'User registered successfully.');
-            return $this->redirectToRoute('app_login'); // Adjust as per your routing
+            // Redirect to a success page or do something else
+            return $this->redirectToRoute('registration_success');
         }
-
-        return $this->render('ClientHome/UserManagement/signup.html.twig', [
+    
+        return $this->render('log.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
-    #[Route('/login', name: 'app_login')]
-    public function login(Request $request, ): Response
+
+
+
+    #[Route('/register/success', name: 'registration_success')]
+    public function registrationSuccess(): Response
     {
-        $form = $this->createForm(LoginFormType::class);
-        $form->handleRequest($request);
-    
-    
-        return $this->render('signin.html.twig', [
-            'loginForm' => $form->createView(),
-    
-        ]);
+        return $this->render('registration/success.html.twig');
     }
-    
-    
-    
-
-
 
     #[Route('/dashboard/profile/{pseudo}', name: 'app_profile')]
     public function profile($pseudo): Response

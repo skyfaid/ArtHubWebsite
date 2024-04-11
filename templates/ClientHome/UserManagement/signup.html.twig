@@ -68,14 +68,15 @@
 								</div>
 							</div>
 							<div class="col-lg-12">
-							 <div class="donate-one__input">
-                                <label>Phone Number</label>
-								<div class="donate-one__input" style="display: flex; align-items: baseline;">
-									{{ form_row(registrationForm.countryCode) }}
-									{{ form_row(registrationForm.phoneNumber) }}
-								</div>
+								<div class="donate-one__input">
+                                    <label>Phone Number</label>
+									<div class="donate-one__input" style="display: flex; align-items: baseline;">
+										{{ form_row(registrationForm.countryCode) }}
+										{{ form_row(registrationForm.phoneNumber) }}
+									</div>
 								</div>
 							</div>
+							{{ form_errors(registrationForm) }}
 							<div class="col-lg-12" style="margin-top: 10px;">
 								{{ form_row(registrationForm.register, {'label': 'Register Now', 'attr': {'class': 'thm-btn donate-one__btn'}}) }}
 							</div>
@@ -87,7 +88,6 @@
 						<p>Please enter the code sent to your email.</p>
 						<div class="donate-one__input">
 							{{ form_row(registrationForm.resetCode) }}
-
 						</div>
 						<button type="submit" class="thm-btn donate-one__btn">Verify</button>
 					</div>
@@ -98,19 +98,19 @@
 	</section>
 	<script>
 		function showPersonalInfoSection() {
-document.getElementById('pseudoAndPasswordSection').style.display = 'none';
-document.getElementById('personalInfoSection').style.display = 'block';
-}
+			document.getElementById('pseudoAndPasswordSection').style.display = 'none';
+			document.getElementById('personalInfoSection').style.display = 'block';
+		}
 
-function showPseudoAndPasswordSection() {
-document.getElementById('personalInfoSection').style.display = 'none';
-document.getElementById('pseudoAndPasswordSection').style.display = 'block';
-}
+		function showPseudoAndPasswordSection() {
+			document.getElementById('personalInfoSection').style.display = 'none';
+			document.getElementById('pseudoAndPasswordSection').style.display = 'block';
+		}
 
-function showVerificationSection() {
-document.getElementById('personalInfoSection').style.display = 'none';
-document.getElementById('verificationSection').style.display = 'block';
-}
+		function showVerificationSection() {
+			document.getElementById('personalInfoSection').style.display = 'none';
+			document.getElementById('verificationSection').style.display = 'block';
+		}
 	</script>
 	<section class="cta-one"></section>
 {% endblock %}

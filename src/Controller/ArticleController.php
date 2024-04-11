@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Articles;
 
-class ArticlesController extends AbstractController
+class ArticleController extends AbstractController
 {
 
-    #[Route('/blog', name: 'app_articles')]
+    #[Route('/home/blog', name: 'app_articles')]
     public function index(EntityManagerInterface $entityManager): Response
     {
         // Fetch all articles from the database
@@ -29,6 +29,12 @@ class ArticlesController extends AbstractController
 
         return $this->render('ClientHome/BlogManagement/article-details.html.twig', [
             'article' => $article,
+        ]);
+    }
+    #[Route('/blog/add', name: 'article_new')]
+    public function add_article(): Response
+    {
+        return $this->render('ClientHome/BlogManagement/add-article.html.twig', [
         ]);
     }
 }

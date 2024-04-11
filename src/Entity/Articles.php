@@ -2,64 +2,37 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Utilisateurs;
+use App\Repository\ArticlesRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
-
-/**
- * Articles
- *
- * @ORM\Table(name="articles", indexes={@ORM\Index(name="utilisateur_id", columns={"utilisateur_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ArticlesRepository::class)]
+#[ORM\Table(name: "articles", indexes: [new ORM\Index(name: "utilisateur_id", columns: ["utilisateur_id"])])]
 class Articles
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="article_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $articleId;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $articleId = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="titre", type="string", length=100, nullable=false)
-     */
-    private $titre;
+    #[ORM\Column(type: "string", length: 100)]
+    private string $titre;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="contenu", type="text", length=65535, nullable=false)
-     */
-    private $contenu;
+    #[ORM\Column(type: "text")]
+    private string $contenu;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_creation", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $dateCreation = 'CURRENT_TIMESTAMP';
+    #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
+    private \DateTimeInterface $dateCreation;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="derniere_modification", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $derniereModification = 'CURRENT_TIMESTAMP';
+    #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
+    private \DateTimeInterface $derniereModification;
 
-    /**
-     * @var \Utilisateurs
-     *
-     * @ORM\ManyToOne(targetEntity="Utilisateurs")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="utilisateur_id", referencedColumnName="utilisateur_id")
-     * })
-     */
-    private $utilisateur;
+    #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "utilisateur_id")]
+    private ?Utilisateurs $utilisateur = null;
+
+    // Getters and setters ...
 
     public function getArticleId(): ?int
     {
@@ -74,6 +47,7 @@ class Articles
     public function setTitre(string $titre): self
     {
         $this->titre = $titre;
+
         return $this;
     }
 
@@ -85,6 +59,7 @@ class Articles
     public function setContenu(string $contenu): self
     {
         $this->contenu = $contenu;
+
         return $this;
     }
 
@@ -96,6 +71,7 @@ class Articles
     public function setDateCreation(\DateTimeInterface $dateCreation): self
     {
         $this->dateCreation = $dateCreation;
+
         return $this;
     }
 
@@ -107,6 +83,7 @@ class Articles
     public function setDerniereModification(\DateTimeInterface $derniereModification): self
     {
         $this->derniereModification = $derniereModification;
+
         return $this;
     }
 
@@ -118,6 +95,8 @@ class Articles
     public function setUtilisateur(?Utilisateurs $utilisateur): self
     {
         $this->utilisateur = $utilisateur;
+
         return $this;
     }
+
 }

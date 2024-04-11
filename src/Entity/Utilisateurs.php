@@ -2,173 +2,130 @@
 
 namespace App\Entity;
 
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\UtilisateursRepository;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="utilisateurs", uniqueConstraints={
- *     @ORM\UniqueConstraint(name="pseudo", columns={"pseudo"}),
- *     @ORM\UniqueConstraint(name="email", columns={"email"})
- * })
- */
+#[ORM\Entity(repositoryClass: UtilisateursRepository::class)]
+#[ORM\Table(name: "utilisateurs", uniqueConstraints: [
+    new ORM\UniqueConstraint(name: "pseudo", columns: ["pseudo"]),
+    new ORM\UniqueConstraint(name: "email", columns: ["email"])
+    ])] 
+      
 class Utilisateurs implements UserInterface
-
 {
-    public function getUserIdentifier(): string
+
+    public function getRoles(): array
     {
-        return $this->email;
-    }
-    
-    public function getRoles()
-    {
+        // Example, assuming $role property is a string. You might need to adjust it based on your application's needs.
         return [$this->role];
     }
 
-    public function getPassword()
+    public function getPassword(): string
     {
+        // Assuming motDePasseHash is your password field
         return $this->motDePasseHash;
     }
 
-    public function getSalt()
+    public function getSalt(): ?string
     {
-        
+        // Not needed for modern algorithms but must be included for interface compatibility
         return null;
     }
 
-    public function getUsername()
+    public function getUsername(): string
     {
+        // Assuming pseudo is your "username" field
         return $this->email;
     }
 
     public function eraseCredentials()
     {
         // If you store any temporary, sensitive data on the user, clear it here
+        // Not needed in this example
     }
 
-   
-    /**
-     * @ORM\Column(name="utilisateur_id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $utilisateurId;
+    public function getUserIdentifier(): string
+    {
+        // This method is new in Symfony 5.3 and should return the identifier used for authentication
+        // For example, if you're using email as the unique identifier:
+        return $this->getEmail();
+    }
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: "integer")]
+    private ?int $utilisateurId = null;
 
-    /**
-     * @ORM\Column(name="pseudo", type="string", length=50, nullable=false)
-     * @Assert\NotBlank(message="Pseudo cannot be blank.")
-     * @Assert\Regex(
-     *     pattern="/^[a-zA-Z][a-zA-Z0-9]*$/",
-     *     message="Pseudo must start with a letter and contain only alphanumeric characters."
-     * )
-     */
-    private $pseudo;
+    #[Assert\NotBlank(message: 'The username cannot be blank')]
+    #[Assert\Regex(pattern: '/^[a-zA-Z]{3}[a-zA-Z0-9]*$/', message: 'The username must start with at least 3 alphabetic characters ')]
+    #[ORM\Column(type: "string", length: 50)]
+    private string $pseudo;
 
-    /**
-     * @ORM\Column(name="prenom", type="string", length=50, nullable=false)
-     * @Assert\NotBlank(message="First name cannot be blank.")
-     * @Assert\Regex(
-     *     pattern="/^[a-zA-Z]+$/",
-     *     message="First name must contain only letters."
-     * )
-     * @Assert\Length(
-     *     max=20,
-     *     maxMessage="First name cannot exceed 20 characters."
-     * )
-     */
-    private $prenom;
+    #[Assert\NotBlank(message: 'The first name is required')]
+    #[Assert\Length(max: 20, maxMessage: 'The first name cannot be longer than {{ limit }} characters')]
+    #[Assert\Regex(pattern: '/^[a-zA-Z]*$/', message: 'The first name must contain only alphabetic characters')]
+    #[ORM\Column(type: "string", length: 50)]
+    private string $prenom;
 
-    /**
-     * @ORM\Column(name="nom", type="string", length=50, nullable=false)
-     * @Assert\NotBlank(message="Last name cannot be blank.")
-     * @Assert\Regex(
-     *     pattern="/^[a-zA-Z]+$/",
-     *     message="Last name must contain only letters."
-     * )
-     * @Assert\Length(
-     *     max=20,
-     *     maxMessage="Last name cannot exceed 20 characters."
-     * )
-     */
-    private $nom;
+    #[Assert\NotBlank(message: 'The last name is required')]
+    #[Assert\Length(max: 20, maxMessage: 'The last name cannot be longer than {{ limit }} characters')]
+    #[Assert\Regex(pattern: '/^[a-zA-Z]*$/', message: 'The last name must contain only alphabetic characters')]
+    #[ORM\Column(type: "string", length: 50)]
+    private string $nom;
 
-    /**
-     * @ORM\Column(name="email", type="string", length=100, nullable=false)
-     * @Assert\NotBlank(message="Email cannot be blank.")
-     * @Assert\Email(message="The email '{{ value }}' is not a valid email.")
-     */
-    private $email;
+    #[Assert\NotBlank(message: 'The email address is required')]
+    #[Assert\Email(message: 'Please enter a valid email address')]
+    #[ORM\Column(type: "string", length: 100)]
+    private string $email;
 
-    /**
-     * @ORM\Column(name="mot_de_passe_hash", type="string", length=255, nullable=false)
-     */
-    private $motDePasseHash;
+    #[ORM\Column(name: "mot_de_passe_hash", type: "string", length: 255)]
+    private string $motDePasseHash;
 
-    /**
-     * @ORM\Column(name="role", type="string", length=50, nullable=true, options={"default"="user"})
-     */
-    private $role;
+    #[ORM\Column(type: "string", length: 50, nullable: true, options: ["default" => "user"])]
+    private ?string $role = 'user';
 
-    /**
-     * @ORM\Column(name="date_inscription", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $dateInscription;
+    #[ORM\Column(type: "datetime", options: ["default" => "CURRENT_TIMESTAMP"])]
+    private \DateTimeInterface $dateInscription;
 
-    /**
-     * @ORM\Column(name="derniere_connexion", type="datetime", nullable=true)
-     */
-    private $derniereConnexion;
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private ?\DateTimeInterface $derniereConnexion = null;
 
-    /**
-     * @ORM\Column(name="url_image_profil", type="string", length=255, nullable=true)
-     */
-    private $urlImageProfil;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $urlImageProfil = null;
 
-    /**
-     * @ORM\Column(name="estActif", type="boolean", nullable=true)
-     */
-    private $estactif;
+    #[ORM\Column(type: "boolean", nullable: true)]
+    private ?bool $estactif = null;
 
-    /**
-     * @ORM\Column(name="gender", type="string", length=20, nullable=true)
-        * @Assert\NotBlank(message="Gender cannot be blank.")
-     * @Assert\Choice(choices={"male", "female", "other"}, message="Choose a valid gender.")
-     */
-    private $gender;
+    #[Assert\NotBlank(message: 'Please select a gender')]
+    #[ORM\Column(type: "string", length: 20, nullable: true)]
+    private ?string $gender = null;
 
-    /**
-     * @ORM\Column(name="reset_code", type="string", length=255, nullable=true)
-     
-     */
-    private $resetCode;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $resetCode = null;
 
-    /**
-     * @ORM\Column(name="phone_number", type="string", length=20, nullable=true)
-      * @Assert\NotBlank(message="Phone number cannot be blank.")
-     */
-    private $phoneNumber;
+    #[Assert\NotBlank(message: 'Please provide your phone number')]
+    #[ORM\Column(type: "string", length: 20, nullable: true)]
+    private ?string $phoneNumber = null;
 
-    /**
-     * @ORM\Column(name="facial_data_hash", type="string", length=255, nullable=true)
-     */
-    private $facialDataHash;
+    #[ORM\Column(type: "string", length: 255, nullable: true)]
+    private ?string $facialDataHash = null;
 
-    // Add your getters and setters here
     public function getUtilisateurId(): ?int
     {
         return $this->utilisateurId;
     }
 
-    // Repeat for other properties...
     public function getPseudo(): ?string
     {
         return $this->pseudo;
     }
 
-    public function setPseudo(string $pseudo): self
+    public function setPseudo(string $pseudo): static
     {
         $this->pseudo = $pseudo;
+
         return $this;
     }
 
@@ -177,9 +134,10 @@ class Utilisateurs implements UserInterface
         return $this->prenom;
     }
 
-    public function setPrenom(string $prenom): self
+    public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
+
         return $this;
     }
 
@@ -188,9 +146,10 @@ class Utilisateurs implements UserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): self
+    public function setNom(string $nom): static
     {
         $this->nom = $nom;
+
         return $this;
     }
 
@@ -199,9 +158,10 @@ class Utilisateurs implements UserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): self
+    public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
@@ -210,9 +170,10 @@ class Utilisateurs implements UserInterface
         return $this->motDePasseHash;
     }
 
-    public function setMotDePasseHash(string $motDePasseHash): self
+    public function setMotDePasseHash(string $motDePasseHash): static
     {
         $this->motDePasseHash = $motDePasseHash;
+
         return $this;
     }
 
@@ -221,9 +182,10 @@ class Utilisateurs implements UserInterface
         return $this->role;
     }
 
-    public function setRole(?string $role): self
+    public function setRole(?string $role): static
     {
         $this->role = $role;
+
         return $this;
     }
 
@@ -232,9 +194,10 @@ class Utilisateurs implements UserInterface
         return $this->dateInscription;
     }
 
-    public function setDateInscription(\DateTimeInterface $dateInscription): self
+    public function setDateInscription(\DateTimeInterface $dateInscription): static
     {
         $this->dateInscription = $dateInscription;
+
         return $this;
     }
 
@@ -243,9 +206,10 @@ class Utilisateurs implements UserInterface
         return $this->derniereConnexion;
     }
 
-    public function setDerniereConnexion(?\DateTimeInterface $derniereConnexion): self
+    public function setDerniereConnexion(?\DateTimeInterface $derniereConnexion): static
     {
         $this->derniereConnexion = $derniereConnexion;
+
         return $this;
     }
 
@@ -254,20 +218,22 @@ class Utilisateurs implements UserInterface
         return $this->urlImageProfil;
     }
 
-    public function setUrlImageProfil(?string $urlImageProfil): self
+    public function setUrlImageProfil(?string $urlImageProfil): static
     {
         $this->urlImageProfil = $urlImageProfil;
+
         return $this;
     }
 
-    public function isEstActif(): ?bool
+    public function isEstactif(): ?bool
     {
         return $this->estactif;
     }
 
-    public function setEstActif(?bool $estactif): self
+    public function setEstactif(?bool $estactif): static
     {
         $this->estactif = $estactif;
+
         return $this;
     }
 
@@ -276,9 +242,10 @@ class Utilisateurs implements UserInterface
         return $this->gender;
     }
 
-    public function setGender(?string $gender): self
+    public function setGender(?string $gender): static
     {
         $this->gender = $gender;
+
         return $this;
     }
 
@@ -287,9 +254,10 @@ class Utilisateurs implements UserInterface
         return $this->resetCode;
     }
 
-    public function setResetCode(?string $resetCode): self
+    public function setResetCode(?string $resetCode): static
     {
         $this->resetCode = $resetCode;
+
         return $this;
     }
 
@@ -298,9 +266,10 @@ class Utilisateurs implements UserInterface
         return $this->phoneNumber;
     }
 
-    public function setPhoneNumber(?string $phoneNumber): self
+    public function setPhoneNumber(?string $phoneNumber): static
     {
         $this->phoneNumber = $phoneNumber;
+
         return $this;
     }
 
@@ -309,9 +278,12 @@ class Utilisateurs implements UserInterface
         return $this->facialDataHash;
     }
 
-    public function setFacialDataHash(?string $facialDataHash): self
+    public function setFacialDataHash(?string $facialDataHash): static
     {
         $this->facialDataHash = $facialDataHash;
+
         return $this;
-    }   
+    }
+
+
 }

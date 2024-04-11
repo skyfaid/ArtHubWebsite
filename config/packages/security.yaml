@@ -1,32 +1,43 @@
 security:
-    encoders:
-        App\Entity\Utilisateurs: bcrypt
+    enable_authenticator_manager: true
+
+    password_hashers:
+        App\Entity\Utilisateurs:
+            algorithm: bcrypt
+            cost: 12 # Adjust the cost factor as needed for your testing environment
 
     providers:
-        app_user_provider:
+        app_user_provider: # This replaces 'users_in_memory' to use your entity for user authentication
             entity:
                 class: App\Entity\Utilisateurs
-                property: email
+                property: email # Assumes that 'email' is the unique identifier for your user entity
 
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+
         main:
             lazy: true
-            provider: app_user_provider
-            form_login:
-                login_path: app_login
-                check_path: app_login
-                csrf_token_generator: security.csrf.token_manager
-                csrf_token_id: authenticate
+            provider: app_user_provider # Use the defined provider above
+            logout:
+                path: app_logout # Route to handle logout
+                target: app_client_home # Route to redirect to after logout, adjusted to your homepage route name
+            form_login: # Form login authentication
+                login_path: app_login # Route name for the login page
+                check_path: app_login # Route name for submitting the login form
                 username_parameter: email
                 password_parameter: password
-            logout:
-                path: app_logout
-                target: /
-                invalidate_session: true
+            custom_authenticator: App\Security\SecurityAuthenticator
+            entry_point: App\Security\SecurityAuthenticator
 
-    access_control:
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/profile, roles: ROLE_USER }
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
+                always_remember_me: true
+
+   # access_control:
+       # - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allow access to login page without being authenticated
+        #- { path: ^/register, roles: IS_AUTHENTICATED_ANONYMOUSLY } # Allow access to register page without being authenticated
+       # - { path: ^/dashboard, roles: admin } # Adjusted for your admin access path and role
