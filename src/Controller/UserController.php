@@ -10,43 +10,41 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateurs;
 use App\Form\UserRegistrationFormType;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use App\Form\LoginFormType;
 
 class UserController extends AbstractController
 {
-  /*  #[Route(path: '/login', name: 'login')]
-public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
-{
-    // This dumps request data; ensure it's showing your expected fields
-    $error = $authenticationUtils->getLastAuthenticationError();
-    $lastUsername = $authenticationUtils->getLastUsername();
 
-    $form = $this->createForm(LoginFormType::class);
-    $form->handleRequest($request); // This line is crucial
+    #[Route(path: '/login', name: 'app_login')]
+    public function login(AuthenticationUtils $authenticationUtils): Response
+    {
+        // if ($this->getUser()) {
+        //     return $this->redirectToRoute('target_path');
+        // }
 
-    return $this->render('signin.html.twig', [
-        'last_username' => $lastUsername,
-        'error'         => $error,
-        'loginForm' => $form->createView(),
-    ]);
+        // get the login error if there is one
+        $error = $authenticationUtils->getLastAuthenticationError();
+        // last username entered by the user
+        $lastUsername = $authenticationUtils->getLastUsername();
 
-}
+        return $this->render('login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+    }
 
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout()
+    public function logout(): void
     {
-        throw new \Exception('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }*/
+        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+    }
 
-    #[Route('/register', name: 'user_registration')]
+
+
+    #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new Utilisateurs();
         $form = $this->createForm(UserRegistrationFormType::class, $user);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             // Hash the password
             $hashedPassword = $passwordHasher->hashPassword($user, $form->get('motDePasseHash')->getData());
@@ -59,10 +57,10 @@ public function login(AuthenticationUtils $authenticationUtils, Request $request
             $entityManager->persist($user);
             $entityManager->flush();
             // Redirect to a success page or do something else
-            return $this->redirectToRoute('registration_success');
+            return $this->redirectToRoute('app_login');
         }
-    
-        return $this->render('log.html.twig', [
+
+        return $this->render('ClientHome/UserManagement/signup.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

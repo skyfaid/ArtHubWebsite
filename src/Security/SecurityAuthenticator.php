@@ -67,8 +67,8 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
         return new RedirectResponse($targetUrl);*/
         $user = $token->getUser();
 
-    // Check if the user has the 'ROLE_ADMIN' role
-    if (in_array('admin', $user->getRoles(), true)) {
+    
+        if ($this->security->isGranted('admin')) {
         // Redirect to the admin dashboard
         $targetUrl = $this->router->generate('app_dashboard');
     } else {

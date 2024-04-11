@@ -8,20 +8,23 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
-                {{ form_start(loginForm, {'attr': {'class': 'donate-one__form', 'id': 'loginForm','novalidate': 'novalidate'}}) }}
+                <form method="post" class="donate-one__form" id="loginForm" novalidate>
                     <h3 class="donate-one__title text-center">Login to Your Account</h3>
-                    {{ form_row(loginForm.email, {'label': 'Email Address'}) }}
-                    {{ form_row(loginForm.password, {'label': 'Password'}) }}
+                    <label for="inputEmail">Email Address</label>
+                    <input type="email" id="inputEmail" name="email" class="form-control" required>
+                    <label for="inputPassword">Password</label>
+                    <input type="password" id="inputPassword" name="password" class="form-control" required>
                     <div class="text-left" style="margin-top: 10px;">
                         <a href="">Forgot Password?</a>
                     </div>
                     <div class="text-center" style="margin-top: 20px;">
-                        {{ form_row(loginForm.login) }}
+                        <button type="submit" class="thm-btn donate-one__btn">Login</button>
                     </div>
                     <div class="text-left" style="margin-top: 20px;">
-                        Don't have an account?<a href=""> Sign Up</a>
+                        Don't have an account?<a href="{{path('app_register')}}"> Sign Up</a>
                     </div>
-                {{ form_end(loginForm) }}
+                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                </form>
             </div>
         </div>
     </div>
