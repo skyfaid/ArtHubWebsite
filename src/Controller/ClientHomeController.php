@@ -15,16 +15,7 @@ class ClientHomeController extends AbstractController
             'controller_name' => 'ClientHomeController',
         ]);
     }
-    #[Route('/test', name: 'app_client_test')]
-    public function test(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-  
-
-
+   
     #[Route('/home/events', name: 'app_client_event')]
     public function events(): Response
     {

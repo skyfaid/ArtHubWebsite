@@ -17,6 +17,9 @@
                                 <li><a href="#">By {{ article.utilisateur.pseudo }}</a></li>
                                 <li><a href="#">Published:
 													{{ article.dateCreation|date('Y/m/d ') }}</a></li>
+                                <li><a href="{{ path('edit_article', {'id': article.articleId}) }}"><i class="far fa-edit"></i></a></li>
+                                <li><a href="{{ path('delete_article', {'id': article.articleId}) }}"><i class="far fa-trash-alt"></i></a></li>
+                               
                             </ul><!-- /.blog-one__meta list-unstyled -->
                             <h3>{{ article.titre }}</h3>
                             <br>

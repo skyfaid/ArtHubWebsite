@@ -33,7 +33,7 @@
 											<a href="{{ path('article_details', {'articleId': article.articleId}) }}">{{ article.titre }}</a>
 										</h3>
 										<p>{{ article.contenu|slice(0, 150) }}
-</p>
+										</p>
 										<a href="{{ path('article_details', {'articleId': article.articleId}) }}" class="blog-one__link">Learn More</a>
 										<!-- /.blog-one__link -->
 									</div>
@@ -69,35 +69,26 @@
 									<i class="muzex-icon-search"></i>
 								</button>
 							</form>
-
 						</div>
 						<!-- /.sidebar__single -->
-
 						<div class="sidebar__single">
-							<h3 class="sidebar__title">Categories</h3>
-							<p>Lorem ipsum dolor sit amet consectur pisicelit sed do.</p>
+							<h3 class="sidebar__title">Blogs</h3>
+							<p>You can explore here every thing you see .</p>
 							<ul class="list-unstyled sidebar__cat-list">
 								<li>
-									<a href="#">Education</a>
+									<a href="#">All Blogs</a>
 								</li>
 								<li>
-									<a href="#">Olympiad</a>
+									<a href="#">My Blogs</a>
 								</li>
 								<li>
-									<a href="#">Drawing</a>
-								</li>
-								<li>
-									<a href="#">Science</a>
-								</li>
-								<li>
-									<a href="#">Mathmetics</a>
+									<a href="{{ path('add_article') }}">Add Blog</a>
 								</li>
 							</ul>
-							<!-- /.list-unstyled sidebar__cat-list -->
 						</div>
-						<!-- /.sidebar__single -->
+
 						<div class="sidebar__single">
-							<h3 class="sidebar__title">Latest News</h3>
+							<h3 class="sidebar__title">Latest Blogs</h3>
 							<div class="sidebar__post">
 								<div class="sidebar__post-single">
 									<div class="sidebar__post-image">
@@ -156,22 +147,11 @@
 							</div>
 							<!-- /.sidebar__post -->
 						</div>
+
+
 						<!-- /.sidebar__single -->
-						<div class="sidebar__single">
-							<h3 class="sidebar__title">Popular Tags</h3>
-							<div class="sidebar__tags">
-								<a href="#">Museum</a>
-								<a href="#">Drawing</a>
-								<a href="#">Art</a>
-								<a href="#">Book</a>
-								<a href="#">Publication</a>
-								<a href="#">Gallery</a>
-								<a href="#">Muzex</a>
-								<a href="#">Collection</a>
-							</div>
-							<!-- /.sidebar__tags -->
-						</div>
-						<!-- /.sidebar__single -->
+
+
 					</div>
 					<!-- /.sidebar -->
 				</div>
