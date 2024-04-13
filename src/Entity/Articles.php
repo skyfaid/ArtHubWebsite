@@ -16,9 +16,13 @@ class Articles
     #[ORM\Column(type: "integer")]
     private ?int $articleId = null;
 
+    #[Assert\NotBlank(message: 'The title cannot be empty')]
+    #[Assert\Length(max: 100, maxMessage: 'The title cannot exceed {{ limit }} characters')]
     #[ORM\Column(type: "string", length: 100)]
     private string $titre;
 
+    #[Assert\NotBlank(message: 'The content cannot be empty')]
+    #[Assert\Length(min: 500, minMessage: 'The content must be at least {{ limit }} characters long')]
     #[ORM\Column(type: "text")]
     private string $contenu;
 

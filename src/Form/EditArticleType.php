@@ -25,6 +25,7 @@ class EditArticleType extends AbstractType
         ->add('imagePath', TextType::class, [
             'label' => 'Image',
             'required' => false,
+            
         ])
         ->add('update', SubmitType::class, [ // Change the button to "Update"
             'label' => 'Update',

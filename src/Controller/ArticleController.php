@@ -15,6 +15,7 @@ use App\Form\ArticlesType;
 use App\Form\EditArticleType;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\ArticlesRepository;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleController extends AbstractController
 {
@@ -80,7 +81,7 @@ class ArticleController extends AbstractController
     */
 
 
-    #[Route('/article/add', name: 'add_article')]
+   /* #[Route('/article/add', name: 'add_article')]
     public function createPost(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
     {
         $article = new Articles();
@@ -99,5 +100,40 @@ class ArticleController extends AbstractController
         return $this->render('ClientHome/BlogManagement/add-article.html.twig', [
             'form' => $form->createView(),
         ]);
+    }*/
+    
+
+    #[Route('/article/add', name: 'add_article')]
+    public function createPost(Request $request, ManagerRegistry $managerRegistry, LoggerInterface $logger): Response
+    {
+        $em = $managerRegistry->getManager();
+        $article = new Articles();
+        $article->setUtilisateur($em->getRepository(Utilisateurs::class)->find(9)); // Assuming Utilisateurs is your user entity
+        $form = $this->createForm(ArticlesType::class, $article);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $uploadedFile = $form->get('imagePath')->getData();
+            $originalFileName = $uploadedFile->getClientOriginalName();
+            // Set the image file name to the article entity
+            $article->setImagePath($originalFileName);
+            //$article->setImagePath("hakunaq");
+           
+            $em->persist($article);
+            $em->flush();
+            return $this->redirectToRoute('app_articles');
+        }
+
+        return $this->renderForm('ClientHome/BlogManagement/add-article.html.twig', [
+            'form' => $form,
+        ]);
+    
+        /*return $this->render('ClientHome/BlogManagement/add-article.html.twig', [
+            'form' => $form->createView(),
+        ]);*/
     }
+    
+    
+   
+
 }
