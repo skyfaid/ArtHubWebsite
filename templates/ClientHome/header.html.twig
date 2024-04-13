@@ -1,127 +1,217 @@
 <div class="preloader" style="display: none;">
-        <div class="lds-ripple">
-            <div></div>
-            <div></div>
-        </div>
-    </div><!-- /.preloader -->
-    <div class="page-wrapper">
-        <div class="topbar-one topbar-one__home-two">
-            <div class="container">
-                <div class="topbar-one__left">
-                    <p>Look at the Calender for the Upcoming Exhibitions.</p>
-                </div><!-- /.topbar-one__left -->
-                <div class="topbar-one__right">
-                    <a href="#"><i class="far fa-clock"></i> Mon - Sat 9.00 - 18.00</a>
-                    <a href="#"><i class="fa fa-phone-alt"></i> (+216) 71 258 698</a>
-                    <a href="#" class="thm-btn topbar__btn">Profile 
-                    </a><!-- /.thm-btn -->
-                </div><!-- /.topbar-one__right -->
-            </div><!-- /.container -->
-        </div><!-- /.topbar-one -->
+	<div class="lds-ripple">
+		<div></div>
+		<div></div>
+	</div>
+</div>
+<!-- /.preloader -->
+<div class="page-wrapper">
+	<div class="topbar-one topbar-one__home-two">
+		<div class="container">
+			<div class="topbar-one__left">
+				<p>Look at the Calender for the Upcoming Exhibitions.</p>
+			</div>
+			<!-- /.topbar-one__left -->
+			<div class="topbar-one__right">
+				<a href="#">
+					<i class="far fa-clock"></i>
+					Mon - Sat 9.00 - 18.00</a>
+				<a href="#">
+					<i class="fa fa-phone-alt"></i>
+					(+216) 71 258 698</a>
+				<div style="padding-left:20px;" class="dropdown">
+					<a class="thm-btn topbar__btn dropdown-toggle" href="#" role="button" id="dropdownProfileLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<i class="fa fa-user"></i>
+						{{app.user.pseudo}}
+					</a>
+					<div class="dropdown-menu" aria-labelledby="dropdownProfileLink">
+						<a href="{{ path('app_profileuser', {'pseudo': app.user.pseudo}) }}" style="color: black;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+							<i class="fa fa-user" style="color: black;"></i>
+							Profile</a>
+						<a href="{{ path('app_logout') }}" style="color: black;">
+							<i class="fa fa-sign-out-alt" style="color: black;"></i>
+							Sign Out</a>
+					</div>
 
-        <nav class="main-nav-one stricky main-nav-one__home-two original">
-            <div class="container">
-                <div class="inner-container">
-                    <div class="logo-box">
-                        <a href="#">
-                            <img src="{{asset('clientHome/images/logo.png')}}" alt="" height="88" width="100">
-                        </a>
-                        <a href="#" class="side-menu__toggler"><i class="muzex-icon-menu"></i></a>
-                    </div><!-- /.logo-box -->
-                    <div class="main-nav__main-navigation">
-                        <ul class="main-nav__navigation-box">
-                            <li>
-                                <a href="{{ path('app_client_home') }}">Home</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#">About</a>
-                                <ul>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Team</a></li>
-                                    
-                                    <li><a href="#">FAQ</a></li>
-                                </ul>
-                            <button class="dropdown-btn"><i class="fa fa-angle-right"></i></button></li>
-                            <li >
-                                <a href="{{ path('app_client_collection') }}">Collections</a>
-                               </li>
-                            <li class="dropdown current">
-                                <a href="#">Explore</a>
-                                <ul>
-                                    <li>
-                                        <a href="{{ path('app_client_event') }}">Events</a>
-                                    </li>
-                                    <li><a href="app_client_masterclass">MasterClass</a></li>
-                                    <li><a href="{{ path('app_client_activity') }}">Activities</a></li>
-                                    
-                                </ul>
-                            <button class="dropdown-btn"><i class="fa fa-angle-right"></i></button></li>
-                            <li >
-                                <a href="#">Blog</a>
-                            </li>
-                            <li><a href="#">Contact</a></li>
-                        </ul><!-- /.main-nav__navigation-box -->
-                    </div><!-- /.main-nav__main-navigation -->
-                    <div class="main-nav__right">
-                        <a href="#" class="search-popup__toggler"><i class="muzex-icon-search"></i></a>
-                        <a class="sidemenu-icon side-content__toggler" href="#"><i class="muzex-icon-menu"></i></a>
-                    </div><!-- /.main-nav__right -->
-                </div><!-- /.inner-container -->
-            </div><!-- /.container -->
-        </nav>
-        <nav class="main-nav-one stricky main-nav-one__home-two stricked-menu">
-            <div class="container">
-                <div class="inner-container">
-                    <div class="logo-box">
-                        <a href="#">
-                            <img src="{{asset('images/test.png')}}" alt="" height="88 " width="100">
-                        </a>
-                        <a href="#" class="side-menu__toggler"><i class="muzex-icon-menu"></i></a>
-                    </div><!-- /.logo-box -->
-                    <div class="main-nav__main-navigation">
-                        <ul class="main-nav__navigation-box">
-                            <li >
-                                <a href="#">Home</a>
-                            </li>
-                            <li class="dropdown">
-                                <a href="#">About</a>
-                                <ul>
-                                    <li><a href="#">About Us</a></li>
-                                    <li><a href="#">Team</a></li>
-                                    <li><a href="#">FAQ</a></li> 
-                                </ul>
-                            <button class="dropdown-btn"><i class="fa fa-angle-right"></i></button></li>
-                            <li >
-                                <a href="#">Collections</a>
-                            </li>
-                            <li class="dropdown current">
-                                <a href="#">Explore</a>
-                                <ul>
-                                    <li >
-                                        <a href="#">Events</a>
-                                </li>
-                                    <li><a href="#">MasterClass</a></li>
-                                    <li><a href="#">Activities</a></li>
-                                    
-                                </ul>
-                            <button class="dropdown-btn"><i class="fa fa-angle-right"></i></button></li>
-                            <li >
-                                <a href="#">Blog</a>
-                             </li>
-                            <li><a href="#">Contact</a></li>
-                        </ul><!-- /.main-nav__navigation-box -->
-                    </div><!-- /.main-nav__main-navigation -->
-                    <div class="main-nav__right">
-                        <a href="#" class="search-popup__toggler"><i class="muzex-icon-search"></i></a>
-                        <a class="sidemenu-icon side-content__toggler" href="#"><i class="muzex-icon-menu"></i></a>
-                    </div><!-- /.main-nav__right -->
-                </div><!-- /.inner-container -->
-            </div><!-- /.container -->
-        </nav><!-- /.main-nav-one -->
 
-        <section class="page-header" style="background-image: url(assets/images/backgrounds/page-header-bg-1-1.jpg);">
-            <div class="container">
-                <h2>{{ page_title }}</h2>
-            </div><!-- /.container -->
-        </section><!-- /.page-header -->
-    </div>
+				</div>
+				<!-- /.thm-btn -->
+
+
+			</div>
+			<!-- /.topbar-one__right -->
+		</div>
+		<!-- /.container -->
+	</div>
+	<!-- /.topbar-one -->
+
+	<nav class="main-nav-one stricky main-nav-one__home-two original">
+		<div class="container">
+			<div class="inner-container">
+				<div class="logo-box">
+					<a href="#">
+						<img src="{{asset('clientHome/images/logo.png')}}" alt="" height="88" width="100">
+					</a>
+					<a href="#" class="side-menu__toggler">
+						<i class="muzex-icon-menu"></i>
+					</a>
+				</div>
+				<!-- /.logo-box -->
+				<div class="main-nav__main-navigation">
+					<ul class="main-nav__navigation-box">
+						<li>
+							<a href="{{ path('app_client_home') }}">Home</a>
+						</li>
+						<li class="dropdown">
+							<a href="#">About</a>
+							<ul>
+								<li>
+									<a href="#">About Us</a>
+								</li>
+								<li>
+									<a href="#">Team</a>
+								</li>
+
+								<li>
+									<a href="#">FAQ</a>
+								</li>
+							</ul>
+							<button class="dropdown-btn">
+								<i class="fa fa-angle-right"></i>
+							</button>
+						</li>
+						<li>
+							<a href="{{ path('app_client_collection') }}">Collections</a>
+						</li>
+						<li class="dropdown current">
+							<a href="#">Explore</a>
+							<ul>
+								<li>
+									<a href="{{ path('app_client_event') }}">Events</a>
+								</li>
+								<li>
+									<a href="app_client_masterclass">MasterClass</a>
+								</li>
+								<li>
+									<a href="{{ path('app_client_activity') }}">Activities</a>
+								</li>
+
+							</ul>
+							<button class="dropdown-btn">
+								<i class="fa fa-angle-right"></i>
+							</button>
+						</li>
+						<li>
+							<a href="{{ path('app_articles') }}">Blog</a>
+						</li>
+						<li>
+							<a href="#">Contact</a>
+						</li>
+					</ul>
+					<!-- /.main-nav__navigation-box -->
+				</div>
+				<!-- /.main-nav__main-navigation -->
+				<div class="main-nav__right">
+					<a href="#" class="search-popup__toggler">
+						<i class="muzex-icon-search"></i>
+					</a>
+					<a class="sidemenu-icon side-content__toggler" href="#">
+						<i class="muzex-icon-menu"></i>
+					</a>
+				</div>
+				<!-- /.main-nav__right -->
+			</div>
+			<!-- /.inner-container -->
+		</div>
+		<!-- /.container -->
+	</nav>
+	<nav class="main-nav-one stricky main-nav-one__home-two stricked-menu">
+		<div class="container">
+			<div class="inner-container">
+				<div class="logo-box">
+					<a href="#">
+						<img src="{{asset('images/test.png')}}" alt="" height="88 " width="100">
+					</a>
+					<a href="#" class="side-menu__toggler">
+						<i class="muzex-icon-menu"></i>
+					</a>
+				</div>
+				<!-- /.logo-box -->
+				<div class="main-nav__main-navigation">
+					<ul class="main-nav__navigation-box">
+						<li>
+							<a href="#">Home</a>
+						</li>
+						<li class="dropdown">
+							<a href="#">About</a>
+							<ul>
+								<li>
+									<a href="#">About Us</a>
+								</li>
+								<li>
+									<a href="#">Team</a>
+								</li>
+								<li>
+									<a href="#">FAQ</a>
+								</li>
+							</ul>
+							<button class="dropdown-btn">
+								<i class="fa fa-angle-right"></i>
+							</button>
+						</li>
+						<li>
+							<a href="#">Collections</a>
+						</li>
+						<li class="dropdown current">
+							<a href="#">Explore</a>
+							<ul>
+								<li>
+									<a href="#">Events</a>
+								</li>
+								<li>
+									<a href="#">MasterClass</a>
+								</li>
+								<li>
+									<a href="#">Activities</a>
+								</li>
+
+							</ul>
+							<button class="dropdown-btn">
+								<i class="fa fa-angle-right"></i>
+							</button>
+						</li>
+						<li>
+							<a href="{{ path('app_articles') }}">Blog</a>
+						</li>
+						<li>
+							<a href="#">Contact</a>
+						</li>
+					</ul>
+					<!-- /.main-nav__navigation-box -->
+				</div>
+				<!-- /.main-nav__main-navigation -->
+				<div class="main-nav__right">
+					<a href="#" class="search-popup__toggler">
+						<i class="muzex-icon-search"></i>
+					</a>
+					<a class="sidemenu-icon side-content__toggler" href="#">
+						<i class="muzex-icon-menu"></i>
+					</a>
+				</div>
+				<!-- /.main-nav__right -->
+			</div>
+			<!-- /.inner-container -->
+		</div>
+		<!-- /.container -->
+	</nav>
+	<!-- /.main-nav-one -->
+	
+		<section class="page-header" style="background-image: url('{{ asset('images/blog/blog-s-2.jpg')}}'); background-size: cover; background-position: center; width: 100%;">
+			<div class="container">
+				<h2>{{ page_title }}</h2>
+			</div>
+			<!-- /.container -->
+		</section>
+	
+	<!-- /.page-header -->
+</div>

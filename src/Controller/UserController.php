@@ -73,10 +73,17 @@ class UserController extends AbstractController
         return $this->render('registration/success.html.twig');
     }
 
-    #[Route('/dashboard/profile/{pseudo}', name: 'app_profile')]
-    public function profile($pseudo): Response
+    #[Route('/profileadmin/{pseudo}', name: 'app_profile')]
+    public function profilead($pseudo): Response
     {
         return $this->render('/AdminDash/UserManagement/profile.html.twig', [
+            'controller_name' => 'UserController',
+        ]);
+    }
+    #[Route('/profile/{pseudo}', name: 'app_profileuser')]
+    public function profile($pseudo): Response
+    {
+        return $this->render('/ClientHome/UserManagement/profile.html.twig', [
             'controller_name' => 'UserController',
         ]);
     }
