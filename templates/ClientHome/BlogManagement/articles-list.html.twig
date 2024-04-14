@@ -14,7 +14,8 @@
 							{% for article in articles %}
 								<div class="blog-one__single">
 									<div class="blog-one__image">
-										<img src="{{asset(article.imagePath)}}" alt="">
+										<img src="{{ asset(article.imagePath ?  article.imagePath : 'images/blog/dafaultblog.jpg') }}" alt="">
+
 									</div>
 									<!-- /.blog-one__image -->
 									<div class="blog-one__content">

@@ -13,16 +13,19 @@
 
             <div class="row">
                 <div class="col-lg-8">
-                    {{ form_start(form, {'attr': {'class': 'contact-form-validated contact-one__form'}}) }}
+                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
                     <div class="row">
                         <div class="col-lg-6">
                             {{ form_row(form.titre) }}
+                            <div class="text-danger">{{ form_errors(form.titre) }}</div>
                         </div>
                         <div class="col-lg-6">
                             {{ form_row(form.imagePath) }}
+                            <div class="text-danger">{{ form_errors(form.imagePath) }}</div>
                         </div>
                         <div class="col-lg-12">
                             {{ form_row(form.contenu) }}
+                            <div class="text-danger">{{ form_errors(form.contenu) }}</div>
                         </div>
                         <div class="col-lg-12">
                             {{ form_row(form.submit) }} 

@@ -12,6 +12,8 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\CallbackTransformer;
+use Symfony\Component\Validator\Constraints\File as FileConstraint;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ArticlesType extends AbstractType
 {
@@ -22,18 +24,17 @@ class ArticlesType extends AbstractType
                 'label' => 'Title',
             ])
             ->add('contenu', TextareaType::class, [
-                'label' => 'Text(required)',
+                'label' => 'Text',
             ])
             ->add('imagePath', FileType::class, [
                 'label' => 'Image',
                 'required' => false,
-                //'mapped' => false,
-                'attr' => [
-                    'accept' => 'image/*', // Limit file types to images
-                ],
+                
+                
                 'constraints' => [
-                    new File([
-                        'maxSize' => '1024k', // Limit file size to 1MB
+                    
+                    new FileConstraint([
+                        'maxSize' => '5M',  // Adjust the max size as needed
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',

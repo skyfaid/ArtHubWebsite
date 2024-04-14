@@ -22,7 +22,7 @@ class Articles
     private string $titre;
 
     #[Assert\NotBlank(message: 'The content cannot be empty')]
-    #[Assert\Length(min: 500, minMessage: 'The content must be at least {{ limit }} characters long')]
+    #[Assert\Length(min: 200, minMessage: 'The content must be at least {{ limit }} characters long')]
     #[ORM\Column(type: "text")]
     private string $contenu;
 

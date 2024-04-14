@@ -51,87 +51,75 @@ class ArticleController extends AbstractController
 
 
     #[Route('/article/{id}/edit', name: 'edit_article')]
-    public function edit(Request $request, int $id, ManagerRegistry $managerRegistry, ArticlesRepository $articlesRepository): Response
-    {
-        $entityManager = $managerRegistry->getManager();
-        $article = $articlesRepository->find($id);
-        $form = $this->createForm(EditArticleType::class, $article);
-        $form->handleRequest($request);
+public function edit(Request $request, int $id, ArticlesRepository $articlesRepository, ManagerRegistry $managerRegistry): Response
+{
+    $entityManager = $managerRegistry->getManager();
+    $article = $articlesRepository->find($id);
+    $form = $this->createForm(ArticlesType::class, $article);
+    $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
 
-            $this->addFlash('success', 'Article updated successfully.'); // Flash message for success
-            return $this->redirectToRoute('app_articles'); // Redirect to article list page
-        }
-
-        return $this->render('ClientHome/BlogManagement/edit-article.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        $this->addFlash('success', 'Article updated successfully.'); // Flash message for success
+        return $this->redirectToRoute('app_articles'); // Redirect to article list page
     }
 
+    return $this->render('ClientHome/BlogManagement/edit-article.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+   
+    
+/////////'class': 'contact-form-validated contact-one__form'
+#[Route('/submit', name: 'add_article')]
+public function createPost(Request $request, ManagerRegistry $managerRegistry, LoggerInterface $logger): Response
+{
+    $em = $managerRegistry->getManager();
+    $article = new Articles();
+    $user = $this->getUser();
+    $article->setUtilisateur($user);
+    
+    $form = $this->createForm(ArticlesType::class, $article);
+    $form->handleRequest($request);
 
+    if ($form->isSubmitted() && $form->isValid()) {
+        $imageFile = $form->get('imagePath')->getData();
 
-
-    /* {% if currentUser.id == article.utilisateur.id %}
-                            <!-- Display edit and delete buttons only if current user is the author -->
-                          <li><a href="{{ path('edit_article', {'id': article.articleId}) }}"><i class="far fa-edit"></i></a></li>
-                            <li><a href="{{ path('delete_article', {'id': article.id}) }}"><i class="far fa-trash-alt"></i> Delete</a></li>
-                        {% endif %}
-    */
-
-
-   /* #[Route('/article/add', name: 'add_article')]
-    public function createPost(Request $request, EntityManagerInterface $entityManager, LoggerInterface $logger): Response
-    {
-        $article = new Articles();
-        $article->setUtilisateur($entityManager->getRepository(Utilisateurs::class)->find(9)); // Assuming Utilisateurs is your user entity
-        $form = $this->createForm(ArticlesType::class, $article);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $logger->info('Redirecting to app_articles route');
-            $entityManager->persist($article);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_articles');
+        if ($imageFile) {
+            // Generate a unique name for the file and store it in the database
+            $imageName = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            $newFilename = $imageName.'-'.uniqid().'.'.$imageFile->guessExtension();
+            $article->setImagePath("images/blog/" .$newFilename);
+            
+            // Move the file to the desired directory
+            try {
+                $imageFile->move(
+                    $this->getParameter('article_images_directory'),
+                    $newFilename
+                );
+            } catch (FileException $e) {
+                // Handle file upload error
+                $logger->error('An error occurred while uploading the image file: '.$e->getMessage());
+                $this->addFlash('error', 'An error occurred while uploading the image file.');
+                return $this->redirectToRoute('add_article');
+            }
         }
 
-        return $this->render('ClientHome/BlogManagement/add-article.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }*/
-    
-
-    #[Route('/article/add', name: 'add_article')]
-    public function createPost(Request $request, ManagerRegistry $managerRegistry, LoggerInterface $logger): Response
-    {
-        $em = $managerRegistry->getManager();
-        $article = new Articles();
-        $article->setUtilisateur($em->getRepository(Utilisateurs::class)->find(9)); // Assuming Utilisateurs is your user entity
-        $form = $this->createForm(ArticlesType::class, $article);
-        $form->handleRequest($request);
-    
-        if ($form->isSubmitted() && $form->isValid()) {
-            $uploadedFile = $form->get('imagePath')->getData();
-            $originalFileName = $uploadedFile->getClientOriginalName();
-            // Set the image file name to the article entity
-            $article->setImagePath($originalFileName);
-            //$article->setImagePath("hakunaq");
-           
-            $em->persist($article);
-            $em->flush();
-            return $this->redirectToRoute('app_articles');
-        }
-
-        return $this->renderForm('ClientHome/BlogManagement/add-article.html.twig', [
-            'form' => $form,
-        ]);
-    
-        /*return $this->render('ClientHome/BlogManagement/add-article.html.twig', [
-            'form' => $form->createView(),
-        ]);*/
+        
+        
+        $em->persist($article);
+        $em->flush();
+        
+        return $this->redirectToRoute('app_articles');
     }
+
+    return $this->renderForm('ClientHome/BlogManagement/add-article.html.twig', [
+        'form' => $form,
+    ]);
+}
+    
+      
     
     
    
