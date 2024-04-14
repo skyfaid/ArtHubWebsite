@@ -25,14 +25,24 @@ class ArticlesType extends AbstractType
             ])
             ->add('contenu', TextareaType::class, [
                 'label' => 'Text',
+                'attr' => ['style' => 'width: 100%;
+                border: none;
+                height: 60px;
+                border: 1px solid #e5e5e5;
+                color: #848484;
+                outline: none;
+                padding-left: 20px;
+                margin-bottom: 30px;height: 165px;
+                padding-top: 15px;'],
             ])
             ->add('imagePath', FileType::class, [
-                'label' => 'Image',
+                'label' => false,
                 'required' => false,
-                
-                
-                'constraints' => [
+                'attr' => [
+                    'accept' => 'image/*', // Allow only image files
                     
+                ],
+                'constraints' => [
                     new FileConstraint([
                         'maxSize' => '5M',  // Adjust the max size as needed
                         'mimeTypes' => [
