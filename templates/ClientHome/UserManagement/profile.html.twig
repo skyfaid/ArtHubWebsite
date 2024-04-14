@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{% block title %}profile - ArtHub
+{% block title %}Profile-{{app.user.pseudo}}
 {% endblock %}
 
 {% block body %}
@@ -27,216 +27,180 @@
 	<!-- CSS Files -->
 	<link id="pagestyle" href="{{asset('adminDash/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet"/>
 
-	<div class="card shadow-lg mx-4 card-profile-bottom" style="margin-top: -2px;">
+	<div class="card shadow-lg mx-4 card-profile-bottom" style="padding-top: 3px;">
 		<div class="card-body p-3">
 			<div class="row gx-4">
 				<div class="col-auto">
 					<div class="avatar avatar-xl position-relative">
-						<form method="post" enctype="multipart/form-data" action="">
-							<input
-							type="file" name="profile_image" id="profile_image" style="display:none;" onchange="this.form.submit();"/>
-							<!-- Image acts as the 'button' to upload -->
-							<label for="profile_image" style="cursor: pointer; position: relative;">
-								<img
-								src="{{ asset(app.user.urlImageProfil) }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
-								<!-- Edit icon -->
-								<i class="bi bi-pencil-square text-primary edit-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; display: none;"></i>
-							</label>
-						</form>
-					</div>
-				</div>
-				<div class="col-auto my-auto">
-					<div class="h-100">
-						<h5 class="mb-1">{{app.user.prenom}}
-							{{app.user.nom}}</h5>
-						<p class="mb-0 font-weight-bold text-sm">{{app.user.pseudo}}</p>
-					</div>
+						{{ form_start(editUserForm, {'attr': {'enctype':'multipart/form-data'}}) }}
+						{{ form_row(editUserForm.urlImageProfil, {
+                            'label': false,
+                            'attr': {'class': 'form-control', 'style': 'display:none;'}
+                        }) }}
+						<!-- Trigger to open the file input -->
+						<label for="{{ editUserForm.urlImageProfil.vars.id }}" style="cursor: pointer; position: relative;">
+						{% if app.user.urlImageProfil %}	
+							<img src="{{ asset(app.user.urlImageProfil) }}" alt="profile_image" class="w-100 border-radius-lg shadow-sm">
+						{% else %}
+							<img src="{{ asset('images/blog/blog-s-1.jpg') }}" alt="Default Image" class="w-100 border-radius-lg shadow-sm">
+						{% endif %}
+						<i class="bi bi-pencil-square text-primary edit-icon" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 24px; display: none;"></i>
+					</label>
+
 				</div>
 			</div>
-		</div>
-	</div>
-
-	<div class="container-fluid py-4">
-		<div class="row">
-			<div class="col-md-4">
-				<div class="card card-profile">
-					<div class="card-body">
-						<div class="list-group">
-							<a id="profileButton" href="#" class="list-group-item list-group-item-action">
-								<i class="bi bi-person-fill me-2"></i>Profile</a>
-							<a href="#" class="list-group-item list-group-item-action">
-								<i class="bi bi-bell-fill me-2"></i>Notifications</a>
-							<a href="#" class="list-group-item list-group-item-action">
-								<i class="bi bi-link-45deg me-2"></i>Linked Accounts</a>
-							<a href="#" class="list-group-item list-group-item-action">
-								<i class="bi bi-shield-lock-fill me-2"></i>2FA</a>
-							<a href="#" id="passwordButton" class="list-group-item list-group-item-action">
-								<i class="bi bi-key-fill me-2"></i>Password</a>
-							<a href="#" id="showAccountDeletion" class="list-group-item list-group-item-action">
-								<i class="bi bi-file-earmark-text-fill me-2"></i>KYC</a>
-
-							<a href="#" id="deleteAccountButton" class="list-group-item list-group-item-action">
-								<i class="bi bi-trash-fill me-2"></i>
-								Account</a>
-
-
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-8">
-				<div class="card">
-					<div class="card-header pb-0">
-						<div class="d-flex align-items-center">
-							<p class="mb-0">Edit Profile</p>
-							<button class="btn btn-primary btn-sm ms-auto">
-								Save
-							</button>
-						</div>
-					</div>
-					<div class="card-body">
-						<div id="userInfoSection" style="display: block;">
-							<p class="text-uppercase text-sm">User Information</p>
-							<div class="row mb-3">
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">Username</label>
-										<input class="form-control" type="text" value="{{app.user.pseudo}}">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">Email address</label>
-										<input class="form-control" type="email" value="{{app.user.email}}">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">First name</label>
-										<input class="form-control" type="text" value="{{app.user.prenom}}">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">Last name</label>
-										<input class="form-control" type="text" value="{{app.user.nom}}">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">Phone Number</label>
-										<div
-											style="display: flex; justify-content: space-between;">
-											<!-- Flex container -->
-
-											<select
-												class="form-control" style="width: 35%;">
-												<!-- Correctly Alphabetically Sorted Countries -->
-												<option data-countrycode="DZ" value="213">🇩🇿 Algeria +213</option>
-												<option data-countrycode="BH" value="973">🇧🇭 Bahrain +973</option>
-												<option data-countrycode="BE" value="32">🇧🇪 Belgium +32</option>
-												<option data-countrycode="DK" value="45">🇩🇰 Denmark +45</option>
-												<option data-countrycode="EG" value="20">🇪🇬 Egypt +20</option>
-												<option data-countrycode="FR" value="33">🇫🇷 France +33</option>
-												<option data-countrycode="DE" value="49">🇩🇪 Germany +49</option>
-												<option data-countrycode="GR" value="30">🇬🇷 Greece +30</option>
-												<option data-countrycode="IT" value="39">🇮🇹 Italy +39</option>
-												<option data-countrycode="JO" value="962">🇯🇴 Jordan +962</option>
-												<option data-countrycode="KW" value="965">🇰🇼 Kuwait +965</option>
-												<option data-countrycode="LB" value="961">🇱🇧 Lebanon +961</option>
-												<option data-countrycode="LY" value="218">🇱🇾 Libya +218</option>
-												<option data-countrycode="MA" value="212">🇲🇦 Morocco +212</option>
-												<option data-countrycode="NL" value="31">🇳🇱 Netherlands +31</option>
-												<option data-countrycode="NO" value="47">🇳🇴 Norway +47</option>
-												<option data-countrycode="OM" value="968">🇴🇲 Oman +968</option>
-												<option data-countrycode="PL" value="48">🇵🇱 Poland +48</option>
-												<option data-countrycode="QA" value="974">🇶🇦 Qatar +974</option>
-												<option data-countrycode="RU" value="7">🇷🇺 Russia +7</option>
-												<option data-countrycode="SA" value="966">🇸🇦 Saudi Arabia +966</option>
-												<option data-countrycode="ES" value="34">🇪🇸 Spain +34</option>
-												<option data-countrycode="SE" value="46">🇸🇪 Sweden +46</option>
-												<option data-countrycode="TN" value="216">🇹🇳 Tunisia +216</option>
-												<option data-countrycode="GB" value="44">🇬🇧 UK +44</option>
-												<option data-countrycode="AE" value="971">🇦🇪 United Arab Emirates +971</option>
-												<option data-countrycode="US" value="1">🇺🇸 USA +1</option>
-											</select>
-											<input class="form-control" type="text" style="width: 60%; margin-right: 3%;" placeholder="{{app.user.phoneNumber}}">
-										</div>
-									</div>
-
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label class="form-control-label">Gender</label>
-										<select class="form-control">
-											<option>Male</option>
-											<option>Female</option>
-											<option>Other</option>
-										</select>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="passwordSection" style="display: none;">
-							<hr class="horizontal dark">
-							<p class="text-uppercase text-sm">change Password</p>
-							<div class="row">
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="current-password" class="form-control-label">Current Password</label>
-										<input class="form-control" type="password" id="current-password" placeholder="Enter current password">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="new-password" class="form-control-label">New Password</label>
-										<input class="form-control" type="password" id="new-password" placeholder="Enter new password">
-									</div>
-								</div>
-								<div class="col-md-6">
-									<div class="form-group">
-										<label for="confirm-new-password" class="form-control-label">Confirm New Password</label>
-										<input class="form-control" type="password" id="confirm-new-password" placeholder="Confirm new password">
-									</div>
-								</div>
-							</div>
-						</div>
-						<div id="deleteAccountSection" style="display: none;">
-							<hr class="horizontal dark">
-							<p class="text-uppercase text-sm">Delete Account</p>
-							<p>Please note:
-								<br>Deleting your account is an irreversible action.
-																							 It will result in the permanent loss of your account data, settings, and content. 
-																						     This action cannot be undone.
-								<br>
-								Please ensure you have backed up any important information you wish to retain before proceeding.</p>
-							<div class="form-group">
-								<button class="btn btn-danger" onclick="confirmAccountDeletion()">Delete Account</button>
-							</div>
-						</div>
-
-					</div>
+			<div class="col-auto my-auto">
+				<div class="h-100">
+					<h5 class="mb-1">{{app.user.prenom}}
+						{{app.user.nom}}</h5>
+					<p class="mb-0 font-weight-bold text-sm">{{app.user.pseudo}}</p>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-<script>
+
+<div class="container-fluid py-4">
+	<div class="row">
+		<div class="col-md-4">
+			<div class="card card-profile">
+				<div class="card-body">
+					<div class="list-group">
+						<a id="profileButton" href="#" class="list-group-item list-group-item-action">
+							<i class="bi bi-person-fill me-2"></i>Profile</a>
+						<a href="#" class="list-group-item list-group-item-action">
+							<i class="bi bi-bell-fill me-2"></i>Notifications</a>
+						<a href="#" class="list-group-item list-group-item-action">
+							<i class="bi bi-link-45deg me-2"></i>Linked Accounts</a>
+						<a href="#" class="list-group-item list-group-item-action">
+							<i class="bi bi-shield-lock-fill me-2"></i>2FA</a>
+						<a href="#" id="passwordButton" class="list-group-item list-group-item-action">
+							<i class="bi bi-key-fill me-2"></i>Password</a>
+						<a href="#" id="showAccountDeletion" class="list-group-item list-group-item-action">
+							<i class="bi bi-file-earmark-text-fill me-2"></i>KYC</a>
+
+						<a href="#" id="deleteAccountButton" class="list-group-item list-group-item-action">
+							<i class="bi bi-trash-fill me-2"></i>
+							Account</a>
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header pb-0">
+					<div class="d-flex align-items-center " style=" margin-right:2%;justify-content: space-between;">
+						<p class="mb-0">Edit Profile</p>
+						{{ form_row(editUserForm.saveinfo) }}
+						
+					</div>
+				</div>
+				<div class="card-body">
+					<div id="userInfoSection" style="display: block;">
+						<p class="text-uppercase text-sm">User Information</p>
+						<div class="row mb-3">
+							<div class="col-md-6">
+								<div class="form-group">
+
+									{{ form_row(editUserForm.pseudo) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.email) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+
+									{{ form_row(editUserForm.prenom) }}
+
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.nom) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									<label class="form-control-label">Phone Number</label>
+									<div
+										style="display: flex;align-items: center; gap: 10px; ">
+										<!-- Flex container -->
+
+										{{ form_widget(editUserForm.countryCode) }}
+										{{ form_row(editUserForm.phoneNumber) }}
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.gender) }}
+								</div>
+							</div>
+						</div>
+					</div>
+					<div id="passwordSection" style="display: none;">
+						<hr class="horizontal dark">
+						<p class="text-uppercase text-sm">change Password</p>
+						<div class="row">
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.currentPassword) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.newPassword.first) }}
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="form-group">
+									{{ form_row(editUserForm.newPassword.second) }}
+								</div>
+							</div>
+							{{ form_end(editUserForm) }}
+						</div>
+					</div>
+					<div id="deleteAccountSection" style="display: none;">
+						<hr class="horizontal dark">
+						<p class="text-uppercase text-sm">Delete Account</p>
+						<p>Please note:
+							<br>Deleting your account is an irreversible action.
+																																						 It will result in the permanent loss of your account data, settings, and content. 
+																																					     This action cannot be undone.
+							<br>
+							Please ensure you have backed up any important information you wish to retain before proceeding.</p>
+						<div class="form-group">
+							<a href="{{ path('app_delete_account') }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.');">
+								Delete Account
+							</a>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div></div><script>
 document.getElementById('profileButton').addEventListener('click', function () {
-    document.getElementById('userInfoSection').style.display = 'block';
-    document.getElementById('passwordSection').style.display = 'none';
-    document.getElementById('deleteAccountSection').style.display = 'none';
+document.getElementById('userInfoSection').style.display = 'block';
+document.getElementById('passwordSection').style.display = 'none';
+document.getElementById('deleteAccountSection').style.display = 'none';
 });
 
 document.getElementById('passwordButton').addEventListener('click', function () {
-    document.getElementById('passwordSection').style.display = 'block';
-    document.getElementById('userInfoSection').style.display = 'none';
-    document.getElementById('deleteAccountSection').style.display = 'none';
+document.getElementById('passwordSection').style.display = 'block';
+document.getElementById('userInfoSection').style.display = 'none';
+document.getElementById('deleteAccountSection').style.display = 'none';
 });
 
 document.getElementById('deleteAccountButton').addEventListener('click', function () {
-    document.getElementById('deleteAccountSection').style.display = 'block';
-    document.getElementById('userInfoSection').style.display = 'none';
-    document.getElementById('passwordSection').style.display = 'none';
-});
-</script>{% endblock %}
+document.getElementById('deleteAccountSection').style.display = 'block';
+document.getElementById('userInfoSection').style.display = 'none';
+document.getElementById('passwordSection').style.display = 'none';
+});</script>{% endblock %}

@@ -9,7 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Utilisateurs;
+
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Form\UserRegistrationFormType;
+use App\Form\EditUserType;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
@@ -35,7 +39,6 @@ class UserController extends AbstractController
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
-
 
 
     #[Route('/register', name: 'app_register')]
@@ -80,13 +83,48 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
         ]);
     }
-    #[Route('/profile/{pseudo}', name: 'app_profileuser')]
+    /*#[Route('/profile/{pseudo}', name: 'app_profileuser')]
     public function profile($pseudo): Response
     {
         return $this->render('/ClientHome/UserManagement/profile.html.twig', [
             'controller_name' => 'UserController',
         ]);
+    }*/
+    #[Route('/profile/{pseudo}', name: 'app_profileuser')]
+    public function editUser(Request $request, ManagerRegistry $doctrine, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        $entityManager = $doctrine->getManager();
+        $user = $this->getUser(); // Assuming this retrieves the logged-in user
+        $form = $this->createForm(EditUserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            if ($form->get('saveinfo')->isClicked()) {
+                // Save user info logic
+                $entityManager->persist($user);
+                $entityManager->flush();
+                $this->addFlash('success', 'Profile updated successfully!');
+                return $this->redirectToRoute('app_profileuser');
+            } elseif ($form->get('save')->isClicked()) {
+                // Change password logic
+                $newPassword = $form->get('newPassword')->getData(); // Assuming you have a field named 'newPassword'
+                if ($newPassword) {
+                    $hashedPassword = $passwordHasher->hashPassword($user, $newPassword);
+                    $user->setMotDePasseHash($hashedPassword);
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+                    $this->addFlash('success', 'Password updated successfully!');
+                }
+                return $this->redirectToRoute('app_profileuser');
+            }
+        }
+
+        return $this->render('/ClientHome/UserManagement/profile.html.twig', [
+            'editUserForm' => $form->createView(),
+        ]);
     }
+
 
     #[Route('/dashboard/users', name: 'app_users')]
     public function view(EntityManagerInterface $entityManager): Response
@@ -95,5 +133,27 @@ class UserController extends AbstractController
         return $this->render('/AdminDash/UserManagement/users.html.twig', [
             'users' => $users,
         ]);
+    }
+
+
+    #[Route('/delete-account', name: 'app_delete_account')]
+    public function deleteAccount(EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils): RedirectResponse
+    {
+        $user = $this->getUser();
+        if ($user) {
+            // Remove the user from the database
+            $entityManager->remove($user);
+            $entityManager->flush();
+
+            // Log out the user
+            $this->get('security.token_storage')->setToken(null);
+            $this->get('session')->invalidate();
+
+            // Redirect to the home page
+            return $this->redirectToRoute('app_client_home');
+        }
+
+        // Redirect to login page if no user found
+        return $this->redirectToRoute('app_login');
     }
 }
