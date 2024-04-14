@@ -32,7 +32,7 @@
 			<div class="row gx-4">
 				<div class="col-auto">
 					<div class="avatar avatar-xl position-relative">
-						{{ form_start(editUserForm, {'attr': {'enctype':'multipart/form-data'}}) }}
+						{{ form_start(editUserForm, {'attr': {'novalidate': 'novalidate'}}) }}
 						{{ form_row(editUserForm.urlImageProfil, {
                             'label': false,
                             'attr': {'class': 'form-control', 'style': 'display:none;'}
@@ -82,7 +82,6 @@
 						<a href="#" id="deleteAccountButton" class="list-group-item list-group-item-action">
 							<i class="bi bi-trash-fill me-2"></i>
 							Account</a>
-
 
 					</div>
 				</div>

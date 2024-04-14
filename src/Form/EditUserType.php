@@ -11,13 +11,23 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use App\Entity\Utilisateurs;
+use App\EventSubscriber\PhoneNumberValidationSubscriber;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
+
 class EditUserType extends AbstractType
 {
+    private PhoneNumberValidationSubscriber $phoneNumberValidationSubscriber;
+
+    public function __construct(PhoneNumberValidationSubscriber $phoneNumberValidationSubscriber)
+    {
+        $this->phoneNumberValidationSubscriber = $phoneNumberValidationSubscriber;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,10 +50,10 @@ class EditUserType extends AbstractType
                 'attr' => ['class' => 'form-control','style' => 'width: 80%;'],  
             ])
 
-            ->add('save', SubmitType::class, [
+            /*->add('save', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary btn-sm ms-auto'],
                 'label' => 'Save Changes'
-            ])
+            ])*/
             ->add('saveinfo', SubmitType::class, [
                 'attr' => ['class' => 'btn btn-primary btn-sm ms-auto'],
                 'label' => 'Save '
@@ -82,15 +92,17 @@ class EditUserType extends AbstractType
                     '🇺🇸 USA +1' => '1'
                 ],
                 'attr' => ['class' => 'form-control','style' => 'width: 30%;', ],
-               
+                'data' => $options['country_code'],  // Set default value for country code
                 'label' => false,
                 'mapped' => false,
             ])
             ->add('phoneNumber', TextType::class, [
                 'attr' => ['class' => 'form-control','style' => 'width: 100%; margin-right: 20px;'],
                 'label' => false,
+                'data' => $options['phone_number'],  // Set default value for phone number
                 
             ])
+            
             ->add('gender', ChoiceType::class, [
                 'choices' => [
                     'Male' => 'Male',
@@ -115,14 +127,19 @@ class EditUserType extends AbstractType
                 'second_options' => ['label' => 'Confirm New Password'],
                 'mapped' => false,
                 
-            ]);
-        
+        ])
+        ->addEventListener(FormEvents::PRE_SUBMIT, [$this->phoneNumberValidationSubscriber, 'onFormEventsPRESUBMIT']);
+            
+            
+           
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Utilisateurs::class,
+            'country_code' => null,  // Define default value for country_code option
+            'phone_number' => null,  // Define default value for phone_number option
         ]);
     }
 }
