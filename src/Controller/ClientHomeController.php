@@ -5,9 +5,14 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\UserRepository;
+use App\Form\RegistrationType;
 
 class ClientHomeController extends AbstractController
 {
+
     #[Route('/', name: 'app_client_home')]
     public function index(): Response
     {
@@ -70,13 +75,12 @@ class ClientHomeController extends AbstractController
         ]);
     }
 
-    #[Route('/home/contact', name: 'app_client_contact')]
-    public function contact(): Response
-    {
-        return $this->render('ClientHome/ComplaintManagement/complaint.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
+#[Route('/home/contact', name: 'app_client_contact')]
+public function contact(): Response
+{
+    return $this->redirectToRoute('app_reclamation_index');
+}
+    
 
     #[Route('/home/masterclass', name: 'app_client_masterclass')]
     public function masterclass(): Response
