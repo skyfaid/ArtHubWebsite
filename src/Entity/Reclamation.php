@@ -1,13 +1,18 @@
 <?php
 
 
-
+namespace App\Entity;
+use App\Entity\Utilisateurs;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Reclamation
  *
- * @ORM\Table(name="reclamation", indexes={@ORM\Index(name="fk_reclamation_oeuvre", columns={"reference"}), @ORM\Index(name="fk_utilisateur_id", columns={"utilisateur_id"}), @ORM\Index(name="fk_oeuvre_id", columns={"id"})})
+ * @ORM\Table(name="reclamation", indexes={
+ *     @ORM\Index(name="fk_utilisateur_id", columns={"utilisateur_id"}),
+ *     @ORM\Index(name="fk_oeuvre_id", columns={"oeuvre_id"})
+ * })
  * @ORM\Entity
  */
 class Reclamation
@@ -19,28 +24,31 @@ class Reclamation
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $reclamationid;
+    private $ReclamationID;
 
     /**
      * @var int
      *
      * @ORM\Column(name="utilisateur_id", type="integer", nullable=false)
      */
-    private $utilisateurId;
+    private $utilisateur_id;
+
+ 
 
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\ManyToOne(targetEntity=Oeuvre::class)
+     * @ORM\JoinColumn(name="oeuvre_id", referencedColumnName="id", nullable=false)
      */
-    private $id;
+    private $oeuvre;
 
-    /**
+     /**
      * @var string|null
      *
      * @ORM\Column(name="Description", type="string", length=255, nullable=true)
+     * @Assert\NotBlank(message="Description must not be empty.")
      */
-    private $description;
+    private $Description;
+    
 
     /**
      * @var string|null
@@ -49,12 +57,12 @@ class Reclamation
      */
     private $status = 'pending';
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="DateSubmitted", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
-     */
-    private $datesubmitted = 'CURRENT_TIMESTAMP';
+/**
+ * @var \DateTime
+ *
+ * @ORM\Column(name="DateSubmitted", type="datetime", nullable=false)
+ */
+private $datesubmitted;
 
     /**
      * @var string|null
@@ -62,13 +70,122 @@ class Reclamation
      * @ORM\Column(name="productPNG", type="string", length=255, nullable=true)
      */
     private $productpng;
-
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="reference", type="integer", nullable=true)
+     /**
+     * @ORM\ManyToOne(targetEntity=Utilisateurs::class)
+     * @ORM\JoinColumn(nullable=false, name="utilisateur_id", referencedColumnName="utilisateur_id")
      */
-    private $reference;
+    private $utilisateur;
+
+
+
+
+    // Getter and setter for utilisateurId
+    public function getUtilisateurId(): int
+    {
+        return $this->utilisateur_id;
+    }
+    
+    public function setUtilisateurId(int $utilisateur_id): self
+    {
+        $this->utilisateur_id = $utilisateur_id;
+        return $this;
+    }
+    // Getter and setter for id
+    public function getReclamationID(): int
+    {
+        return $this->ReclamationID;
+    }
+
+    public function setReclamationID(int $ReclamationID): self
+    {
+        $this->ReclamationID = $ReclamationID;
+        return $this;
+    }
+
+    // Getter and setter for description
+    public function getDescription(): ?string
+    {
+        return $this->Description;
+    }
+
+    public function setDescription(?string $Description): self
+    {
+        $this->Description = $Description;
+        return $this;
+    }
+
+    // Getter and setter for status
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): self
+    {
+        $this->status = $status;
+        return $this;
+    }
+
+    // Getter and setter for datesubmitted
+    public function getDateSubmitted(): \DateTime
+    {
+        return $this->datesubmitted;
+    }
+
+    public function setDateSubmitted(\DateTime $datesubmitted): self
+    {
+        $this->datesubmitted = $datesubmitted;
+        return $this;
+    }
+    public function __construct()
+    {
+        $this->datesubmitted = new \DateTime();
+    }
+
+    // Getter and setter for productpng
+    public function getProductPng(): ?string
+    {
+        return $this->productpng;
+    }
+
+    public function setProductPng(?string $productpng): self
+    {
+        $this->productpng = $productpng;
+        return $this;
+    }
+    public function getOeuvre(): ?Oeuvre
+    {
+        return $this->oeuvre;
+    }
+    
+    public function setOeuvre(?Oeuvre $oeuvre): self
+    {
+        $this->oeuvre = $oeuvre;
+        return $this;
+    }
+
+    public function getUtilisateur(): ?Utilisateurs
+    {
+        return $this->utilisateur;
+    }
+
+    public function setUtilisateur(?Utilisateurs $utilisateur): self
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+/**
+     * String representation of the Reclamation entity.
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        // Assuming that you want to represent the Reclamation by the title of the Oeuvre and its ID
+        return $this->oeuvre ? $this->oeuvre->getTitre() . ' - ' . $this->getReclamationID() : '';
+    }
 
 
 }
