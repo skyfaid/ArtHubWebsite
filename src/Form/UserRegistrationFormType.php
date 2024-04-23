@@ -13,22 +13,34 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TelType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\EventSubscriber\PhoneNumberValidationSubscriber;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 
 
 class UserRegistrationFormType extends AbstractType
 {
+    private PhoneNumberValidationSubscriber $phoneNumberValidationSubscriber;
+
+    public function __construct(PhoneNumberValidationSubscriber $phoneNumberValidationSubscriber)
+    {
+        $this->phoneNumberValidationSubscriber = $phoneNumberValidationSubscriber;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('pseudo', TextType::class, [ 
             ])
             ->add('prenom', TextType::class, [ 
+                'invalid_message' => '',
                 'label' => 'First Name',
             ])
             ->add('nom', TextType::class, [ 
+                'invalid_message' => '',
                 'label' => 'Last Name',
             ])
             ->add('email', EmailType::class, [  
+                'invalid_message' => '',
             ])
             ->add('motDePasseHash', RepeatedType::class, [ 
                 'type' => PasswordType::class,
@@ -42,12 +54,14 @@ class UserRegistrationFormType extends AbstractType
                 'attr' => ['class' => 'selectpicker', 'style' => 'margin-right: 5px;'],
                 'mapped' => false,
                 'required' => true,
-                'error_bubbling' => true
+                'error_bubbling' => true,
+                
             ])
             ->add('phoneNumber', TelType::class, [ 
                 'label' => false,
                 'attr' => ['placeholder' => 'Phone number', 'style' => 'width: 300px; margin-left: 5px;'],
                 'required' => true, 
+                'invalid_message' => '',
                 
             ])
             ->add('gender', ChoiceType::class, [ 'error_bubbling' => true,
@@ -65,7 +79,9 @@ class UserRegistrationFormType extends AbstractType
                 'error_bubbling' => true
                 
             ])
-            ->add('register', SubmitType::class, ['label' => 'Register']);
+            
+            ->add('register', SubmitType::class, ['label' => 'Register'])
+            ->addEventListener(FormEvents::PRE_SUBMIT, [$this->phoneNumberValidationSubscriber, 'onFormEventsPRESUBMIT']);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -78,19 +94,20 @@ class UserRegistrationFormType extends AbstractType
     private function getCountryChoices()
     {
         return [
-            '🇫🇷 France +33' => '33',
-            '🇩🇪 Germany +49' => '49',
-            '🇮🇹 Italy +39' => '39',
-            '🇯🇴 Jordan +962' => '962',
-            '🇲🇦 Morocco +212' => '212',
-            '🇶🇦 Qatar +974' => '974',
-            '🇷🇺 Russia +7' => '7',
-            '🇸🇦 Saudi Arabia +966' => '966',
-            '🇪🇸 Spain +34' => '34',
-            '🇹🇳 Tunisia +216' => '216',
-            '🇬🇧 UK +44' => '44',
-            '🇦🇪 United Arab Emirates +971' => '971',
-            '🇺🇸 USA +1' => '1',
+            '🇩🇿 Algeria +213' => '213',
+                    '🇪🇬 Egypt +20' => '20',
+                    '🇫🇷 France +33' => '33',
+                    '🇩🇪 Germany +49' => '49',
+                    '🇬🇷 Greece +30' => '30',
+                    '🇮🇹 Italy +39' => '39',
+                    '🇱🇧 Lebanon +961' => '961',
+                    '🇱🇾 Libya +218' => '218',
+                    '🇲🇦 Morocco +212' => '212',
+                    '🇪🇸 Spain +34' => '34',
+                    '🇹🇳 Tunisia +216' => '216',
+                    '🇬🇧 UK +44' => '44',
+                    '🇦🇪 United Arab Emirates +971' => '971',
+                    '🇺🇸 USA +1' => '1'
         ];
     }
 }

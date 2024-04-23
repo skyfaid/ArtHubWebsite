@@ -68,13 +68,21 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
         $user = $token->getUser();
 
     
-        if ($this->security->isGranted('admin')) {
-        // Redirect to the admin dashboard
-        $targetUrl = $this->router->generate('app_dashboard');
-    } else {
-        // Redirect to the blog homepage for regular users
-        $targetUrl = $this->router->generate('app_articles');
-    }
+        
+            // Check the roles of the user
+            $roles = $user->getRoles();
+        
+            if (in_array('admin', $roles)) {
+                // Redirect to the admin dashboard
+                $targetUrl = $this->router->generate('app_dashboard');
+            } elseif (in_array('user', $roles)) {
+                // Redirect to the blog homepage for regular users
+                $targetUrl = $this->router->generate('app_articles');
+            } else {
+                // Handle other roles or unauthorized access
+                $targetUrl = $this->router->generate('app_login'); // Redirect to login page or handle as per your application logic
+            }
+        
 
     return new RedirectResponse($targetUrl);
     }

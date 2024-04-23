@@ -36,7 +36,7 @@ class Articles
     private ?string $imagePath = null;
 
     #[ORM\ManyToOne(targetEntity: Utilisateurs::class)]
-    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "utilisateur_id")]
+    #[ORM\JoinColumn(name: "utilisateur_id", referencedColumnName: "utilisateur_id",onDelete:"CASCADE")]
     private ?Utilisateurs $utilisateur = null;
 
     // Getters and setters ...

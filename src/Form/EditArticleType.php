@@ -31,6 +31,8 @@ class EditArticleType extends AbstractType
             'label' => 'Update',
             'attr' => ['class' => 'thm-btn contact-one__btn'],
         ]);
+        
+        
     }
     
     public function configureOptions(OptionsResolver $resolver): void

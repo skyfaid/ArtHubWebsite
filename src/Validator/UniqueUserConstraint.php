@@ -17,4 +17,6 @@ class UniqueUserConstraint extends Constraint
      * Then, use these in your validator class.
      */
     public $message = 'This value is already taken.';
+    
+   
 }
