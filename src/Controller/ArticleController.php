@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Psr\Log\LoggerInterface;
 use App\Entity\Articles;
+use Knp\Component\Pager\PaginatorInterface;
 use App\Entity\Utilisateurs;
 use App\Form\ArticlesType;
 use App\Form\EditArticleType;
@@ -21,13 +22,21 @@ class ArticleController extends AbstractController
 {
 
     #[Route('/blog', name: 'app_articles')]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $articles = $entityManager->getRepository(Articles::class)->findAll();
+        $query = $entityManager->getRepository(Articles::class)->createQueryBuilder('a')->getQuery();
+
+        $pagination = $paginator->paginate(
+            $query, // Query to paginate
+            $request->query->getInt('page', 1), // Get current page number, default to 1
+            3 // Limit of items per page
+        );
+
         return $this->render('ClientHome/BlogManagement/articles-list.html.twig', [
-            'articles' => $articles,
+            'pagination' => $pagination,
         ]);
     }
+   
 
     #[Route('/article/{articleId}/view', name: 'article_details')]
     public function articleDetails(int $articleId, EntityManagerInterface $entityManager): Response
