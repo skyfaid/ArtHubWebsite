@@ -1,7 +1,9 @@
 {% extends 'base.html.twig' %}
 {% block title %}Blog - ArtHub{% endblock %}
+
 {% block body %}
     {% include 'ClientHome/header.html.twig' with {'page_title': 'Articles'} %}
+
     <section class="blog-one blog-standard-page">
         <div class="container">
             <div class="row">
@@ -13,70 +15,64 @@
                                     <div class="blog-one__image">
                                         <img src="{{ asset(article.imagePath ? article.imagePath : 'images/blog/dafaultblog.jpg') }}" alt="">
                                     </div>
-                                    <!-- /.blog-one__image -->
                                     <div class="blog-one__content">
                                         <ul class="blog-one__meta list-unstyled">
-                                            <li>
-                                                <a href="#">By {{ article.utilisateur.pseudo }}</a>
-                                            </li>
-                                            <li>
-                                                <a href="#">Published: {{ article.dateCreation|date('Y/m/d') }}</a>
-                                            </li>
+                                            <li><a href="#">By {{ article.utilisateur.pseudo }}</a></li>
+                                            <li><a href="#">Published: {{ article.dateCreation|date('Y/m/d') }}</a></li>
                                         </ul>
-                                        <!-- /.blog-one__meta list-unstyled -->
-                                        <h3>
-                                            <a href="{{ path('article_details', {'articleId': article.articleId}) }}">{{ article.titre }}</a>
-                                        </h3>
+                                        <h3><a href="{{ path('article_details', {'articleId': article.articleId}) }}">{{ article.titre }}</a></h3>
                                         <p>{{ article.contenu|slice(0, 150) }}</p>
                                         <a href="{{ path('article_details', {'articleId': article.articleId}) }}" class="blog-one__link">Learn More</a>
-                                        <!-- /.blog-one__link -->
                                     </div>
-                                    <!-- /.blog-one__content -->
                                 </div>
-                                <!-- /.blog-one__single -->
                             {% endfor %}
                         </div>
                     </div>
-                    <div class="text-center">
-                        {{ knp_pagination_render(pagination) }}
-                    </div>
+
+                    {% if pagination.totalItemCount > pagination.getItemNumberPerPage() %}
+    <div class="post-pagination">
+        {% set currentPage = pagination.currentPageNumber %}
+        {% set lastPage = pagination.getPaginationData()['last'] %}
+
+        {% if currentPage > 1 %}
+            <a href="{{ path('app_articles', {'page': 1}) }}">&laquo;</a>
+            <a href="{{ path('app_articles', {'page': currentPage - 1}) }}">&lsaquo;</a>
+        {% endif %}
+
+        {% for page in 1..lastPage %}
+            <a href="{{ path('app_articles', {'page': page}) }}"
+               class="{{ currentPage == page ? 'active' : '' }}">{{ page }}</a>
+        {% endfor %}
+
+        {% if currentPage < lastPage %}
+            <a href="{{ path('app_articles', {'page': currentPage + 1}) }}">&rsaquo;</a>
+            <a href="{{ path('app_articles', {'page': lastPage}) }}">&raquo;</a>
+        {% endif %}
+    </div>
+{% endif %}
                 </div>
+
                 <div class="col-lg-4">
                     <div class="sidebar">
                         <div class="sidebar__single">
                             <h3 class="sidebar__title">Search</h3>
                             <form action="#" class="sidebar__search">
                                 <input type="text" placeholder="Search">
-                                <button type="submit">
-                                    <i class="muzex-icon-search"></i>
-                                </button>
+                                <button type="submit"><i class="muzex-icon-search"></i></button>
                             </form>
                         </div>
-                        <!-- /.sidebar__single -->
                         <div class="sidebar__single">
                             <h3 class="sidebar__title">Blogs</h3>
                             <p>You can explore everything you see here.</p>
                             <ul class="list-unstyled sidebar__cat-list">
-                                <li>
-                                    <a href="{{path('app_articles')}}">All Blogs</a>
-                                </li>
-                                <li>
-                                    <a href="#">My Blogs</a>
-                                </li>
-                                <li>
-                                    <a href="{{ path('add_article') }}">Add Blog</a>
-                                </li>
+                                <li><a href="{{path('app_articles')}}">All Blogs</a></li>
+                                <li><a href="#">My Blogs</a></li>
+                                <li><a href="{{ path('add_article') }}">Add Blog</a></li>
                             </ul>
                         </div>
-                        <!-- /.sidebar__single -->
                     </div>
-                    <!-- /.sidebar -->
                 </div>
-                <!-- /.col-lg-4 -->
             </div>
-            <!-- /.row -->
         </div>
-        <!-- /.container -->
     </section>
-    <!-- /.blog-one blog-grid-page -->
 {% endblock %}
