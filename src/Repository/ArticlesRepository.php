@@ -21,6 +21,16 @@ class ArticlesRepository extends ServiceEntityRepository
         parent::__construct($registry, Articles::class);
     }
 
+    public function findByTitleLike($titre)
+{
+    return $this->createQueryBuilder('a')
+        ->where('a.titre LIKE :titre')
+        ->setParameter('title', '%' . $titre . '%')
+        ->getQuery()
+        ->getResult();
+}
+
+
 //    /**
 //     * @return Articles[] Returns an array of Articles objects
 //     */

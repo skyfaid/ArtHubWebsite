@@ -2,22 +2,16 @@
 
 namespace App\Controller;
 
+use App\Service\TwilioClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
+use App\Service\SmsNotificationService;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 use Symfony\Component\Form\FormError;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Utilisateurs;
 use App\Form\EditUserType;
@@ -25,6 +19,9 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Form\UserRegistrationFormType;
+
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class UserController extends AbstractController
 {
@@ -213,5 +210,66 @@ class UserController extends AbstractController
 
         // Redirect to login page if no user found
         return $this->redirectToRoute('app_login');
+    }
+
+
+    // src/Controller/UserController.php
+
+    #[Route('/forgotpassword', name: 'app_forgot_password')]
+    public function forgotPassword(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $twilioSid = $_ENV['TWILIO_SID'];
+        $twilioToken = $_ENV['TWILIO_TOKEN'];
+        $twilioFrom = $_ENV['TWILIO_FROM'];
+
+        // Create an instance of TwilioClient with the fetched credentials
+        $twilioClient = new TwilioClient($twilioSid, $twilioToken, $twilioFrom);
+
+        $email = $request->request->get('email');
+        $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
+        if ($user) {
+            $resetCode = mt_rand(1000, 9999);
+            $user->setResetCode((string)$resetCode);
+            //$user->setResetCodeExpires(new \DateTime('+1 hour'));
+            $entityManager->flush();
+            // Send the reset code via SMS using the TwilioClient service
+            $twilioClient->sendSms($user->getPhoneNumber(), "Your password reset code is: $resetCode");
+
+            $this->addFlash('success', 'A reset code has been sent to your phone.');
+            return $this->redirectToRoute('app_reset_password');
+            // return $this->redirectToRoute('app_forgot_password');
+        }
+        /*if (!$user) {
+            $this->addFlash('error', 'No account found for that email.');
+            return $this->redirectToRoute('app_forgot_password');
+        }*/
+        return $this->render('/ClientHome/UserManagement/forget_password.html.twig');
+    }
+
+
+     #[Route('/reset-password', name: 'app_reset_password')]
+    public function resetPassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $code = $request->request->get('code');
+            $newPassword = $request->request->get('newPassword');
+
+            $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
+            if (!$user || $user->getResetCode() !== $code ) {
+                $this->addFlash('error', 'Invalid or expired reset code.');
+                return $this->redirectToRoute('app_reset_password');
+            }
+
+            $user->setMotDePasseHash($passwordHasher->hashPassword($user, $newPassword));
+            $user->setResetCode(null);
+            //$user->setResetCodeExpires(null);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Your password has been updated.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('/ClientHome/UserManagement/reset_password.html.twig');
     }
 }
