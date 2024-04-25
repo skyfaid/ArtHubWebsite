@@ -1,0 +1,54 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Participant Index{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Participant ID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Number of Formations</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Date of Registration</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if participants is empty %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">No records found</td>
+                                    </tr>
+                                {% else %}
+                                    {% for participant in participants %}
+                                    <tr>
+                                        <td>{{ participant.id }}</td>
+                                        <td>{{ participant.nbrFormations }}</td>
+                                        <td>{{ participant.dateInscription ? participant.dateInscription|date('Y-m-d') : '' }}</td>
+                                        <td class="align-middle text-center">
+                                            
+                                            <a href="{{ path('app_participant_edit', {'id': participant.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="4" class="text-right">
+                                        <a href="{{ path('app_participant_newDash') }}" class="btn btn-sm btn-primary">Add New Participant</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

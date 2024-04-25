@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formation Details{% endblock %}
+
+{% block body %}
+    {% include 'clientHome/header.html.twig' with {'page_title': 'Formation Details'} %}
+
+    <section class="event-one event-one__event-page-2">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="event-one__single">
+                        <div class="event-one__content">
+                            <h1>Formation Details</h1>
+                            <table class="table">
+                                <tbody>
+                                    <tr>
+                                        <th>Id</th>
+                                        <td>{{ formation.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>NbrParticipants</th>
+                                        <td>{{ formation.nbrParticipants }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Lien</th>
+                                        <td>{{ formation.lien }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>DateDebut</th>
+                                        <td>{{ formation.dateDebut ? formation.dateDebut|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>DateFin</th>
+                                        <td>{{ formation.dateFin ? formation.dateFin|date('Y-m-d') : '' }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="event-one__btn-block">
+                            <a href="{{ path('app_formations_index') }}" class="thm-btn">Back to List</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

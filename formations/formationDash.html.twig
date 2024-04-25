@@ -1,0 +1,57 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Formations Index{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="table-responsive p-0">
+                        <table class="table align-items-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nbr Participants</th>
+                                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Link</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Start Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">End Date</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if formations is empty %}
+                                    <tr>
+                                        <td colspan="6" class="text-center">No records found</td>
+                                    </tr>
+                                {% else %}
+                                    {% for formation in formations %}
+                                    <tr>
+                                        <td>{{ formation.id }}</td>
+                                        <td>{{ formation.nbrParticipants }}</td>
+                                        <td><a href="{{ formation.lien }}" target="_blank">{{ formation.lien }}</a></td>
+                                        <td>{{ formation.dateDebut ? formation.dateDebut|date('Y-m-d') : '' }}</td>
+                                        <td>{{ formation.dateFin ? formation.dateFin|date('Y-m-d') : '' }}</td>
+                                        <td class="align-middle text-center">
+                                            <a href="{{ path('app_formations_edit', {'id': formation.id}) }}" class="btn btn-sm btn-warning">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6" class="text-right">
+                                        <a href="{{ path('app_formations_new') }}" class="btn btn-sm btn-primary">Add New Formation</a>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
