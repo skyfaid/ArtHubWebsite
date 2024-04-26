@@ -16,6 +16,18 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 class ActiviteController extends AbstractController
 {
 
+
+    #[Route('/puzzle', name: 'activite_puzzle', methods: ['GET'])]
+    public function puzzle(EntityManagerInterface $entityManager): Response
+    {
+        $activites = $entityManager->getRepository(Activite::class)->findAll();
+    
+        return $this->render('activite/puzzle.html.twig', [
+            'activites' => $activites,
+        ]);
+    }
+
+
     //recherche activities
     #[Route('/search', name: 'app_activite_search')]
     public function search(Request $request, EntityManagerInterface $entityManager): Response
