@@ -14,6 +14,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Utilisateurs;
+use App\Repository\UtilisateursRepository;
 use App\Form\EditUserType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -120,8 +121,6 @@ class UserController extends AbstractController
             // Check if a new password is being typed
             $newPassword = $form->get('newPassword')->getData();
 
-
-
             if (!empty($newPassword)) {
                 // If a new password is provided, ensure the current password is also provided
                 $currentPassword = $form->get('currentPassword')->getData();
@@ -212,12 +211,10 @@ class UserController extends AbstractController
         return $this->redirectToRoute('app_login');
     }
 
-
-    // src/Controller/UserController.php
-
     #[Route('/forgotpassword', name: 'app_forgot_password')]
     public function forgotPassword(Request $request, EntityManagerInterface $entityManager): Response
     {
+        // Fetch Twilio credentials from environment variables
         $twilioSid = $_ENV['TWILIO_SID'];
         $twilioToken = $_ENV['TWILIO_TOKEN'];
         $twilioFrom = $_ENV['TWILIO_FROM'];
@@ -225,51 +222,115 @@ class UserController extends AbstractController
         // Create an instance of TwilioClient with the fetched credentials
         $twilioClient = new TwilioClient($twilioSid, $twilioToken, $twilioFrom);
 
+        // Get the email from the request
         $email = $request->request->get('email');
+
+        // Find the user by email
         $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
+
+        // If user exists, generate a reset code, update it in the database, and send it via SMS
         if ($user) {
             $resetCode = mt_rand(1000, 9999);
             $user->setResetCode((string)$resetCode);
-            //$user->setResetCodeExpires(new \DateTime('+1 hour'));
+            $expiryDate = new \DateTime();
+            $expiryDate->modify('+3 minutes');
+            $user->setResetCodeExpires($expiryDate);
+
             $entityManager->flush();
             // Send the reset code via SMS using the TwilioClient service
             $twilioClient->sendSms($user->getPhoneNumber(), "Your password reset code is: $resetCode");
 
+            // Add flash message and redirect to reset password route with email as query parameter
             $this->addFlash('success', 'A reset code has been sent to your phone.');
-            return $this->redirectToRoute('app_reset_password');
-            // return $this->redirectToRoute('app_forgot_password');
+            return $this->redirectToRoute('app_reset_password', ['email' => $email]);
         }
-        /*if (!$user) {
-            $this->addFlash('error', 'No account found for that email.');
-            return $this->redirectToRoute('app_forgot_password');
-        }*/
+
+        // If user doesn't exist, render the forgot password form
         return $this->render('/ClientHome/UserManagement/forget_password.html.twig');
     }
 
-
-     #[Route('/reset-password', name: 'app_reset_password')]
+    #[Route('/reset-password', name: 'app_reset_password')]
     public function resetPassword(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        // Get the email and test code from the query parameters
+        $email = $request->query->get('email');
+        $testcode = $request->query->get('test');
+
+
+        // Find the user by email
+        $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
+        $testcode = $user->getResetCode();
+        $expiryDate = $user->getResetCodeExpires();
+
+        // Check if the request is POST
         if ($request->isMethod('POST')) {
-            $email = $request->request->get('email');
+            // Get the reset code and new password from the request
             $code = $request->request->get('code');
             $newPassword = $request->request->get('newPassword');
 
-            $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
-            if (!$user || $user->getResetCode() !== $code ) {
+            // Validate reset code and user existence
+            if (!$user || $testcode !== $code) {
                 $this->addFlash('error', 'Invalid or expired reset code.');
-                return $this->redirectToRoute('app_reset_password');
+                return $this->redirectToRoute('app_reset_password', ['email' => $email, 'test' => $testcode]);
             }
 
+            $now = new \DateTime();
+            if ($expiryDate < $now) {
+                $this->addFlash('error', 'Reset code has expired. Please request a new one.');
+                return $this->redirectToRoute('app_forgot_password');
+            }
+
+            // Update user's password and reset code in the database
             $user->setMotDePasseHash($passwordHasher->hashPassword($user, $newPassword));
             $user->setResetCode(null);
-            //$user->setResetCodeExpires(null);
+            
             $entityManager->flush();
 
+            // Add success flash message and redirect to login page
             $this->addFlash('success', 'Your password has been updated.');
             return $this->redirectToRoute('app_login');
         }
 
-        return $this->render('/ClientHome/UserManagement/reset_password.html.twig');
+        // Render the reset password form
+        return $this->render('/ClientHome/UserManagement/reset_password.html.twig', ['email' => $email, 'test' => $testcode]);
+    }
+    #[Route('/resend-code', name: 'app_resend_code')]
+    public function resendCode(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        // Fetch Twilio credentials from environment variables
+        $twilioSid = $_ENV['TWILIO_SID'];
+        $twilioToken = $_ENV['TWILIO_TOKEN'];
+        $twilioFrom = $_ENV['TWILIO_FROM'];
+
+        // Create an instance of TwilioClient with the fetched credentials
+        $twilioClient = new TwilioClient($twilioSid, $twilioToken, $twilioFrom);
+        // Get the email from the request
+        $email = $request->query->get('email');
+
+        // Find the user by email
+        $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
+
+        // If user exists, generate a new reset code, update it in the database, and send it via SMS
+        if ($user) {
+            $resetCode = mt_rand(1000, 9999);
+            $user->setResetCode((string)$resetCode);
+            $expiryDate = new \DateTime();
+            $expiryDate->modify('+3 minutes');
+            $user->setResetCodeExpires($expiryDate);
+
+            $entityManager->flush();
+            $twilioClient->sendSms($user->getPhoneNumber(), "Your password reset code is: $resetCode");
+
+            // Implement code to resend the code, such as sending an SMS or email
+            // For example:
+            // $this->sendResetCode($user->getEmail(), $resetCode); // Implement this method to send the code via SMS or email
+
+            // Add flash message and redirect to reset password route with email as query parameter
+            $this->addFlash('success', 'A new reset code has been sent to your phone.');
+            return $this->redirectToRoute('app_reset_password', ['email' => $email]);
+        }
+
+        // If user doesn't exist, redirect to the forgot password route
+        return $this->redirectToRoute('app_forgot_password');
     }
 }

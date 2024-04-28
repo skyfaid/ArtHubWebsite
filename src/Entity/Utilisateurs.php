@@ -13,8 +13,8 @@ use App\Validator\UniqueUserConstraint;
 #[ORM\Table(name: "utilisateurs", uniqueConstraints: [
     new ORM\UniqueConstraint(name: "pseudo", columns: ["pseudo"]),
     new ORM\UniqueConstraint(name: "email", columns: ["email"])
-    ])] 
-      
+])]
+
 class Utilisateurs implements UserInterface
 {
 
@@ -107,6 +107,9 @@ class Utilisateurs implements UserInterface
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     private ?string $resetCode = null;
+
+    #[ORM\Column(type: "datetime", nullable: true)]
+    private \DateTimeInterface $resetCodeExpires;
 
     #[Assert\NotBlank(message: 'Please provide your phone number')]
     #[ORM\Column(type: "string", length: 20, nullable: true)]
@@ -276,17 +279,16 @@ class Utilisateurs implements UserInterface
         return $this;
     }
 
-    public function getFacialDataHash(): ?string
+
+    public function getResetCodeExpires(): ?\DateTimeInterface
     {
-        return $this->facialDataHash;
+        return $this->resetCodeExpires;
     }
 
-    public function setFacialDataHash(?string $facialDataHash): static
+    public function setResetCodeExpires(?\DateTimeInterface $resetCodeExpires): static
     {
-        $this->facialDataHash = $facialDataHash;
+        $this->resetCodeExpires = $resetCodeExpires;
 
         return $this;
     }
-
-
 }
