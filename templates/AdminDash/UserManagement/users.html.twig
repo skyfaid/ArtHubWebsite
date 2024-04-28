@@ -1,72 +1,68 @@
 {% extends 'baseAdmin.html.twig' %}
+
 {% block title %}
-	ArtHub - Users
+    ArtHub - Users
 {% endblock %}
-{% block page_name %}Users
-{% endblock %}
+
 {% block body %}
-	<div class="container-fluid py-4">
-		<div class="row">
-			<div class="col-12">
-				<div class="card mb-4">
-					<div class="card-header pb-0">
-						<h6>Users table</h6>
-					</div>
-					<div class="card-body px-0 pt-0 pb-2">
-						<div class="table-responsive p-0">
-							<table class="table align-items-center mb-0">
-								<thead>
-									<tr>
-										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">User</th>
-										<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Pseudo/gender</th>
-										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Role</th>
-										<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Joined</th>
-										<th class="text-secondary opacity-7"></th>
-									</tr>
-								</thead>
-								<tbody>
-									{% for user in users %}
-										<tr>
-											<td>
-												<div class="d-flex px-2 py-1">
-													<div>
-														<img src="{{ user.urlImageProfil ? asset(user.urlImageProfil) : asset('path/to/default/image.jpg') }}" class="avatar avatar-sm me-3" alt="{{ user.prenom }}">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6>Users table</h6>
+                    </div>
+                    <div class="card-body px-0 pt-0 pb-2">
+                        <div class="table-responsive p-0">
+                            <table id="usersTable" class="table align-items-center mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Pseudo/gender</th>
+                                        <th class="text-center">Role</th>
+                                        <th class="text-center">Joined</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody> {# Add tbody for the table body #}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-													</div>
-													<div class="d-flex flex-column justify-content-center">
-														<h6 class="mb-0 text-sm">{{ user.nom ~' '~ user.prenom  }}</h6>
-														<p class="text-xs text-secondary mb-0">{{ user.email }}</p>
-													</div>
-												</div>
-											</td>
-											<td>
-												<p class="text-xs font-weight-bold mb-0">{{ user.pseudo}}</p>
-												<p class="text-xs text-secondary mb-0">{{ user.gender }}</p>
-											</td>
-											<td class="align-middle text-center text-sm">
 
-												{% if user.role == 'admin' %}
-													<span class="badge badge-sm bg-gradient-secondary">{{ user.role }}</span>
-												{% else %}
-													<span class="badge badge-sm bg-gradient-success">{{ user.role }}</span>
-												{% endif %}
+    {# Include jQuery and DataTables JavaScript #}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+    // Initialize DataTable
+    $('#usersTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "pageLength": 10, // Set number of rows per page
+        "lengthMenu": [5, 10, 20], // Customize length menu options
+        "ajax": "{{ path('ajax_users_list') }}",
+        "columns": [
+            { 
+                "data": "user",
+                "render": function (data, type, row) {
+                    return data; // Renders the HTML content as is
+                }
+            },
+            { "data": "pseudo_gender" },
+            { "data": "role" },
+            { "data": "joined" },
+            { "data": "action" }
+        ],
+        "order": [[3, "desc"]], // Initial sort by the "Joined" column, descending
+        "searching": true // Enable search functionality
+    });
+});
 
-											</td>
-											<td class="align-middle text-center">
-												<span class="text-secondary text-xs font-weight-bold">{{ user.dateInscription|date('Y-m-d ') }}</span>
-											</td>
-											<td class="align-middle">
-												<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-													Ban
-												</a>
-											</td>
-										</tr>
-									{% endfor %}
-								</tbody>
-							</table>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endblock %}
+    </script>
+{% endblock %}

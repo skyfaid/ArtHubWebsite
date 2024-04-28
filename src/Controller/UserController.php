@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Service\TwilioClient;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,20 +10,19 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use App\Service\SmsNotificationService;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Entity\Utilisateurs;
 use App\Repository\UtilisateursRepository;
 use App\Form\EditUserType;
+
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Form\UserRegistrationFormType;
+use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
 
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
 class UserController extends AbstractController
 {
@@ -93,11 +93,9 @@ class UserController extends AbstractController
         $userRepository = $entityManager->getRepository(Utilisateurs::class);
         $user = $userRepository->findOneBy(['pseudo' => $pseudo]); // Retrieve user by pseudo
 
-
         if (!$user) {
             throw $this->createNotFoundException('No user found for pseudo ' . $pseudo);
         }
-
         // Extract country code and phone number if phone number exists
         $countryCode = '';
         $phoneNumber = '';
@@ -120,7 +118,6 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             // Check if a new password is being typed
             $newPassword = $form->get('newPassword')->getData();
-
             if (!empty($newPassword)) {
                 // If a new password is provided, ensure the current password is also provided
                 $currentPassword = $form->get('currentPassword')->getData();
@@ -138,15 +135,12 @@ class UserController extends AbstractController
                 $user->setMotDePasseHash($hashedPassword);
             }
 
-
             // Handle image upload
             $profileImageFile = $form->get('urlImageProfil')->getData();
             if ($profileImageFile) {
                 $originalFilename = pathinfo($profileImageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 // Use Symfony's Slugger to generate a unique filename
-
                 $newFilename = $originalFilename . '.' . $profileImageFile->guessExtension();
-
                 // Move the file to the desired location
                 try {
                     $profileImageFile->move(
@@ -157,17 +151,13 @@ class UserController extends AbstractController
                     // Handle file upload error
                     // Display some error message to the user
                 }
-
                 // Store the filename in the database
                 $user->setUrlImageProfil('/images/' . $newFilename);
             }
-
             // Combine country code and phone number before saving
             $user->setPhoneNumber('+' . $form->get('countryCode')->getData() . $form->get('phoneNumber')->getData());
-
             $entityManager->persist($user);
             $entityManager->flush();
-
             $this->addFlash('success', 'Profile updated successfully!');
             return $this->redirectToRoute('app_profileuser', ['pseudo' => $user->getPseudo()]);
         }
@@ -177,9 +167,6 @@ class UserController extends AbstractController
         ]);
     }
 
-
-
-
     #[Route('/dashboard/users', name: 'app_users')]
     public function view(EntityManagerInterface $entityManager): Response
     {
@@ -188,7 +175,6 @@ class UserController extends AbstractController
             'users' => $users,
         ]);
     }
-
 
     #[Route('/delete-account', name: 'app_delete_account')]
     public function deleteAccount(EntityManagerInterface $entityManager, AuthenticationUtils $authenticationUtils): RedirectResponse
@@ -218,16 +204,12 @@ class UserController extends AbstractController
         $twilioSid = $_ENV['TWILIO_SID'];
         $twilioToken = $_ENV['TWILIO_TOKEN'];
         $twilioFrom = $_ENV['TWILIO_FROM'];
-
         // Create an instance of TwilioClient with the fetched credentials
         $twilioClient = new TwilioClient($twilioSid, $twilioToken, $twilioFrom);
-
         // Get the email from the request
         $email = $request->request->get('email');
-
         // Find the user by email
         $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
-
         // If user exists, generate a reset code, update it in the database, and send it via SMS
         if ($user) {
             $resetCode = mt_rand(1000, 9999);
@@ -235,16 +217,13 @@ class UserController extends AbstractController
             $expiryDate = new \DateTime();
             $expiryDate->modify('+3 minutes');
             $user->setResetCodeExpires($expiryDate);
-
             $entityManager->flush();
             // Send the reset code via SMS using the TwilioClient service
             $twilioClient->sendSms($user->getPhoneNumber(), "Your password reset code is: $resetCode");
-
             // Add flash message and redirect to reset password route with email as query parameter
             $this->addFlash('success', 'A reset code has been sent to your phone.');
             return $this->redirectToRoute('app_reset_password', ['email' => $email]);
         }
-
         // If user doesn't exist, render the forgot password form
         return $this->render('/ClientHome/UserManagement/forget_password.html.twig');
     }
@@ -255,8 +234,6 @@ class UserController extends AbstractController
         // Get the email and test code from the query parameters
         $email = $request->query->get('email');
         $testcode = $request->query->get('test');
-
-
         // Find the user by email
         $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
         $testcode = $user->getResetCode();
@@ -283,7 +260,7 @@ class UserController extends AbstractController
             // Update user's password and reset code in the database
             $user->setMotDePasseHash($passwordHasher->hashPassword($user, $newPassword));
             $user->setResetCode(null);
-            
+
             $entityManager->flush();
 
             // Add success flash message and redirect to login page
@@ -301,12 +278,10 @@ class UserController extends AbstractController
         $twilioSid = $_ENV['TWILIO_SID'];
         $twilioToken = $_ENV['TWILIO_TOKEN'];
         $twilioFrom = $_ENV['TWILIO_FROM'];
-
         // Create an instance of TwilioClient with the fetched credentials
         $twilioClient = new TwilioClient($twilioSid, $twilioToken, $twilioFrom);
         // Get the email from the request
         $email = $request->query->get('email');
-
         // Find the user by email
         $user = $entityManager->getRepository(Utilisateurs::class)->findOneByEmail($email);
 
@@ -320,17 +295,78 @@ class UserController extends AbstractController
 
             $entityManager->flush();
             $twilioClient->sendSms($user->getPhoneNumber(), "Your password reset code is: $resetCode");
-
-            // Implement code to resend the code, such as sending an SMS or email
-            // For example:
-            // $this->sendResetCode($user->getEmail(), $resetCode); // Implement this method to send the code via SMS or email
-
             // Add flash message and redirect to reset password route with email as query parameter
             $this->addFlash('success', 'A new reset code has been sent to your phone.');
             return $this->redirectToRoute('app_reset_password', ['email' => $email]);
         }
-
         // If user doesn't exist, redirect to the forgot password route
         return $this->redirectToRoute('app_forgot_password');
     }
+
+
+    #[Route('/ajax/users/list', name: 'ajax_users_list')]
+    public function ajaxUsersList(Request $request, EntityManagerInterface $em): JsonResponse
+    {
+        // Get the parameters from DataTables request
+        $start = $request->query->getInt('start', 0);
+        $length = $request->query->getInt('length', 10);
+        $search = $request->query->get('search', ['value' => ''])['value'];
+        $order = $request->query->get('order', [['column' => '0', 'dir' => 'asc']]);
+    
+        // Determine which column to sort by (default is by 'joined' column)
+        $sortColumns = ['u.nom', 'u.pseudo', 'u.role', 'u.dateInscription'];
+        $orderColumn = $sortColumns[$order[0]['column']] ?? 'u.dateInscription';
+    
+        // Create a QueryBuilder instance for pagination
+        $qb = $em->createQueryBuilder();
+        $qb->select('u')
+           ->from(Utilisateurs::class, 'u')
+           ->setFirstResult($start)
+           ->setMaxResults($length);
+    
+        // Add search functionality if there is a search value
+        if (!empty($search)) {
+            $qb->andWhere('u.nom LIKE :search OR u.pseudo LIKE :search OR u.email LIKE :search OR u.prenom LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
+        }
+    
+        // Add ordering
+        $qb->orderBy($orderColumn, $order[0]['dir']);
+    
+        // Create Paginator instance
+        $paginator = new DoctrinePaginator($qb, $fetchJoinCollection = false);
+    
+        // Format the data as needed by DataTables
+        $formattedData = [];
+        foreach ($paginator as $user) {
+            $userHtml = '<div class="d-flex align-items-center">';
+            $userHtml .= '<div class="me-3">';
+            $userHtml .= '<img src="' . ($user->getUrlImageProfil() ? $user->getUrlImageProfil() : 'path/to/default/image.jpg') . '" class="avatar avatar-sm" alt="' . $user->getPrenom() . '">';
+            $userHtml .= '</div>';
+            $userHtml .= '<div>';
+            $userHtml .= '<h6 class="mb-0">' . $user->getNom() . ' ' . $user->getPrenom() . '</h6>';
+            $userHtml .= '<p class="text-secondary mb-0">' . $user->getEmail() . '</p>';
+            $userHtml .= '</div></div>';
+    
+            $formattedData[] = [
+                'user' => $userHtml,
+                'pseudo_gender' => $user->getPseudo() . ' / ' . $user->getGender(),
+                'role' => $user->getRole(),
+                'joined' => $user->getDateInscription()->format('Y-m-d'),
+                'action' => '<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Ban</a>'
+            ];
+        }
+    
+        // Prepare the response for DataTables
+        $response = [
+            'draw' => intval($request->query->get('draw', 0)),
+            'recordsTotal' => $em->getRepository(Utilisateurs::class)->count([]),
+            'recordsFiltered' => count($paginator),
+            'data' => $formattedData,
+        ];
+    
+        return new JsonResponse($response);
+    }
+    
+
 }
