@@ -146,4 +146,24 @@ public function gallery(EntityManagerInterface $entityManager): Response
 
         return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
 }
+
+
+
+
+
+
+#[Route('/details/{idActivite}', name: 'activity_details', methods: ['GET'])]
+public function activityDetails(int $idActivite, EntityManagerInterface $entityManager): Response
+{
+    $activite = $entityManager->getRepository(Activite::class)->find($idActivite);
+
+    if (!$activite) {
+        throw $this->createNotFoundException('The activity does not exist.');
+    }
+
+    return $this->render('activite/details.html.twig', [
+        'activite' => $activite
+    ]);
+}
+
 }
