@@ -65,7 +65,7 @@
                 <div class="collection-grid__single">
                     <div class="image-container">
                         <img src="{{ asset('uploads/posters/' ~ activite.posterurl) }}" alt="{{ activite.nomAct }}" width="300" height="300">
-                       <a class="btn btn-primary btn-participate">Participate</a>
+                       <a href="{{ path('app_puzzle2') }}" class="btn btn-primary btn-participate">Participate</a>
                     </div>
                     <div class="collection-grid__content">
                         <h3><a href="{{ path('app_activite_show', {'idActivite': activite.idActivite}) }}">{{ activite.nomAct }}</a></h3>
