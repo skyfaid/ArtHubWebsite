@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -19,7 +19,7 @@ class Utilisateurs
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $utilisateur_id;
+    private $utilisateurId;
 
     /**
      * @var string
@@ -119,162 +119,5 @@ class Utilisateurs
      */
     private $facialDataHash;
 
-    public function getUtilisateurId(): ?int
-    {
-        return $this->utilisateur_id;
-    }
 
-    public function getPseudo(): ?string
-    {
-        return $this->pseudo;
-    }
-
-    public function setPseudo(string $pseudo): self
-    {
-        $this->pseudo = $pseudo;
-        return $this;
-    }
-
-    public function getPrenom(): ?string
-    {
-        return $this->prenom;
-    }
-
-    public function setPrenom(string $prenom): self
-    {
-        $this->prenom = $prenom;
-        return $this;
-    }
-
-    public function getNom(): ?string
-    {
-        return $this->nom;
-    }
-
-    public function setNom(string $nom): self
-    {
-        $this->nom = $nom;
-        return $this;
-    }
-
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(string $email): self
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    public function getMotDePasseHash(): ?string
-    {
-        return $this->motDePasseHash;
-    }
-
-    public function setMotDePasseHash(string $motDePasseHash): self
-    {
-        $this->motDePasseHash = $motDePasseHash;
-        return $this;
-    }
-
-    public function getRole(): ?string
-    {
-        return $this->role;
-    }
-
-    public function setRole(?string $role): self
-    {
-        $this->role = $role;
-        return $this;
-    }
-
-    public function getDateInscription(): ?\DateTimeInterface
-    {
-        return $this->dateInscription;
-    }
-
-    public function setDateInscription(\DateTimeInterface $dateInscription): self
-    {
-        $this->dateInscription = $dateInscription;
-        return $this;
-    }
-
-    public function getDerniereConnexion(): ?\DateTimeInterface
-    {
-        return $this->derniereConnexion;
-    }
-
-    public function setDerniereConnexion(?\DateTimeInterface $derniereConnexion): self
-    {
-        $this->derniereConnexion = $derniereConnexion;
-        return $this;
-    }
-
-    public function getUrlImageProfil(): ?string
-    {
-        return $this->urlImageProfil;
-    }
-
-    public function setUrlImageProfil(?string $urlImageProfil): self
-    {
-        $this->urlImageProfil = $urlImageProfil;
-        return $this;
-    }
-
-    public function getEstActif(): ?bool
-    {
-        return $this->estactif;
-    }
-
-    public function setEstActif(?bool $estactif): self
-    {
-        $this->estactif = $estactif;
-        return $this;
-    }
-
-    public function getGender(): ?string
-    {
-        return $this->gender;
-    }
-
-    public function setGender(?string $gender): self
-    {
-        $this->gender = $gender;
-        return $this;
-    }
-
-    public function getResetCode(): ?string
-    {
-        return $this->resetCode;
-    }
-
-    public function setResetCode(?string $resetCode): self
-    {
-        $this->resetCode = $resetCode;
-        return $this;
-    }
-
-    public function getPhoneNumber(): ?string
-    {
-        return $this->phoneNumber;
-    }
-
-    public function setPhoneNumber(?string $phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-        return $this;
-    }
-
-    public function getFacialDataHash(): ?string
-    {
-        return $this->facialDataHash;
-    }
-
-    public function setFacialDataHash(?string $facialDataHash): self
-    {
-        $this->facialDataHash = $facialDataHash;
-        return $this;
-    }
 }

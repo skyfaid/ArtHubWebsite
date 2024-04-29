@@ -1,0 +1,14 @@
+{# templates/formations/quizz.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+   
+    <p>{{ quiz.question }}</p>
+    <ul>
+        {% for option in quiz.options %}
+            <li>{{ option }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

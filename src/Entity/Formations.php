@@ -1,6 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
+namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -19,35 +21,82 @@ class Formations
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
-    private $id;
+    private int $id;
 
     /**
      * @var int
      *
      * @ORM\Column(name="nbr_participants", type="integer", nullable=false)
      */
-    private $nbrParticipants;
+    private int $nbrParticipants;
 
     /**
      * @var string
      *
      * @ORM\Column(name="lien", type="string", length=255, nullable=false)
      */
-    private $lien;
+    private string $lien;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_debut", type="date", nullable=false)
      */
-    private $dateDebut;
+    private \DateTime $dateDebut;
 
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="date_fin", type="date", nullable=false)
      */
-    private $dateFin;
+    private \DateTime $dateFin;
 
+    // Getters
 
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function getNbrParticipants(): int
+    {
+        return $this->nbrParticipants;
+    }
+
+    public function getLien(): string
+    {
+        return $this->lien;
+    }
+
+    public function getDateDebut(): \DateTime
+    {
+        return $this->dateDebut;
+    }
+
+    public function getDateFin(): \DateTime
+    {
+        return $this->dateFin;
+    }
+
+    // Setters
+
+    public function setNbrParticipants(int $nbrParticipants): void
+    {
+        $this->nbrParticipants = $nbrParticipants;
+    }
+
+    public function setLien(string $lien): void
+    {
+        $this->lien = $lien;
+    }
+
+    public function setDateDebut(\DateTime $dateDebut): void
+    {
+        $this->dateDebut = $dateDebut;
+    }
+
+    public function setDateFin(\DateTime $dateFin): void
+    {
+        $this->dateFin = $dateFin;
+    }
 }

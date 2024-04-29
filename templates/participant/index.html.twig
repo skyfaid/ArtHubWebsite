@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}Participant Index{% endblock %}
+
+{% block body %}
+{% include 'clientHome/header.html.twig' with {'page_title': 'Participant Index'} %}
+
+<section class="event-one event-one__event-page-2">
+    <div class="container">
+        <div class="row">
+            {% if participants is empty %}
+            <div class="col-lg-12">
+                <div class="event-one__single">
+                    <p>No records found.</p>
+                </div>
+            </div>
+            {% else %}
+            {% for participant in participants %}
+            <div class="col-lg-12">
+                <div class="event-one__single"> <!-- Animation will trigger for this class -->
+                    <div class="event-one__content">
+                        <h3>Participant ID: {{ participant.id }}</h3>
+                        <p>Number of Formations: {{ participant.nbrFormations }}</p>
+                        <p>Date of Registration: {{ participant.dateInscription|date('Y-m-d') }}</p>
+                    </div>
+                    <div class="event-one__btn-block">
+                        <a href="{{ path('app_participant_show', {'id': participant.id}) }}" class="thm-btn">Show</a>
+                        <a href="{{ path('app_participant_edit', {'id': participant.id}) }}" class="thm-btn">Edit</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="text-center d-flex justify-content-center align-items-center">
+            <div class="more-post__block">
+                <a href="{{ path('app_participant_new') }}" class="thm-btn">Create New Participant</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
