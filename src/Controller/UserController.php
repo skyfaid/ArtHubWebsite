@@ -22,12 +22,54 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Form\UserRegistrationFormType;
 use Doctrine\ORM\Tools\Pagination\Paginator as DoctrinePaginator;
-
+use ReCaptcha\ReCaptcha;
 
 class UserController extends AbstractController
 {
 
     #[Route(path: '/login', name: 'app_login')]
+public function login(AuthenticationUtils $authenticationUtils, Request $request): Response
+{
+    if ($this->getUser()) {
+        return $this->redirectToRoute('app_client_home');
+    }
+
+    if ($request->isMethod('POST')) {
+        $recaptchaResponse = $request->request->get('g-recaptcha-response');
+        if (!$recaptchaResponse) {
+            // reCAPTCHA response is empty, user did not tick the checkbox
+            $this->addFlash('error', 'Please check the reCAPTCHA box.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // You may need to adjust the reCAPTCHA site key and secret key accordingly
+        $recaptcha = new ReCaptcha('
+        6Le3PsspAAAAAGgGWlf696-aGw8P8vHZSjqA2u0i');
+        $recaptchaResult = $recaptcha->verify($recaptchaResponse, $request->getClientIp());
+        if (!$recaptchaResult->isSuccess()) {
+            // reCAPTCHA validation failed
+            $this->addFlash('error', 'reCAPTCHA validation failed. Please try again.');
+            return $this->redirectToRoute('app_login');
+        }
+
+        // Proceed with Symfony's form login handling
+        $error = $authenticationUtils->getLastAuthenticationError();
+        $lastUsername = $authenticationUtils->getLastUsername();
+    } else {
+        $error = null;
+        $lastUsername = $authenticationUtils->getLastUsername();
+    }
+
+    return $this->render('login.html.twig', [
+        'last_username' => $lastUsername,
+        'error' => $error
+    ]);
+}
+
+    
+    
+
+ /*#[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -40,8 +82,7 @@ class UserController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
-    }
-
+    }*/
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout(): void
     {

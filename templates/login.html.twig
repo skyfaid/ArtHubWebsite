@@ -4,24 +4,25 @@
 
 {% block body %}
 <section style="padding-top: 50px; padding-bottom: 150px;">
-    <img src="{{ asset('clientHome/images/signup/status.png') }}" style="bottom: 5px; position: absolute; left: 90px; -webkit-animation: ImgBounce 5s ease-in-out 0s infinite alternate; animation: ImgBounce 5s ease-in-out 0s infinite alternate;">
+ <img src="{{ asset('clientHome/images/signup/status.png') }}" style="bottom: 5px; position: absolute; left: 90px; -webkit-animation: ImgBounce 5s ease-in-out 0s infinite alternate; animation: ImgBounce 5s ease-in-out 0s infinite alternate;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <form method="post" class="donate-one__form" id="loginForm" novalidate>
                     <h3 class="donate-one__title text-center">Login to Your Account</h3>
                     <label for="inputEmail">Email Address</label>
-                    <input type="email" id="inputEmail" name="email" class="form-control" required>
+                    <input type="email" id="inputEmail" name="email" class="form-control" required autofocus>
                     <label for="inputPassword">Password</label>
                     <input type="password" id="inputPassword" name="password" class="form-control" required>
                     <div class="text-left" style="margin-top: 10px;">
-                        <a href="{{path('app_forgot_password')}}">Forgot Password?</a>
+                        <a href="{{ path('app_forgot_password') }}">Forgot Password?</a>
                     </div>
+                    <div class="g-recaptcha" data-sitekey="6Le3PsspAAAAAJn7PTCRlR7ivA_UorZmOvIdn_iw"></div>
                     <div class="text-center" style="margin-top: 20px;">
                         <button type="submit" class="thm-btn donate-one__btn">Login</button>
                     </div>
                     <div class="text-left" style="margin-top: 20px;">
-                        Don't have an account?<a href="{{path('app_register')}}"> Sign Up</a>
+                        Don't have an account?<a href="{{ path('app_register') }}"> Sign Up</a>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 </form>
@@ -29,6 +30,9 @@
         </div>
     </div>
 </section>
+
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
 
 <section class="cta-one"></section>
 {% endblock %}

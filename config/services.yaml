@@ -6,7 +6,12 @@
 parameters:
    article_images_directory: '%kernel.project_dir%/public/images/blog'
    profile_images_directory: '%kernel.project_dir%/public/images'
+   recaptcha_secret_key: '6Le3PsspAAAAAGgGWlf696-aGw8P8vHZSjqA2u0i'
 services:
+    ReCaptcha\ReCaptcha:
+        arguments:
+            $secret: '%recaptcha.secret_key%'
+
     App\Service\TwilioClient:
         arguments:
             $sid: '%env(TWILIO_SID)%'
