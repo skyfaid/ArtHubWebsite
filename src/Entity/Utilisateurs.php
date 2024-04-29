@@ -291,4 +291,6 @@ class Utilisateurs implements UserInterface
 
         return $this;
     }
+
+    
 }

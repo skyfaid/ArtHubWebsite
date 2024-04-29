@@ -312,30 +312,30 @@ class UserController extends AbstractController
         $length = $request->query->getInt('length', 10);
         $search = $request->query->get('search', ['value' => ''])['value'];
         $order = $request->query->get('order', [['column' => '0', 'dir' => 'asc']]);
-    
+
         // Determine which column to sort by (default is by 'joined' column)
         $sortColumns = ['u.nom', 'u.pseudo', 'u.role', 'u.dateInscription'];
         $orderColumn = $sortColumns[$order[0]['column']] ?? 'u.dateInscription';
-    
+
         // Create a QueryBuilder instance for pagination
         $qb = $em->createQueryBuilder();
         $qb->select('u')
-           ->from(Utilisateurs::class, 'u')
-           ->setFirstResult($start)
-           ->setMaxResults($length);
-    
+            ->from(Utilisateurs::class, 'u')
+            ->setFirstResult($start)
+            ->setMaxResults($length);
+
         // Add search functionality if there is a search value
         if (!empty($search)) {
             $qb->andWhere('u.nom LIKE :search OR u.pseudo LIKE :search OR u.email LIKE :search OR u.prenom LIKE :search')
-               ->setParameter('search', '%' . $search . '%');
+                ->setParameter('search', '%' . $search . '%');
         }
-    
+
         // Add ordering
         $qb->orderBy($orderColumn, $order[0]['dir']);
-    
+
         // Create Paginator instance
         $paginator = new DoctrinePaginator($qb, $fetchJoinCollection = false);
-    
+
         // Format the data as needed by DataTables
         $formattedData = [];
         foreach ($paginator as $user) {
@@ -347,16 +347,22 @@ class UserController extends AbstractController
             $userHtml .= '<h6 class="mb-0">' . $user->getNom() . ' ' . $user->getPrenom() . '</h6>';
             $userHtml .= '<p class="text-secondary mb-0">' . $user->getEmail() . '</p>';
             $userHtml .= '</div></div>';
-    
+            
             $formattedData[] = [
                 'user' => $userHtml,
                 'pseudo_gender' => $user->getPseudo() . ' / ' . $user->getGender(),
                 'role' => $user->getRole(),
                 'joined' => $user->getDateInscription()->format('Y-m-d'),
-                'action' => '<a href="javascript:;" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">Ban</a>'
+                'action' => sprintf(
+                    '<a href="javascript:;" class="text-secondary font-weight-bold text-xs ban-user" data-user-id="%d"><i class="%s"></i></a>',
+                    $user->getUtilisateurId(),
+                    $user->isEstactif() ? 'fas fa-check' : 'fas fa-ban'
+                )
+                
+
             ];
         }
-    
+
         // Prepare the response for DataTables
         $response = [
             'draw' => intval($request->query->get('draw', 0)),
@@ -364,9 +370,27 @@ class UserController extends AbstractController
             'recordsFiltered' => count($paginator),
             'data' => $formattedData,
         ];
-    
+
         return new JsonResponse($response);
     }
-    
+
+    #[Route('/ajax/toggle-active/{id}', name: 'ajax_toggle_active')]
+public function toggleActive(int $id, EntityManagerInterface $em): JsonResponse
+{
+    $userRepository = $em->getRepository(Utilisateurs::class);
+    $user = $userRepository->find($id);
+
+    if (!$user) {
+        return new JsonResponse(['success' => false, 'message' => 'User not found.']);
+    }
+
+    // Toggle the 'estActif' field
+    $user->setEstactif(!$user->isEstactif());
+    $em->flush();
+
+    $status = $user->isEstactif() ? 'unbanned' : 'banned';
+    return new JsonResponse(['success' => true, 'message' => "User has been {$status}.", 'newStatus' => $user->isEstactif()]);
+}
+
 
 }

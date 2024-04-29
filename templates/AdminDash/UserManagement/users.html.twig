@@ -39,30 +39,43 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script>
-        $(document).ready(function() {
-    // Initialize DataTable
-    $('#usersTable').DataTable({
+$(document).ready(function() {
+    var table = $('#usersTable').DataTable({
         "processing": true,
         "serverSide": true,
-        "pageLength": 10, // Set number of rows per page
-        "lengthMenu": [5, 10, 20], // Customize length menu options
         "ajax": "{{ path('ajax_users_list') }}",
         "columns": [
-            { 
-                "data": "user",
-                "render": function (data, type, row) {
-                    return data; // Renders the HTML content as is
+            {"data": "user"},
+            {"data": "pseudo_gender"},
+            {"data": "role"},
+            {"data": "joined"},
+            {"data": "action", "orderable": false}
+        ],
+        "order": [[3, "desc"]]
+    });
+
+    $('#usersTable tbody').on('click', '.ban-user', function() {
+        var userId = $(this).data('user-id');
+        $.ajax({
+            url: '{{ path('ajax_toggle_active', {'id': '__id__'}) }}'.replace('__id__', userId),
+            method: 'POST',
+            success: function(response) {
+                if (response.success) {
+                    alert(response.message);
+                    // Update the icon based on the new status
+                    var iconClass = response.newStatus ? 'fas fa-check' : 'fas fa-ban';
+                    var element = $('a[data-user-id="' + userId + '"] i');
+                    element.removeClass('fas fa-ban fa-check').addClass(iconClass);
+                } else {
+                    alert(response.message);
                 }
             },
-            { "data": "pseudo_gender" },
-            { "data": "role" },
-            { "data": "joined" },
-            { "data": "action" }
-        ],
-        "order": [[3, "desc"]], // Initial sort by the "Joined" column, descending
-        "searching": true // Enable search functionality
+            error: function() {
+                alert('Error toggling user status.');
+            }
+        });
     });
 });
+</script>
 
-    </script>
 {% endblock %}
