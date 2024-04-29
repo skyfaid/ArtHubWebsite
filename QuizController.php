@@ -79,6 +79,9 @@ class QuizController extends AbstractController
     #[Route('/quiz/question', name: 'quiz_question', methods: ['GET', 'POST'])]
     public function question(SessionInterface $session): Response
     {
+       
+    
+
         $currentQuestionIndex = $session->get('current_question', 0);
         $question = $this->questions[$currentQuestionIndex];
     

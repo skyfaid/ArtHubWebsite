@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\ActiviteRepository;
+
 use App\Entity\Activite;
 use App\Form\ActiviteType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,17 +26,18 @@ class ActiviteController extends AbstractController
     }
 
 
-    //recherche activities
-    #[Route('/search', name: 'app_activite_search')]
-    public function search(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/search', name: 'app_activite_search', methods: ['GET'])]
+    public function search(Request $request, ActiviteRepository $repository): Response
     {
         $query = $request->query->get('query');
-        $activites = $entityManager->getRepository(Activite::class)->findBySearchQuery($query);
-    
-        return $this->render('activite/_partials/activities_table.html.twig', [
-            'activites' => $activites,
+        $activites = $repository->findBySearchQuery($query);
+
+        return $this->json([
+            'activites' => $activites // Ensure that $activites is an array of associative arrays or objects
         ]);
     }
+    
+
     
 
 // This route displays the Activite gallery in client home !!!

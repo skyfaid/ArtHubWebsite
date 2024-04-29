@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activity Details - {{ activite.nomAct }}{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h2>Activity Details: {{ activite.nomAct }}</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ activite.nomAct }}</h5>
+            
+            <ul>
+                <li>Type: {{ activite.typeAct }}</li>
+                <li>Start Date: {{ activite.datedebut|date('Y-m-d') }}</li>
+                <li>End Date: {{ activite.datefin|date('Y-m-d') }}</li>
+                <li>Location: {{ activite.lieu }}</li>
+                <li>Number of Places: {{ activite.nbrePlaces }}</li>
+                <li>
+                    <img src="{{ asset('uploads/posters/' ~ activite.posterurl) }}" alt="Poster for {{ activite.nomAct }}" class="img-fluid" >
+                </li>
+                
+            </ul>
+            <a href="{{ path('app_activite_index') }}" class="btn btn-primary">Back to Activities</a>
+          
+
+        </div>
+          
+    </div>
+    <img id="qrCodeImage" src="{{ path('generate_qr_code', {'activityId': activite.idActivite}) }}" alt="QR Code">
+           
+</div>
+{% endblock %}
+{% block javascripts %}
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Replace 'activityId' with the ID of the activity
+            const activityId = 123;
+
+            // URL of the generateQrCode action
+            const qrCodeUrl = `/qr-code/${activityId}`;
+
+            // Get the image element
+            const qrCodeImage = document.getElementById('qrCodeImage');
+
+            // Fetch the QR code image and update the src attribute
+            fetch(qrCodeUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load QR code image');
+                    }
+                    return response.blob();
+                })
+                .then(blob => {
+                    // Convert the blob to a data URL
+                    const imageUrl = URL.createObjectURL(blob);
+                    // Update the src attribute of the image element
+                    qrCodeImage.src = imageUrl;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    // Handle error gracefully (e.g., display a fallback image or error message)
+                });
+        });
+    </script>
+{% endblock %}
+
