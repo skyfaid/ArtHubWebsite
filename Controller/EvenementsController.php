@@ -29,6 +29,8 @@ class EvenementsController extends AbstractController
         ]);
     }
 
+    test commit 
+    
     #[Route('/new', name: 'app_evenements_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
