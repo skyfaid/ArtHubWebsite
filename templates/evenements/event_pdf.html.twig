@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Event PDF - {{ event.nom }}</title>
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+    </style>
+</head>
+<body>
+    <h1>{{ event.nom }}</h1>
+    <p>Date: {{ event.datedebut|date('Y-m-d') }} to {{ event.datefin|date('Y-m-d') }}</p>
+    <p>Location: {{ event.lieu }}</p>
+    <p>Description: {{ event.description }}</p>
+
+    <h2>Participants</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <!-- Add other participant details as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for participant in participants %}
+                <tr>
+                    <td>{{ participant.utilisateurId }}</td>
+                    <td>{{ participant.nom }} {{ participant.prenom }}</td>
+                    <!-- Add other participant details as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

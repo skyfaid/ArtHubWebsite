@@ -1,0 +1,50 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Participants of Event #{{ eventId }}{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h3>Participants for Event ID: {{ eventId }}</h3>
+    <div class="card mb-4">
+        <div class="card-header pb-0">
+            <h6>Participants List</h6>
+        </div>
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+                <table class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Name</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Gender</th>
+                            <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for participant in participants %}
+                        <tr>
+                            <td>{{ participant.utilisateurId }}</td>
+                            <td>{{ participant.nom }} {{ participant.prenom }}</td>
+                            <td>{{ participant.gender }}</td>
+                             <td>
+                              <form method="post" action="{{ path('delete_participant', {'id': participant.participantId}) }}">
+    <input type="hidden" name="participant_id" value="{{ participant.participantId }}">
+    <button type="submit" class="btn btn-danger">Delete</button>
+</form>
+
+
+
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="3">No participants found.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

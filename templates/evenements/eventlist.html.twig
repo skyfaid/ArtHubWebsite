@@ -1,0 +1,350 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %}Events{% endblock %}
+
+{% block body %}
+
+{% include 'ClientHome/header.html.twig' with {'page_title': 'Events'} %}
+
+
+
+<script>
+        const soundOnImagePath = '{{ asset('uploads/sound-on.png') }}';
+        const soundOffImagePath = '{{ asset('uploads/sound-off.png') }}';
+
+    </script>
+
+<div class="header__roulette">
+    <a href="#" onclick="return false;">
+        <img src="{{ asset('uploads/wheelHeader.png') }}" alt="Roulette Wheel" class="roulette-wheel" style="width: 40px; height: 40px;">
+    </a>
+</div>
+
+
+<style>
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.roulette-wheel {
+  animation: spin 4s linear infinite;
+  margin-left: 365px;
+  margin-top: 20px;
+}
+</style>
+
+{% if countdown %}
+    <style>
+        .countdown {
+            font-weight: bold;
+            font-size: 1.3em;
+            margin-left: 670px;
+            color: white;
+            margin-top: 0px;
+            text-shadow: 0.1px 0.1px 0.1px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Softer neon glow effect */
+        .event-nearestname {
+            color: #ff00ff; /* Adjust the color as needed */
+            text-shadow: 0 0 5px #ff00ff, 0 0 10px rgba(255, 0, 255, 0.5), 0 0 20px rgba(255, 0, 255, 0.5), 0 0 30px rgba(255, 0, 255, 0.5);
+        }
+    </style>
+    <div class="countdown">The earliest upcoming event <span class="event-nearestname">{{ nearestEvent.nom }}</span> is starting in {{ countdown }}</div>
+{% endif %}
+
+
+   <section class="event-three">
+    <div class="container">
+        <div class="row">
+            {% for evenement in evenements %}
+            <div class="col-lg-4 col-md-6">
+                <div class="event-three__single">
+                    <div class="event-three__image">
+                        {% if evenement.posterurl %}
+                        {% set posterFilename = evenement.posterurl|split('\\')|last %}
+                        <img src="{{ asset('uploads/' ~ posterFilename) }}" alt="Event Poster">
+                        {% else %}
+                        <img src="{{ asset('uploads/real5.jpg') }}" alt="Default Event Poster">
+                        {% endif %}
+                        <div class="event-three__date">
+                            <i class="far fa-calendar-alt"></i>
+                            {{ evenement.datedebut|date('M d, Y') }}
+                        </div>
+                       
+                    </div>
+                    
+                    <div class="event-three__content">
+                        <h3><a href="{{ path('app_evenements_details', {'id': evenement.id}) }}">{{ evenement.nom }}</a></h3>
+                        <p><i class="fa fa-map-marker-alt"></i> {{ evenement.lieu }}</p>
+                        <p>Remaining spots: {{ evenement.nombreplaces }}</p>
+                        <!-- Button container with flex layout -->
+                        <div style="display: flex; justify-content: start; gap: 10px;">
+                          {% if participationStatus[evenement.id] %}
+                      <form action="{{ path('app_evenements_quit', {'id': evenement.id}) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('quit' ~ evenement.id) }}">
+                                <button type="submit" class="thm-btn event-three__btn">Quitter</button>
+                            </form>
+                            {% else %}
+                       <form action="{{ path('app_evenements_participate', {'id': evenement.id}) }}" method="post">
+                          <input type="hidden" name="_token" value="{{ csrf_token('participate' ~ evenement.id) }}">
+                          <button type="submit" class="thm-btn event-three__btn">Participer</button>
+                       </form>
+                       {% endif %} 
+                       <a href="{{ path('app_evenements_details', {'id': evenement.id}) }}" class="thm-btn event-three__btn">Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p>No events found.</p>
+            {% endfor %}
+        </div>
+    </div>   
+</section> 
+
+<style>
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /*  Initially hidden*/
+    z-index: 1000; /* High z-index to be on top */
+    overflow-y: auto; /* Allows scrolling within the modal if needed */
+    backdrop-filter: blur(5px); /* Apply a blur effect to the overlay itself */
+}
+.blur-effect {
+    filter: blur(5px); /* Adjust the pixel value as needed */
+    pointer-events: none; /* Optional: disable interactions with the background */
+    user-select: none; /* Optional: prevent text selection in the background */
+}
+.modal-content {
+    position: relative;
+    background-color: #2E5AAC;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    width: 600px;
+    margin: 80px auto; /* Centering the modal within the viewport*/
+}
+</style>
+
+<script>
+// Function to display win information
+function displayWin(message, type) {
+    const messageContainer = document.getElementById('win-message-container');
+    const winMessage = document.getElementById('win-message');
+    const winImage = document.getElementById('win-image');
+    const noWinImage = document.getElementById('no-win-image');
+
+    winMessage.textContent = message; // Set the win message
+    if (type === 'win') {
+        winImage.style.display = 'block'; // Show the win image
+        noWinImage.style.display = 'none'; // Hide the no-win image
+    } else  {
+        noWinImage.style.display = 'block'; // Show the no-win image
+        winImage.style.display = 'none'; // Hide the win image
+    }
+    messageContainer.style.display = 'block'; // Show the container
+}
+
+
+const preloadedTimeLeft = {{ timeLeft | json_encode }}; // Make sure this line is placed here correctly.
+
+    let timerText;  // Declare timerText as a global variable
+    let modalTimer; // Declare timerText as a global variable
+
+document.addEventListener('DOMContentLoaded', function() {
+
+   
+
+    const rouletteLink = document.querySelector('.header__roulette a');
+    const mainContent = document.querySelector('.event-three'); // Assuming this is the main content container ID
+    const winSound=new Audio('{{ asset('uploads/winsoundmain.mp3') }}'); // Path to your win sound effect
+
+    rouletteLink.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor click behavior
+
+        fetch('{{ path('load_roulette') }}')
+            .then(response => {
+                if (response.ok) return response.text();
+                throw new Error('Network response was not ok.');
+            })
+            .then(html => {
+                let modalOverlay = document.createElement('div');
+                modalOverlay.className = 'modal-overlay';
+                modalOverlay.innerHTML = html;
+                document.body.appendChild(modalOverlay);
+
+                // Extract the time left from the server response or set a default
+                const timeLeft = modalOverlay.querySelector('#time-left') ? parseInt(modalOverlay.querySelector('#time-left').textContent) : 0;
+
+                // Initialize the countdown timer before displaying the modal
+                initializeCountdown(timeLeft);
+
+                modalOverlay.style.display = 'block';
+
+                // Apply the blur effect to the main content
+                mainContent.classList.add('blur-effect');
+
+                // Now bind event listeners for the sound controls
+                let soundButton = modalOverlay.querySelector('.btn-toggle-sound');
+                const audio = modalOverlay.querySelector('#roulette-sound');
+                const spinButtonSoundEffect = modalOverlay.querySelector('#spinbutton-soundeffect');
+                if (soundButton) {
+                    soundButton.addEventListener('click', function() {
+                        if (!audio.paused) {
+                            audio.pause();
+                            soundButton.querySelector('img').src = '{{ asset('uploads/sound-off.png') }}';
+                        } else {
+                            audio.play();
+                            soundButton.querySelector('img').src = '{{ asset('uploads/sound-on.png') }}';
+                        }
+                    });
+                }
+
+                // Now that the modal is loaded, bind the spin button click event
+                let spinButton = modalOverlay.querySelector('#spin-button');
+                // Disable spin button if the user cannot spin
+                if (timeLeft > 0) {
+                    spinButton.disabled = true;
+                }
+                spinButton.addEventListener('click', function(event) {
+
+                    // Play the spin button sound effect
+                    spinButtonSoundEffect.play();
+
+                    // Add the spinning class to the wheel
+                    let wheel = modalOverlay.querySelector('.roulette-wheel-image');
+                        spinButton.disabled = true; // Disable the spin button immediately when clicked
+
+                    wheel.classList.add('spinning');
+
+                    // Fetch to record the spin
+                    fetch('{{ path('record_spin') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-Token': '{{ csrf_token('spin') }}' // Ensure CSRF tokens are managed correctly
+                                }
+                            })
+                        .then(response => { if (!response.ok) throw new Error('Failed to record spin, response not OK.');
+                        return response.json();})
+                        .then(data => {
+                             console.log('Data received:', data); 
+                             const winType = data.message.includes('No win this time') ? 'noWin' : 'win';
+                            // Animation ends event to remove the spinning class
+                        wheel.addEventListener('animationend', function() {
+                        wheel.classList.remove('spinning');
+                        console.log('Spin recorded successfully, message:', data.message);
+                        displayWin(data.message, winType);
+                    
+                       winSound.play();
+                    
+                           }, { once: true });
+                        })
+                        .catch(error => console.error('Error recording the spin:', error));
+                        
+                });
+
+
+
+                let closeButton = modalOverlay.querySelector('.btn-close-modal');
+                if (closeButton) {
+
+                    closeButton.addEventListener('click', function() {
+                        modalOverlay.style.display = 'none';
+                        mainContent.classList.remove('blur-effect');
+                        document.body.removeChild(modalOverlay); // Remove the overlay from the DOM
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error loading the roulette:', error);
+            });
+    });
+});
+
+
+
+function initializeCountdown(timeLeft) {
+     timerText = document.querySelector('.timer-text');
+     modalTimer = document.querySelector('.modal-timer');
+
+    // Show or hide timer based on time left
+    if (timeLeft > 0) {
+        timerText.style.display = 'block';
+        modalTimer.style.display = 'flex';
+    } else {
+        timerText.style.display = 'none';
+        modalTimer.style.display = 'none';
+    }
+
+    const targetTime = new Date().getTime() + timeLeft * 1000;
+    let interval; // Declare the interval variable at the start
+
+    function updateTimerDisplay() {
+        let now = new Date().getTime();
+        let distance = targetTime - now;
+
+        if (distance > 0) {
+            let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.querySelector('.timer-hours .timer-unit').textContent = String(hours).padStart(2, '0');
+            document.querySelector('.timer-minutes .timer-unit').textContent = String(minutes).padStart(2, '0');
+            document.querySelector('.timer-seconds .timer-unit').textContent = String(seconds).padStart(2, '0');
+        } else {
+            clearInterval(interval);
+            timerText.style.display = 'none';
+            modalTimer.style.display = 'none';
+            document.querySelector('#spin-button').disabled = false;
+        }
+    }
+
+ // Set interval to continuously update the timer
+    interval = setInterval(updateTimerDisplay, 1000);
+    // Initial call to updateTimerDisplay
+    updateTimerDisplay();
+
+    
+}
+
+
+
+
+
+</script>
+
+
+<style>
+
+@keyframes spinaction {
+  0% {
+    transform: rotate(0deg);
+    animation-timing-function: ease-out; /* Start fast */
+  }
+ 
+  100% {
+    transform: rotate(1800deg); /* Slow down towards the end */
+    animation-timing-function: ease-in; /* Slow down */
+  }
+}
+
+.spinning {
+  animation: spinaction 7s linear;
+}
+</style>
+
+
+
+
+
+{% endblock %}
+

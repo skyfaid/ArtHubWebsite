@@ -1,0 +1,356 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <button type="button" class="btn-close-modal">
+      <img src="{{ asset('uploads/closePopUpicon.png') }}" alt="Close">
+    </button>
+  </div>
+    <span id="time-left" style="display:none;">{{ timeLeft }}</span>
+
+  {#<hr class="modal-divider">#}
+
+  {#<div class="roulette-container">
+    <aside class="sidebar-history">
+      <button type="button" class="btn-close-history">
+        <!-- SVG Close Icon Here -->
+      </button>
+      <h3 class="sidebar-title">History</h3>
+      <!-- History Items Here -->
+    </aside>#}
+
+    <div class="main-game">
+      <!-- 'April Showers' Text Image -->
+      <div class="event-title">
+        <img src="{{ asset('uploads/mainImageWithTitle.png') }}" alt="April Showers" class="event-title-image">
+      </div>
+
+    <audio id="roulette-sound" loop autoplay>
+    <source src="{{ asset('uploads/casino song.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+     </audio>
+
+     <audio id="spinbutton-soundeffect" >
+    <source src="{{ asset('uploads/spin-button-sound-effect.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+     </audio>
+
+      <div class="game-controls">
+        <button type="button" class="btn-toggle-sound">
+          <img src="{{ asset('uploads/sound-on.png') }}" alt="Sound" id="sound-icon" style= "width :30px; height:30px;">
+        </button>
+        <!-- Additional Controls Here -->
+      </div>
+
+      <div class="wheel-section">
+        <div class="spin-info">
+          <span class="text-win">Spin and Win Access To</span>
+          <span class="text-amount">An Exclusive Event</span>
+        </div>
+<div class="win-message-container" style="text-align: center; display: none;" id="win-message-container">
+    <p id="win-message" style="color: #FFF; font-size: 24px; font-weight: bold;"></p>
+    <img src="{{ asset('uploads/winprizeimage.png') }}" id="win-image" style="width: 100%; display: none;" alt="Win Image">
+    <!-- New No-Win Image -->
+    <img src="{{ asset('uploads/betterluck.gif') }}" id="no-win-image" style="width: 100%; display: none;" alt="No Win Image">
+</div>
+
+        <ul class="prize-list">
+          <!-- Prize Items Here -->
+        </ul>
+
+        <div class="wheel">
+          <img src="{{ asset('uploads/wheelPointer.png') }}" alt="Pointer" class="wheel-pointer">
+          <img src="{{ asset('uploads/wheelimage.png') }}" alt="Roulette Wheel" class="roulette-wheel-image">
+          <button id="spin-button" class="btn-spin">
+          <span class="text-spin">SPIN</span>
+            <img src="{{ asset('uploads/spinButton.png') }}" alt="Spin Button" class="spin-button-image">
+            
+          </button>
+          
+        </div>
+
+
+ 
+<p class ="timer-text" style="display: none;" >Next Spin Available in:</p> {# this means it's a standalone paragragh   #}
+    <div class="modal-timer" style="display: none;"> 
+    <div class="timer-hours">
+    <p class="timer-unit">00</p>
+    <span class="timer-label">HRS</span>
+  </div>
+  <div class="timer-separator">:</div>
+  <div class="timer-minutes">
+    <p class="timer-unit">00</p>
+    <span class="timer-label">MIN</span>
+  </div>
+  <div class="timer-separator">:</div>
+  <div class="timer-seconds">
+    <p class="timer-unit">00</p>
+    <span class="timer-label">SEC</span>
+  </div>
+
+</div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<style>
+
+
+.timer-text{
+  font-size: 2em; /* Adjust size as needed */
+  font-weight: bold;
+  color: #FFFFFF; /* Color for the ETH amount */
+   margin-top: 20px; /* Adjust the margin-bottom value to add space */
+}
+
+.modal-timer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  font-family: 'Montserrat', sans-serif; /* Use a font that matches your design */
+    margin-bottom: 20px; /* Add some bottom margin */
+
+}
+
+.timer-unit {
+  background-color: #FFA500; /* Orange background */
+  color: #FFFFFF; /* White text */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 20px; /* Padding around the numbers */
+  margin: 0 5px; /* Spacing between units */
+  font-size: 2em; /* Adjust font size to match the design */
+  font-weight: bold;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Optional: Adds shadow for depth */
+}
+
+.timer-label {
+  font-size: 0.6em; /* Adjusted size for the label */
+  text-transform: uppercase;
+  display: block;
+  text-align: center;
+  margin-top: -5px; /* Adjust as needed */
+}
+
+.timer-separator {
+  color: #FFFFFF; /* White color for the separator */
+  font-size: 2em; /* Adjust font size as needed */
+  padding: 0 5px; /* Adjust padding as needed */
+  display: inline-block; /* Use inline-block for positioning */
+  margin-top: -0.60em;  /* Adjust margin to move the separator up */
+   
+}
+
+
+
+
+
+
+
+
+
+.modal-content {
+  position: relative;
+  background-color: #2E5AAC; /* Adjust the background color as needed */
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  width: 600px; /* Adjust the width as necessary */
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px; /* Adjust the margin-top to move the modal down */
+}
+
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.btn-toggle-sound img {
+  position: absolute;
+  top: 20px;
+  right:60px;
+}
+
+.btn-close-modal img {
+position:absolute;
+right: 20px;
+height:30px;  
+width: 30px;
+top: 20px;
+}
+
+.btn-close-modal, .btn-toggle-sound, .btn-spin {
+  background: none; /* Removes the background */
+  border: none; /* Removes the border */
+  padding: 0; /* Removes padding */
+  outline: none; /* Removes outline */
+}
+
+
+
+
+
+.event-title-image {
+  width: 100%; /* make the title image full width */
+  margin-top: -10px; /* Adjust as per your layout */
+}
+
+
+
+.wheel-section {
+  position: relative;
+  text-align: center;
+}
+
+.spin-info {
+  color: #ffffff;
+  margin-bottom: 10px;
+  font-size: 1.5em; /* Adjust size as needed */
+}
+
+.text-amount {
+  font-size: 2em; /* Adjust size as needed */
+  font-weight: bold;
+  color: #FEBD11; /* Color for the ETH amount */
+}
+
+.wheel {
+  position: relative;
+  display: inline-block; /* Center wheel */
+}
+
+.roulette-wheel-image {
+  width: 300px; /* Adjust the size of the wheel */
+  margin-top: 20px;
+} 
+
+.btn-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: none;
+  background: none; /* Remove background style if you want to see the 'Spin' text */
+  width: 90px;
+  height: auto;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+   z-index: 2;
+}
+
+.text-spin {
+   color: #fff;
+  font-size: 18px; /* Matched the reference font size */
+  font-weight: 600; /* Matched the reference font weight */
+  text-transform: uppercase; /* This makes the text uppercase */
+  pointer-events: none; /* This ensures that clicks go through to the button */
+  position: absolute; 
+  left: 50%; /* Centers it horizontally */
+ top: calc(50% + 10px); /* Centers it vertically and moves it down by 10px */
+  transform: translate(-50%, -50%); /* Adjusts the exact centering */
+  z-index: 3; /* Ensures it's above the spin button image */
+}
+
+.spin-button-image {
+   position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translate(-50%, -50%); 
+  width: 73px; /* Remove inline styles and use this */
+  height: auto;
+  
+}
+
+.wheel-pointer {
+position: absolute;
+  width: 150px; /* Rendered width of the pointer */
+  height:auto; /* Rendered height of the pointer */
+  top:-20px;
+  left: 50%; /* Start at the horizontal center of the wheel */
+  transform: translateX(-50%); /* Adjust to place the pointer on top */
+  z-index: 1;
+}
+
+.prize-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 0;
+  margin-top: 20px; /* Space from wheel */
+}
+
+.prize-list li {
+  margin: 0 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 0.8em;
+}
+
+.prize-list img {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+}
+
+
+
+
+
+
+
+
+
+
+/* Make the timer responsive for smaller screens */
+@media (max-width: 768px) {
+  .modal-timer {
+    margin-top: 10px;
+  }
+
+  .timer-unit {
+    font-size: 1.5em; /* Smaller font size for timer numbers on mobile */
+  }
+
+  .timer-separator {
+    font-size: 1.5em; /* Smaller font size for separator on mobile */
+    padding: 0 5px; /* Smaller padding for the separators on mobile */
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+@media (max-width: 768px) {
+  .modal-content {
+    width: 90%;
+    padding: 10px;
+  }
+
+  .roulette-wheel-image {
+    width: 90%;
+  }
+
+  .btn-spin {
+    width: 80px; /* Adjust as needed for mobile */
+    height: 80px; /* Adjust as needed for mobile */
+  }
+}
+
+</style>

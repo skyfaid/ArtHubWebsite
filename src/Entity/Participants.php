@@ -1,42 +1,54 @@
 <?php
 
+namespace App\Entity;
 
-
+use App\Repository\ParticipantsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Participants
- *
- * @ORM\Table(name="participants", indexes={@ORM\Index(name="fk_event_id", columns={"event_id"}), @ORM\Index(name="utilisateur_id", columns={"utilisateur_id"})})
- * @ORM\Entity
- */
+#[ORM\Entity(repositoryClass: ParticipantsRepository::class)]
 class Participants
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="participant_id", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $participantId;
+    #[ORM\Column(name: "participant_id", type: "integer", nullable: false)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "IDENTITY")]
+    private ?int $participantId = null;
 
-    /**
-     * @var int|null
-     *
-     * @ORM\Column(name="utilisateur_id", type="integer", nullable=true)
-     */
-    private $utilisateurId;
+    #[ORM\Column(name: "utilisateur_id", type: "integer", nullable: true)]
+    private ?int $utilisateurId = null;
 
-    /**
-     * @var \Evenements
-     *
-     * @ORM\ManyToOne(targetEntity="Evenements")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="event_id", referencedColumnName="id")
-     * })
-     */
+    #[ORM\ManyToOne(targetEntity: Evenements::class)]
+    #[ORM\JoinColumn(name: "event_id", referencedColumnName: "id")]
     private $event;
 
+    // Add getters and setters manually
+    public function getParticipantId(): ?int
+    {
+        return $this->participantId;
+    }
 
+    public function setParticipantId(?int $participantId): void
+    {
+        $this->participantId = $participantId;
+    }
+
+    public function getUtilisateurId(): ?int
+    {
+        return $this->utilisateurId;
+    }
+
+    public function setUtilisateurId(?int $utilisateurId): void
+    {
+        $this->utilisateurId = $utilisateurId;
+    }
+
+    public function getEvent()
+    {
+        return $this->event;
+    }
+
+    public function setEvent($event): void
+    {
+        $this->event = $event;
+    }
 }
+

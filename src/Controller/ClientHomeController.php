@@ -2,17 +2,16 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Repository\EvenementsRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\UserRepository;
-use App\Form\RegistrationType;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class ClientHomeController extends AbstractController
 {
-
     #[Route('/', name: 'app_client_home')]
     public function index(): Response
     {
@@ -20,43 +19,24 @@ class ClientHomeController extends AbstractController
             'controller_name' => 'ClientHomeController',
         ]);
     }
-    #[Route('/test', name: 'app_client_test')]
-    public function test(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-    #[Route('/register', name: 'app_client_register')]
-    public function register(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-
-    #[Route('/login', name: 'app_client_login')]
-    public function login(): Response
-    {
-        return $this->render('custom.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-
-    #[Route('/home/blog', name: 'app_client_blog')]
-    public function blog(): Response
-    {
-        return $this->render('ClientHome/BlogManagement/blog.html.twig', [
-            'controller_name' => 'ClientHomeController',
-        ]);
-    }
-
-    #[Route('/home/events', name: 'app_client_event')]
+   
+    /*#[Route('/home/events', name: 'app_client_event')]
     public function events(): Response
     {
-        return $this->render('ClientHome/EventManagement/events.html.twig', [
-            'controller_name' => 'ClientHomeController',
+        return $this->render('evenements/eventlist.html.twig', [
+            'controller_name' => 'EvenementsController',
         ]);
+    }*/
+    
+    #[Route('/home/events', name: 'app_client_event')]
+    public function events(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
+    {
+        $response = $this->forward('App\Controller\EvenementsController::listEvents', [
+            'entityManager' => $entityManager,
+            'session' => $session,
+        ]);
+    
+        return $response;
     }
 
     #[Route('/home/activities', name: 'app_client_activity')]
@@ -75,12 +55,13 @@ class ClientHomeController extends AbstractController
         ]);
     }
 
-#[Route('/home/contact', name: 'app_client_contact')]
-public function contact(): Response
-{
-    return $this->redirectToRoute('app_reclamation_index');
-}
-    
+    #[Route('/home/contact', name: 'app_client_contact')]
+    public function contact(): Response
+    {
+        return $this->render('ClientHome/ComplaintManagement/complaint.html.twig', [
+            'controller_name' => 'ClientHomeController',
+        ]);
+    }
 
     #[Route('/home/masterclass', name: 'app_client_masterclass')]
     public function masterclass(): Response

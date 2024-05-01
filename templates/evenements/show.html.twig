@@ -3,60 +3,86 @@
 {% block title %}Evenements{% endblock %}
 
 {% block body %}
-    <h1>Evenements</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ evenement.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ evenement.nom }}</td>
-            </tr>
-            <tr>
-                <th>Datedebut</th>
-                <td>{{ evenement.datedebut ? evenement.datedebut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Datefin</th>
-                <td>{{ evenement.datefin ? evenement.datefin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Lieu</th>
-                <td>{{ evenement.lieu }}</td>
-            </tr>
-            <tr>
-                <th>Type</th>
-                <td>{{ evenement.type }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ evenement.description }}</td>
-            </tr>
-            <tr>
-                <th>Nombreplaces</th>
-                <td>{{ evenement.nombreplaces }}</td>
-            </tr>
-            <tr>
-                <th>Nombreparticipants</th>
-                <td>{{ evenement.nombreparticipants }}</td>
-            </tr>
-            <tr>
-                <th>Posterurl</th>
-                <td>{{ evenement.posterurl }}</td>
-            </tr>
-            <tr>
-                <th>Videourl</th>
-                <td>{{ evenement.videourl }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_evenements_index') }}">back to list</a>
-
-    <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}">edit</a>
-
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Event Details</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ evenement.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nom</th>
+                                <td>{{ evenement.nom }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date debut</th>
+                                <td>{{ evenement.datedebut ? evenement.datedebut|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Date fin</th>
+                                <td>{{ evenement.datefin ? evenement.datefin|date('Y-m-d') : '' }}</td>
+                            </tr>
+                            <tr>
+                                <th>Lieu</th>
+                                <td>{{ evenement.lieu }}</td>
+                            </tr>
+                            <tr>
+                                <th>Type</th>
+                                <td>{{ evenement.type }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ evenement.description }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nombre places</th>
+                                <td>{{ evenement.nombreplaces }}</td>
+                            </tr>
+                            <tr>
+                                <th>Nombre participants</th>
+                                <td>{{ evenement.nombreparticipants }}</td>
+                            </tr>
+                            <tr>
+                                <th>Event Poster</th>
+                                <td>
+                                    {% if evenement.posterurl %} {# testing is posterurl has a value #}
+                                        {% set posterFilename = evenement.posterurl|split('\\')|last %} {# The split filter returns an array, and last gets the last element of that array #}
+                                        <img src="{{ asset('uploads/' ~ posterFilename) }}" alt="Event Poster" style="max-width: 320px; height: auto;">
+                                    {% else %}
+                                        No poster available
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Event Trailer</th>
+                                <td>
+                                    {% if evenement.videourl %}
+                                        {% set videoFilename = evenement.videourl|split('\\')|last %}
+                                        <video width="320" style ="height:auto;" controls>
+                                            <source src="{{ asset('uploads/' ~ videoFilename) }}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                    {% else %}
+                                        No video available
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}" class="btn btn-primary" style="margin-left: 30px;">Edit</a>
+    <a href="{{ path('app_evenements_index') }}" class="btn btn-primary" style="margin-left: 5px;">Back to list</a>
     {{ include('evenements/_delete_form.html.twig') }}
+</div>
 {% endblock %}

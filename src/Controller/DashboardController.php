@@ -17,18 +17,5 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
     }
-    #[Route('/login', name: 'app_login')]
-    public function login(Request $request): Response
-    {
-        $form = $this->createForm(UserSignInType::class);
-
-    // Handle the request
-    $form->handleRequest($request);
-
-    // Render the template, passing in the form view
-    return $this->render('login.html.twig', [
-        'UserSignIn' => $form->createView(),
-    ]);
-}
-       
+         
 }

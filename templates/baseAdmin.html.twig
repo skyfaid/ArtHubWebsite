@@ -23,10 +23,6 @@
 
     <!-- CSS Files -->
     <link id="pagestyle" href="{{asset('adminDash/css/argon-dashboard.css?v=2.0.4')}}" rel="stylesheet" />
-   
-   <!-- Bootstrap Datepicker CSS -->
-   {# matmisch <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" rel="stylesheet"> #}
-
     {% endblock %}
 </head>
 <body class="g-sidenav-show   bg-gray-100">
@@ -71,14 +67,6 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">others</h6>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_evenements_index' ? 'active' : '' }} " href="{{ path('app_evenements_index')}}">
-              <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
-                <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
-              </div>
-              <span class="nav-link-text ms-1">Events</span>
-            </a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link " href="">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-app text-info text-sm opacity-10"></i>
@@ -91,17 +79,24 @@
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                 </div>
-              <span class="nav-link-text ms-1">ArtWorks</span>
+              <span class="nav-link-text ms-1">ArtWork</span>
             </a>
         </li>
-        
+        <li class="nav-item">
+            <a class="nav-link " href="">
+              <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                <i class="ni ni-calendar-grid-58 text-warning text-sm opacity-10"></i>
+              </div>
+              <span class="nav-link-text ms-1">Events</span>
+            </a>
+        </li>
         
         <li class="nav-item">
             <a class="nav-link " href="">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-collection text-info text-sm opacity-10"></i>
                 </div>
-              <span class="nav-link-text ms-1">MasterClasses</span>
+              <span class="nav-link-text ms-1">MasterClass</span>
             </a>
         </li>
       </ul>
@@ -120,7 +115,9 @@
             </li>
             <li class="breadcrumb-item text-sm text-white active" aria-current="page">Dashboard</li>
           </ol>
-          <h6 class="font-weight-bolder text-white mb-0">Dashboard</h6>
+          <h6 class="font-weight-bolder text-white mb-0">Dashboard  {% if app.user %}
+    <p>Welcome, {{ app.user.nom}}!</p>
+{% endif %}</h6>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
@@ -128,7 +125,7 @@
           </div>
           <ul class="navbar-nav  justify-content-end">
             <li class="nav-item d-flex align-items-center">
-              <a href="{{ path('app_profile', {'pseudo': "pseudo2"}) }}" class="nav-link text-white font-weight-bold px-0">
+              <a href="{{ path('app_profile', {'pseudo': app.user.pseudo}) }}" class="nav-link text-white font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
                 <span class="d-sm-inline d-none">Profile</span>
               </a>
@@ -139,7 +136,7 @@
                 </a>
               </li>
               <li class="nav-item  pe-2 d-flex align-items-center">
-                <a href="{{ path('app_login', {'email': "joe@example.com"}) }}" class="nav-link text-white p-0">
+                <a href="{{ path('app_logout') }}" class="nav-link text-white p-0">
                     <i class="fa fa-sign-out-alt fixed-plugin-button-nav cursor-pointer"></i> 
                 </a>
             </li>
@@ -158,7 +155,7 @@
                   document.write(new Date().getFullYear())
                 </script>,
                 made with <i class="fa fa-heart"></i> by
-                <a href="#" class="font-weight-bold" target="_blank">Software Spartans</a>
+                <a href="#" class="font-weight-bold" target="_blank">Software Spartens</a>
                 for a better web.
               </div>
             </div>
@@ -166,22 +163,6 @@
         </div>
       </footer>
   </main>
-     {# matmis hat chay 
-     <!-- jQuery (Necessary for Bootstrap's JavaScript plugins and Datepicker) added by me -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script>
-    $(document).ready(function() {
-        // Initialize datepicker
-        $('.js-datepicker').datepicker({
-            startDate: new Date(),
-            autoclose: true,
-            format: 'yyyy-mm-dd'
-        });
-    });
-</script>
-
-<!-- Bootstrap Datepicker JS added by me-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script> #}
 </body>
 </html>
 

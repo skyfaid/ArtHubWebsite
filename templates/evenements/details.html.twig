@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Event Details{% endblock %}
+
+{% block body %}
+<!-- Include header, navigation, etc., from your base template or other includes -->
+
+{% include 'ClientHome/header.html.twig' with {'page_title': 'Event Details'} %}
+{#<section class="page-header" style="background-image: url('{{ asset('images/background.png') }}');">
+    <div class="container">
+        <h2>{{ evenement.nom }}</h2>
+    </div>
+</section>#}
+
+<section class="event-details">
+    <div class="container">
+        <div class="event-details__top">
+            <p>{{ evenement.datedebut|date('l, M d, Y') }}</p>
+            <h3>{{ evenement.nom }}</h3>
+        </div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="event-details__content">
+                   <img src="{{ asset('uploads/' ~ evenement.posterurl|split('\\')|last) }}" alt="Event Image" style="width: 760px; height: 565px;" class="event-details__image">
+
+                    <!-- Your event description here -->
+                     <h3>Description</h3> <!-- Add this line -->
+                    <p>{{ evenement.description }}</p>
+                    
+                    <!-- Optionally include Google Maps iframe, contact details, etc. -->
+                      <!-- Add video player for trailer -->
+                    <h3>Watch Trailer</h3> <!-- Add this line -->
+                    {% if evenement.videourl %}
+                        {% set videoFilename = evenement.videourl|split('\\')|last %}
+                        <video width="760" style="height:auto;" controls>
+                            <source src="{{ asset('uploads/' ~ videoFilename) }}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    {% else %}
+                        No video available
+                    {% endif %}
+                </div>
+            </div>
+         <div class="col-lg-4">
+                    <div class="event-details__booking">
+                        <ul class="event-details__booking-info list-unstyled">
+                            <li>
+                                <span>Type:</span>
+                                {{ evenement.type }}
+                            </li>
+                            <li>
+                                <span>Date:</span>
+                                {{ evenement.datedebut|date('l, M d, Y') }}
+                            </li>
+                            <li>
+                                <span>Time:</span>
+                                {{ evenement.datedebut|date('h:i A') }} - {{ evenement.datefin|date('h:i A') }}
+                            </li>
+                            <li>
+                                <span>Location:</span>
+                                <i class="fa fa-map-marker"></i> {{ evenement.lieu }}
+                            </li>
+                        </ul>
+                         {% if participationStatus %}
+                            <form action="{{ path('app_evenements_quit', {'id': evenement.id}) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('quit' ~ evenement.id) }}">
+                                <button type="submit" class="thm-btn event-details__book-btn">Quit Participation</button>
+                            </form>
+                        {% else %}
+                            <form action="{{ path('app_evenements_participate', {'id': evenement.id}) }}" method="post">
+                                <input type="hidden" name="_token" value="{{ csrf_token('participate' ~ evenement.id) }}">
+                                <button type="submit" class="thm-btn event-details__book-btn">Participate</button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}
+

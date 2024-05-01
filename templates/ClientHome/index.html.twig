@@ -69,7 +69,7 @@
 								</button>
 							</li>
 							<li>
-								<a href="{{ path('app_client_blog') }}">Blog</a>
+								<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_articles') : path('app_login') }}">Blog</a>
 							</li>
 							<li>
 								<a href="{{ path('app_client_contact') }}">Contact</a>
@@ -1279,9 +1279,9 @@
 				Join us today to witness the beauty and diversity of art.
 			</p>
 			<div class="cta-one__btn-block">
-				<a href="#" class="thm-btn cta-one__btn-one">Become A Member</a>
+				<a href="{{ path('app_register') }}" class="thm-btn cta-one__btn-one">Become A Member</a>
 				<!-- /.thm-btn cta-one__btn-one -->
-				<a href="#" class="thm-btn cta-one__btn-two">Sign In</a>
+				<a href="{{ path('app_login') }}" class="thm-btn cta-one__btn-two">Sign In</a>
 				<!-- /.thm-btn cta-one__btn-two -->
 			</div>
 			<!-- /.cta-one__btn-block -->

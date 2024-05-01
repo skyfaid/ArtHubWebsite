@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+{% block title %}Home - ArtHub
+{% endblock %}
+
+{% block body %}
+
+	{% include 'ClientHome/header.html.twig' with {'page_title':  article.titre } %}
+
+	<section class="blog-one blog-details-page">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8">
+					<div class="blog-details__main">
+						<div class="blog-details__image">
+
+							<img src="{{ asset(article.imagePath ? article.imagePath : 'images/blog/dafaultblog.jpg') }}" class="img-fluid" alt="">
+						</div>
+						<!-- /.blog-details__image -->
+						<ul class="blog-one__meta list-unstyled">
+							<li>
+								<a href="#">By
+									{{ article.utilisateur.pseudo }}</a>
+							</li>
+							<li>
+								<a href="#">Published:
+									{{ article.dateCreation|date('Y/m/d ') }}</a>
+							</li>
+							{% if app.user == article.utilisateur %}
+								<li>
+									<a href="{{ path('edit_article', {'id': article.articleId}) }}">
+										<i class="far fa-edit"></i>
+									</a>
+								</li>
+								<li>
+									<a href="{{ path('delete_article', {'id': article.articleId}) }}">
+										<i class="far fa-trash-alt"></i>
+									</a>
+								</li>
+							{% endif %}
+						</ul>
+						<!-- /.blog-one__meta list-unstyled -->
+						<h3>{{ article.titre }}</h3>
+						<br>
+						<p>{{ article.contenu|raw }}</p>
+						<br>
+						
+
+						<p class="blog-details__tags">
+							<span>Tags:
+							</span>
+							<a href="#">Design,
+							</a>
+							<a href="#">Development</a>
+						</p>
+						<!-- /.blog-details__tags -->
+						<p class="blog-details__share">
+							<span>Share:</span>
+							<a href="#">
+								<i class="fab fa-facebook-f"></i>
+							</a>
+							<a href="#">
+								<i class="fab fa-twitter"></i>
+							</a>
+							<a href="#">
+								<i class="fab fa-vimeo-v"></i>
+							</a>
+							<a href="#">
+								<i class="fab fa-linkedin-in"></i>
+							</a>
+						</p>
+						<!-- /.blog-details__share -->
+					</div>
+					<!-- /.blog-details__main -->
+
+
+				</div>
+				<!-- /.col-lg-8 -->
+				<div class="col-lg-4">
+					<div class="sidebar">
+						<div class="sidebar__single">
+							<h3 class="sidebar__title">Search</h3>
+							<form action="#" class="sidebar__search">
+								<input type="text" placeholder="Search">
+								<button type="submit">
+									<i class="muzex-icon-search"></i>
+								</button>
+							</form>
+						</div>
+						<!-- /.sidebar__single -->
+						<div class="sidebar__single">
+							<h3 class="sidebar__title">Blogs</h3>
+							<p>You can explore here every thing you see .</p>
+							<ul class="list-unstyled sidebar__cat-list">
+								<li>
+									<a href="{{path('app_articles')}}">All Blogs</a>
+								</li>
+								<li>
+									<a href="#">My Blogs</a>
+								</li>
+								<li>
+									<a href="{{ path('add_article') }}">Add Blog</a>
+								</li>
+							</ul>
+						</div>
+						
+						
+						<!-- /.sidebar__single -->
+					</div>
+					<!-- /.sidebar -->
+				</div>
+				<!-- /.col-lg-4 -->
+			</div>
+			<!-- /.row -->
+		</div>
+		<!-- /.container -->
+	</section>
+	<!-- /.blog-one blog-grid-page -->
+
+{% endblock %}

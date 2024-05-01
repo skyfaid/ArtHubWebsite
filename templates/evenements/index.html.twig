@@ -10,7 +10,7 @@
         <div class="col-12">
             <div class="card mb-4">
                 <div class="card-header pb-0">
-                    <h6>Events table</h6>
+                    <h6>Events List</h6>
                 </div>
                 <div class="card-body px-0 pt-0 pb-2">
                     <div class="table-responsive p-0">
@@ -28,6 +28,7 @@
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Participants</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">image url</th>
                                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">video url</th>
+                                    <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Exclusive</th>
                                     <th class="text-secondary opacity-7"></th>
                                 </tr>
                             </thead>
@@ -45,13 +46,27 @@
                                     <td class="align-middle text-center">{{ evenement.nombreparticipants }}</td>
                                     <td class="align-middle text-center">{{ evenement.posterurl }}</td>
                                     <td class="align-middle text-center">{{ evenement.videourl }}</td>
+                                    <td class="align-middle text-center">{{ evenement.isExclusive }}</td>
                                     <td class="align-middle">
+                                    
                                         <a href="{{ path('app_evenements_show', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View event">
                                             View
                                         </a>
                                         <a href="{{ path('app_evenements_edit', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit event">
                                             Edit
                                         </a>
+                                       <a href="javascript:void(0);" onclick="deleteEvent({{ evenement.id }}, '{{ csrf_token('delete' ~ evenement.id) }}')" 
+                                       class="text-secondary font-weight-bold text-xs" 
+                                       data-toggle="tooltip" 
+                                       data-original-title="Delete event"
+                                       data-csrf="{{ csrf_token('delete' ~ evenement.id) }}">Delete</a>
+                                      <a href="{{ path('app_evenements_participants', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="View participants">
+                                       Participants
+                                      </a>
+                                      <a href="{{ path('app_evenements_pdf', {'id': evenement.id}) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Download PDF">
+                                       PDF
+                                       </a>
+
                                     </td>
                                 </tr>
                                 {% else %}
@@ -70,6 +85,31 @@
 
 <a href="{{ path('app_evenements_new') }}" class="btn btn-primary" style="margin-left: 30px;">Create new Event</a>
 
+<script>
+function deleteEvent(eventId, csrfToken) {
+    // Prompt the user for confirmation
+    if (confirm('Are you sure you want to delete this event?')) {
+    const formData = new FormData();
+    formData.append('_token', csrfToken);
 
- 
+    fetch('/evenements/' + eventId, {
+        method: 'POST',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+        },
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            window.location.reload(); // Reload the page to reflect the deletion
+        } else {
+            alert('Something went wrong. Please try again.');
+        }
+    }).catch(error => {
+        console.error('Error:', error);
+        alert('An error occurred. Please try again.');
+    });
+}
+}
+</script>
+
 {% endblock %}
