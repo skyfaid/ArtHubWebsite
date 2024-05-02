@@ -55,8 +55,9 @@
 								<a href="#">Explore</a>
 								<ul>
 									<li>
-										<a href="{{ path('app_client_event') }}">Events</a>
+									 <a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_client_event') : path('app_login') }}">Events</a>
 									</li>
+									
 									<li>
 										<a href="{{ path('app_client_activity') }}">Activities</a>
 									</li>
