@@ -9,6 +9,7 @@ parameters:
    recaptcha_secret_key: '6Le3PsspAAAAAGgGWlf696-aGw8P8vHZSjqA2u0i'
    uploads.directory: '%kernel.project_dir%/public/uploads'
    discord.webhook_url: '%env(DISCORD_WEBHOOK_URL)%'  
+   images_directory: '%kernel.project_dir%/public/uploads'
    
 services:
     ReCaptcha\ReCaptcha:
@@ -31,7 +32,13 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
-
+         bind:
+            $stripeSK: '%env(STRIPE_SK)%' # Ensures that $stripeSK can be autowired with the Stripe key
+              # Knp\Snappy\Pdf service configuration
+    Knp\Snappy\Pdf:
+        arguments:
+            $binary: '%env(WKHTMLTOPDF_PATH)%' # Make sure this environment variable is defined in your .env file
+            $options: { 'no-outline': true, 'encoding': 'UTF-8' }
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -44,6 +51,13 @@ services:
     App\Service\DiscordNotifier:
         arguments:
             $webhookUrl: '%discord.webhook_url%'        
+# Specific service definitions for controllers
+    App\Controller\PaymentController:
+        arguments:
+            $stripeSK: '%env(STRIPE_SK)%'  # Ensure this is passed as a string, not a service
 
+    App\Controller\InvoiceController:
+        arguments:
+            $pdf: '@Knp\Snappy\Pdf'  # Correctly autowire the PDF service for InvoiceController
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

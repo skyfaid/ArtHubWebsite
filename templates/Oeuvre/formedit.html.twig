@@ -1,0 +1,62 @@
+{% block body %}
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header pb-0">
+                        <div class="d-flex align-items-center">
+                            <p class="mb-0">Ajouter Oeuvre</p>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-uppercase text-sm">Oeuvre Information</p>
+                        {{ form_start(form, {'attr': {'class': 'form-horizontal'}}) }}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.titre, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.type, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.disponibilite, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.prix, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_row(form.datecreation, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="horizontal dark">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    {{ form_row(form.posterurl, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    {{ form_row(form.description, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary">{{ button_label|default('update') }}</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

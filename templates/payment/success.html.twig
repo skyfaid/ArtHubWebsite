@@ -1,0 +1,21 @@
+{% extends 'basepay.html.twig' %}
+
+{% block title %}Payment Success!{% endblock %}
+
+{% block body %}
+    {{ parent() }}
+
+    <h1>Thanks for your order!</h1>
+    <p>We appreciate your business! If you have any questions, please email us.</p>
+
+    {% if ventes is not empty %}
+        <h2>Your Invoices:</h2>
+        <ul>
+            {% for vente in ventes %}
+                <li><a href="{{ path('invoice_download', {'id': vente.id}) }}">Download Invoice for {{ vente.oeuvre.titre }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No sales records found.</p>
+    {% endif %}
+{% endblock %}

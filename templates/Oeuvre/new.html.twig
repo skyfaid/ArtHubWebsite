@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Oeuvre{% endblock %}
+
+{% block body %}
+  
+
+    {{ include('oeuvre/oeuvreform.html.twig') }}
+
+    <a href="{{ 'app_collection_client') }}">back to list</a>
+{% endblock %}

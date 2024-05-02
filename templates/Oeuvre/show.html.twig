@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Oeuvre{% endblock %}
+
+{% block body %}
+    <h1>Oeuvre</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ oeuvre.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ oeuvre.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ oeuvre.description }}</td>
+            </tr>
+            <tr>
+                <th>Disponibilite</th>
+                <td>{{ oeuvre.disponibilite }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ oeuvre.prix }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{{ oeuvre.datecreation ? oeuvre.datecreation|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ oeuvre.type }}</td>
+            </tr>
+            <tr>
+                <th>Posterurl</th>
+                <td>{{ oeuvre.posterurl }}</td>
+            </tr>
+          
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_collection_client') }}">back to list</a>
+
+    <a href="{{ path('app_oeuvre_edit', {'id': oeuvre.id}) }}">edit</a>
+
+   
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collections - YourSite{% endblock %}
+
+{% block body %}
+{% include 'ClientHome/header.html.twig' with {'page_title': 'Collections'} %}
+ 
+<section class="collection-grid collection-masonary">
+  <div class="container">
+    <div class="collection-grid__top">
+      <div class="block-title text-left">
+        <p>Gallery</p>
+        <h3>Explore <br> the Collection</h3>
+      </div>
+
+      <ul class="collection-filter">
+        <li data-filter=".filter-item" id="all-oeuvre" ><span>All Section</span></li>
+        <li data-filter=".pic" id="favorites-filter" ><span>Favoris</span></li>
+      </ul>
+    </div>
+    <div class="row high-gutter filter-layout masonary-layout">
+      {% for oeuvre in oeuvres %}
+        <div class="col-lg-4 col-md-6 filter-item masonary-item pic">
+          <div class="collection-grid__single">
+           <div class="collection-grid__image">
+            
+              {# Utilisez les attributs width et height directement sur les images #}
+              <img src="/uploads/{{ oeuvre.posterurl }}" alt="{{ oeuvre.titre }}"  class="collection-grid__link">
+            
+             </div>
+             
+            <div class="collection-grid__content">
+              <h3><a href="{{ path('details', {'id': oeuvre.id}) }}">{{ oeuvre.titre }}</a>
+              <a href="#" class="favorite-link" data-id="{{ oeuvre.id }}"> 
+              <img src="/clientHome/images/coeur.png" class="favorite-icon" data-id="{{ oeuvre.id }}" width="20" height="20" alt="Cœur" /></a></h3>
+              <p>{{ oeuvre.type }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+  
+</section>
+<style>
+    .favorite-icon.is-favorite {
+        /* Exemple de style pour changer l'image de l'icône */
+        content: url('/clientHome/images/coeur-favoris.png'); /* Assurez-vous que cette image existe et est bien rouge */
+    }
+    
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+  const allOeuvreBtn = document.getElementById('all-oeuvre');
+  const favoritesBtn = document.getElementById('favorites-filter');
+  const oeuvres = document.querySelectorAll('.filter-item');
+  const favorites = new Set(JSON.parse(localStorage.getItem('favorites') || '[]'));
+
+  document.querySelectorAll('.favorite-icon').forEach(icon => {
+    const oeuvreId = icon.dataset.id;
+    icon.src = favorites.has(oeuvreId) ? '/clientHome/images/coeur-favoris.png' : '/clientHome/images/coeur.png';
+    icon.addEventListener('click', function(event) {
+      event.preventDefault();
+      toggleFavorite(oeuvreId, icon, favorites);
+    });
+  });
+
+  // Show all oeuvres
+  allOeuvreBtn.addEventListener('click', function() {
+    oeuvres.forEach(item => item.style.display = 'block');
+    allOeuvreBtn.classList.add('active');
+    favoritesBtn.classList.remove('active');
+  });
+
+  // Show only favorites
+  favoritesBtn.addEventListener('click', function() {
+    oeuvres.forEach(item => {
+      const id = item.querySelector('.favorite-icon').dataset.id;
+      item.style.display = favorites.has(id) ? 'block' : 'none';
+    });
+    favoritesBtn.classList.add('active');
+    allOeuvreBtn.classList.remove('active');
+  });
+
+  function toggleFavorite(id, icon, favorites) {
+    if (favorites.has(id)) {
+      favorites.delete(id);
+      icon.src = '/clientHome/images/coeur.png';
+    } else {
+      favorites.add(id);
+      icon.src = '/clientHome/images/coeur-favoris.png';
+    }
+    localStorage.setItem('favorites', JSON.stringify([...favorites]));
+  }
+}); 
+
+</script>
+{% endblock %}

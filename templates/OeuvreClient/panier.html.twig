@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier - YourSite{% endblock %}
+
+{% block body %}
+{% include 'ClientHome/header.html.twig' with {'page_title': 'Panier'} %}
+<section class="event-one event-one__event-page-2">
+    <div class="container">
+        {% set total = 0 %}
+        {% for item in items %}
+        <div class="row" id="card-{{ item.oeuvre.id }}" style="margin-bottom: 20px;">
+            <div class="col-lg-12">
+                <div class="event-one__single">
+                    <div class="event-one__image">
+                        <div class="event-one__date">
+                            <!-- Vous pouvez formatter la date comme vous le souhaitez ici -->
+                            <span>{{ item.oeuvre.dateCreation|date('d') }}</span>
+                    <span>{{ item.oeuvre.dateCreation|date('M') }}</span>
+                        </div><!-- /.event-one__date -->
+                        <div class="event-one__image-box">
+                            <div class="event-one__image-inner">
+                                <!-- Utilisez ici le chemin vers l'image de l'œuvre -->
+                                <img src="{{ asset('uploads/' ~ item.oeuvre.posterUrl) }}" alt="{{ item.oeuvre.titre }}" style="width: 200px; height: 200px; border-radius: 50%;">
+                                
+                            </div><!-- /.event-one__image-inner -->
+                        </div><!-- /.event-one__image-box -->
+                    </div><!-- /.event-one__image -->
+                    <div class="event-one__content" style="margin-left: 50px;">
+                        <h3 style="margin: 0;"><a href="#">{{ item.oeuvre.titre }}</a></h3>
+                        <p style="margin: 5px 0;">{{ item.oeuvre.description }}</p>
+                        <!-- Affichez les autres informations de l'œuvre ici -->
+                        <p style="margin: 5px 0;" >Prix : ${{ item.oeuvre.prix }}</p>
+                       
+                        <div class="event-one__btn-block">
+                        <!-- Lien ou action pour modifier la quantité -->
+                        <!-- Bouton pour décrémenter (décoratif) -->
+                        <div class="event-one__btn-block">
+  <button type="button" class="thm-btn event-one__btn" onclick="removeFromCart('{{ path('cart_remove', {'id': item.oeuvre.id}) }}', {{ item.oeuvre.id }})">Delete</button>
+
+        <div class="event-details__content" style="text-align: left; margin-left: auto;"> <!-- Utilisez margin-left: auto pour pousser le contenu vers la droite -->
+            <!-- Les détails de l'oeuvre ici -->
+        </div>
+</div><!-- /.event-one__btn-block -->
+
+    <!-- Utilisation de d-flex et align-items-start pour aligner le bouton à gauche -->
+  
+       
+            
+            <!-- Affichage de la quantité -->
+             <div class="donate-one__input" >
+          <form action="{{ path('route_pour_modifier_quantite', {'id': item.oeuvre.id}) }}" method="post">
+  <div class="event-one__btn-block">
+    <button type="button" class="thm-btn event-one__btn"  style="padding: 2px 10px; cursor: pointer;" onclick="updateQuantity('{{ path('route_pour_modifier_quantite', {'id': item.oeuvre.id}) }}', 'decrement', {{ item.quantity }})">-</button>
+    <input type="text" id="quantity-{{ item.oeuvre.id }}" value="{{ item.quantity }}" readonly style="text-align: center; width: 40px; font-size: 12px; height: 34px;">
+    <button type="button" class="thm-btn event-one__btn" style="padding: 2px 10px;  cursor: pointer;" onclick="updateQuantity('{{ path('route_pour_modifier_quantite', {'id': item.oeuvre.id}) }}', 'increment', {{ item.quantity }})">+</button>
+</div>
+</form>
+</div>
+            <!-- Bouton pour incrémenter (décoratif) -->
+           
+                    </div><!-- /.event-one__btn-block -->
+                    </div><!-- /.event-one__content -->
+                   
+    
+                    
+                </div><!-- /.event-one__single -->
+            </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+        {% set total = total + (item.oeuvre.prix * item.quantity) %}
+        {% endfor %}
+        
+        <div class="row">
+            <div class="col-lg-12 text-center">
+               <p class="donate-one__total" >Total Prix: <input id="total-price" type="text" disabled value="{{ total | number_format(2, '.', ',') }}"></p>
+                <form action="{{ path('checkout') }}" method="post">
+                    <button type="submit" class="thm-btn donate-one__btn">Procéder au paiement</button>
+                </form>
+                <a href="{{ path('app_collection_client') }}" class="thm-btn donate-one__btn" style="margin-top: 20px;">Retour à la collection</a>
+            </div><!-- /.col-lg-12 -->
+        </div><!-- /.row -->
+     
+    </div><!-- /.container -->
+</section>
+<script>
+function updateQuantity(url, action, quantity) {
+    // Créez un objet FormData pour envoyer les données du formulaire
+    let formData = new FormData();
+    formData.append('action', action);
+    formData.append('quantity', quantity);
+
+    // Faites une requête AJAX au serveur
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    }).then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // Mettez à jour l'affichage de la quantité
+            document.getElementById('quantity-' + data.id).value = data.newQuantity;
+            // Mettez à jour le total si nécessaire
+           document.getElementById('total-price').value = parseFloat(data.newTotal).toFixed(2);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+
+function removeFromCart(url, id) {
+    fetch(url, {
+        method: 'GET'
+    }).then(response => response.json())
+    .then(data => {
+        if(data.success) {
+            // Supprimez la carte correspondante à l'article supprimé
+            const card = document.getElementById('card-' + id);
+            card.remove();
+
+            // Mettez à jour le total si nécessaire
+            document.getElementById('total-price').value = parseFloat(data.newTotal).toFixed(2);
+        }
+    }).catch(error => console.error('Error:', error));
+}
+</script>
+{% endblock %}
+
+

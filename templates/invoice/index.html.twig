@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #444;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        .highlight {
+            color: #0056b3;
+            font-weight: bold;
+        }
+        .total {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Invoice for {{ vente.oeuvre.titre }}</h1>
+        <p>Date of Sale: <span class="highlight">{{ vente.dateVente|date('Y-m-d') }}</span></p>
+        <ul>
+            <li>ID de l'oeuvre: <span class="highlight">{{ vente.oeuvre.id }}</span></li>
+            <li>Quantité: <span class="highlight">{{ vente.quantite }}</span></li>
+            <li>Prix total: <span class="highlight total">{{ vente.prixVente }} €</span></li>
+        </ul>
+    </div>
+</body>
+</html>

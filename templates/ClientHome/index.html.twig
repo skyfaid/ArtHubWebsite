@@ -49,7 +49,7 @@
 								</button>
 							</li>
 							<li>
-								<a href="{{ path('app_client_collection') }}">Collection</a>
+								<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_collection_client') : path('app_login') }}">Collection</a>
 							</li>
 							<li class="dropdown">
 								<a href="#">Explore</a>
