@@ -93,7 +93,7 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
     
         if (in_array('admin', $roles)) {
             // Redirect to the admin dashboard
-            $targetUrl = $this->router->generate('app_dashboard');
+            $targetUrl = $this->router->generate('app_dashadmin');
         } elseif (in_array('user', $roles)) {
             // Redirect to the blog homepage for regular users
             $targetUrl = $this->router->generate('app_client_home');

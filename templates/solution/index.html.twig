@@ -1,0 +1,119 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Solution{% endblock %}
+{% block stylesheets %}
+{{ parent() }}
+<style>
+    
+    .scrollable-table-container {
+        overflow-x: auto; /* Enables horizontal scrolling */
+        margin-top: 20px;
+    }
+
+    .table {
+        width: auto; /* Remove max-width restriction */
+        min-width: 1000px; /* Set a minimum width */
+        white-space: nowrap; 
+    }
+ .btn-white {
+        background-color: white;
+        color: #333; /* Dark text for visibility on a white background */
+        border: 1px solid #ccc; /* Light grey border */
+    }
+
+    .btn-white:hover {
+        background-color: #f8f8f8; /* Slightly darker on hover for effect */
+        border-color: #bbb;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<section style="display: flex; justify-content: center; align-items: center; flex-direction: column; min-height: 100vh;">
+    <div style="text-align: center;">
+        <h1>Welcome to Solution</h1>
+        <h2>⬇️ Reply To Reclamation ⬇️</h2>
+    </div>
+    <br>  
+    <br>
+    <br>
+    <br>
+   <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">utilisateur_id</th>
+                    <th scope="col">ReclamationID</th>
+                    <th scope="col">Oeuvre Title</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Product Image</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Date Submitted</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reclamation in reclamations %}
+                    <tr>
+                        <td>{{ reclamation.utilisateur.getUtilisateurId() }}</td>
+                        <td>{{ reclamation.getReclamationID() }}</td>
+                        <td>{{ reclamation.oeuvre.getTitre() }}</td>
+                        <td>{{ reclamation.phoneNumber }}
+                        <td>{{ reclamation.getDescription() }}</td>
+                        <td><img src="{{ asset('uploads/' ~ reclamation.getProductPng()) }}" alt="Product Image" class="img-fluid img-thumbnail" style="max-height: 100px;"></td>
+                        <td>{{ reclamation.getStatus() }}</td>
+                        <td>{{ reclamation.getDateSubmitted()|date('Y-m-d H:i:s') }}</td>
+                        <td class="action-cell">
+                            <a href="{{ path('app_solution_new', {'reclamationId': reclamation.getReclamationID()}) }}" class="btn btn-success">Reply</a>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Solutionid</th>
+                <th>UtilisateurId</th>
+                <th>Status</th>
+                <th>Refundamount</th>
+                <th>Adminfeedback</th>
+                <th>Dateresolved</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for solution in solutions %}
+                <tr>
+                    <td>{{ solution.solutionid }}</td>
+                    <td>{{ solution.utilisateurId }}</td>
+                    <td>{{ solution.status }}</td>
+                    <td>{{ solution.refundamount }}</td>
+                    <td>{{ solution.adminfeedback }}</td>
+                    <td>{{ solution.dateresolved ? solution.dateresolved|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+ {% if solution.status == 'accepted' %}
+    <a href="{{ path('app_solution_claim_form', {'solutionId': solution.solutionid}) }}" class="btn btn-success btn-sm claim-btn">
+        <i class="fa-brands fa-cc-paypal fa-2xl"></i> Claim
+    </a>
+{% endif %}
+
+
+                    <a href="{{ path('app_solution_edit', {'solutionid': solution.solutionid}) }}" class="btn btn-info">Edit</a>
+                </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7">no records found</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Solution{% endblock %}
+
+{% block body %}
+
+<section class="solution-form-container">
+<br>
+<br>
+<br>
+<br>
+    <div class="container">
+
+    <h1>Reply to Reclamation: {{ reclamation.oeuvre.titre }}</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+    {{ include('solution/_form.html.twig') }}
+
+    <a href="{{ path('app_solution_index') }}">back to list</a>
+    </div>
+    </section>
+    {% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', (event) => {
+    const statusSelect = document.querySelector('#solution_status');
+    const refundAmountInput = document.querySelector('#solution_refundamount');
+
+    // Function to toggle refund amount input disabled status
+    function toggleRefundAmountInput() {
+        if (statusSelect.value === 'pending' || statusSelect.value === 'declined') {
+            refundAmountInput.value = 0; // Set to zero when 'Declined' is selected
+            refundAmountInput.setAttribute('disabled', true);
+        } else {
+            refundAmountInput.removeAttribute('disabled');
+        }
+    }
+
+    // Listen for changes on the status select element
+    statusSelect.addEventListener('change', toggleRefundAmountInput);
+
+    // Initial check in case the form is re-rendered with a selection
+    toggleRefundAmountInput();
+});
+</script>
+{% endblock %}
+{% endblock %}
+
+
+
+

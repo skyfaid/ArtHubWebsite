@@ -1,0 +1,51 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Claim Refund{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/paypal_styles.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="content">
+            <h1 class="text-center mb-4"> Send money Refund 💸 </h1>
+            <br>
+            <br>
+            <br>
+            <p>Status: {{ solution.getStatus() }}</p>
+            <p>Admin Feedback 🗣️ {{ solution.getAdminFeedback() }}</p>
+            <p>Date Submitted: {{ solution.dateresolved ? solution.dateresolved|date('Y-m-d H:i:s') : '' }}</p>
+            <img src="{{ asset('uploads/paypal.png') }}" alt="paypal" class="logo" style="width: 250px;" />
+            <form action="{{ path('app_solution_claim_form', {'solutionId': solution.getSolutionId()}) }}" method="post">
+                
+                <br>
+                <label for="amount" class="form-label">Refund Amount</label>
+                <input type="text" id="amount" name="amount" class="input" value="{{ solution.getRefundAmount() }}" readonly>
+                
+                <input type="email" id="paypalEmail" name="paypalEmail" class="input" placeholder="PayPal Email" required>
+                <hr class="form-divider">
+
+                <button type="submit" class="next__btn">Send Refund</button>
+                
+                <!-- Footer -->
+                <div class="footer">
+                    <div class="country">
+                        <img src="{{ asset('uploads/flag.png') }}" alt="flag" class="flag" />
+                        <i class="ri-arrow-down-s-line"></i>
+                    </div>
+                    <div class="language">
+                        <span>English</span>
+                        <span>Français</span>
+                        <span>Español</span>
+                        <span>中国人</span>
+                    </div>
+                </div>
+                <!-- End Footer -->
+                
+            </form>
+        </div>
+    </div>
+{% endblock %}

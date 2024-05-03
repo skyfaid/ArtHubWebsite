@@ -1,0 +1,96 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Reclamation{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .reclamation-edit-container {
+        width: 100%; /* Adjust as needed */
+        max-width: 600px; /* Adjust as needed */
+        margin: auto; /* Center the form */
+        padding: 20px;
+        background-color: #f8f9fa; /* Light grey background */
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .form-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1em;
+    }
+    .form-row > label {
+        flex-basis: 20%; /* Adjust the width of the label */
+        margin-right: 1em; /* Provide space between the label and the field */
+    }
+    .form-row > div {
+        flex-grow: 1;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 0.5em;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+    .btn-update {
+        background-color: #28a745; /* Green color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+    .btn-update:hover {
+        background-color: #218838; /* Darker green on hover */
+    }
+    .btn-update:active {
+        transform: scale(0.95); /* Pop effect when clicked */
+    }
+    a.back-to-list {
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        color: #007bff;
+        text-decoration: none;
+        font-size: 16px;
+    }
+    a.back-to-list i {
+        margin-right: 5px; /* Space between icon and text */
+    }
+    a.back-to-list:hover {
+        text-decoration: underline;
+    }
+    .edit-reclamation-title {
+            text-align: center;
+            margin-top: 1rem; /* Adjust the top margin as needed */
+            margin-bottom: 1rem; /* Adjust the bottom margin as needed */
+        }
+</style>
+{% endblock %}
+
+{% block body %}
+    {% include 'ClientHome/header.html.twig' with {'page_title': 'Edit Reclamation'} %}
+
+    <style>
+        .edit-reclamation-title {
+            text-align: center;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+        }
+    </style>
+
+    <section>
+        <h1 class="edit-reclamation-title">Edit Reclamation</h1>
+        <br>
+        <br>
+        <div class="reclamation-edit-container">
+            {{ include('reclamation/_form.html.twig', {'button_label': 'Update'}) }}
+            <div style="margin-top: 20px;">
+                <a href="{{ path('app_reclamation_index') }}" class="btn btn-info">Back to list</a>
+                {{ include('reclamation/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </section>
+{% endblock %}
