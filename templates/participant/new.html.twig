@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}New Participant{% endblock %}
+
+{% block body %}
+{% include 'clientHome/header.html.twig' with {'page_title': 'Create New Participant'} %}
+
+<section class="event-one event-one__event-page-2">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="event-one__single">
+                    <div class="event-one__content">
+                        <h1>Create New Participant</h1>
+                        {{ include('participant/_form.html.twig') }}
+                    </div>
+                    <div class="event-one__btn-block">
+                        <a href="{{ path('app_formations_index') }}" class="thm-btn">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

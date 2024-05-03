@@ -62,7 +62,7 @@
 										<a href="{{ path('app_client_activity') }}">Activities</a>
 									</li>
 									<li>
-										<a href="{{ path('app_client_masterclass') }}">MasterClass</a>
+										<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_formations_index') : path('app_login') }}">MasterClass</a>
 									</li>
 								</ul>
 								<button class="dropdown-btn">

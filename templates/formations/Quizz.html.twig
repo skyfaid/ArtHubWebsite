@@ -1,0 +1,37 @@
+{# templates/formations/quizz.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz{% endblock %}
+
+{% block body %}
+    {% include 'clientHome/header.html.twig' with {'page_title': 'Quiz'} %}
+    <section class="event-one event-one__event-page-2">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="event-one__single">
+                        <div class="event-one__content">
+                            <h1>Quiz</h1>
+                            <form action="{{ path('quiz_submit') }}" method="post">
+                                <div class="form-group">
+                                    <label for="answer">{{ quiz.question }}</label>
+                                    <select id="answer" name="answer" class="form-control">
+                                        {% for option in quiz.options %}
+                                            <option value="{{ option }}">{{ option }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div >
+                                    <div class="submit__btn-block">
+                                    <input type="hidden" name="formation_id" value="{{ formation.id }}">
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('quiz') }}">
+                                     <a href="{{ path('app_formations_show', {'id': formation.id}) }}" class="thm-btn">quiz_submit</a>
+                                    </div >
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -76,7 +76,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_users' ? 'active' : '' }}" href="{{ path('collections')}}">
+            <a class="nav-link {{ app.request.attributes.get('_route') == 'collections' ? 'active' : '' }}" href="{{ path('collections')}}">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
                 </div>
@@ -92,13 +92,25 @@
             </a>
         </li>
         
-        <li class="nav-item">
-            <a class="nav-link " href="">
+         <li class="nav-item">
+            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_participant_index' ? 'active' : '' }}" href="{{ path('app_participant_index') }}">
+                <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
+                    <i class="ni ni-credit-card text-success text-sm opacity-10"></i>
+                </div>
+              <span class="nav-link-text ms-1">ParticipantsMaster</span>
+            </a>
+        </li>
+        
+        <li class="nav-item dropdown">
+            <a class="nav-link {{ app.request.attributes.get('_route') == 'app_formationsDash' ? 'active' : '' }}" href="{{ path('app_formationsDash') }}" id="navbarMasterclass" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <div class="icon icon-shape icon-sm border-radius-md text-center me-2 d-flex align-items-center justify-content-center">
                     <i class="ni ni-collection text-info text-sm opacity-10"></i>
                 </div>
-              <span class="nav-link-text ms-1">MasterClass</span>
+              <span class="nav-link-text ms-1">MasterClasses</span>
             </a>
+             <ul class="dropdown-menu" aria-labelledby="navbarMasterclass">
+                  <li><a class="dropdown-item" href="{{path('app_participant_index')}}">Participant</a></li>
+             </ul>
         </li>
       </ul>
     </div>

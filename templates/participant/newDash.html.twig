@@ -1,0 +1,28 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Participant{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <h6>Create New Participant</h6>
+                </div>
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="event-one__content">
+                        <h1>Create New Participant</h1>
+                        {{ include('participant/_form.html.twig') }}
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="event-one__btn-block">
+                        <a href="{{ path('app_participant_index') }}" class="btn btn-primary" style="margin-left: 30px;">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

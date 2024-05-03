@@ -1,0 +1,23 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Formations{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card mb-4">
+                <div class="card-body px-0 pt-0 pb-2">
+                    <div class="event-one__content">
+                        <h1>New Formations</h1>
+                        {{ include('formations/_form.html.twig') }}
+                    </div>
+                    <div class="event-one__btn-block">
+                        <a href="{{ path('app_formations_index') }}" class="thm-btn">Back to List</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

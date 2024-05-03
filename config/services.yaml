@@ -47,7 +47,11 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            
+
+    App\Service\QuizGeneratorService:
+        arguments:
+            $apiKey: '%env(API_KEY)%'  
+        
     App\Service\DiscordNotifier:
         arguments:
             $webhookUrl: '%discord.webhook_url%'        
