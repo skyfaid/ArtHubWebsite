@@ -59,7 +59,7 @@
 									</li>
 									
 									<li>
-										<a href="{{ path('app_client_activity') }}">Activities</a>
+										<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('activite_gallery') : path('app_login') }}">Activities</a>
 									</li>
 									<li>
 										<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_formations_index') : path('app_login') }}">MasterClass</a>

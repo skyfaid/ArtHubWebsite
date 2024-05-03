@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activite Collections - YourSite{% endblock %}
+
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
+    {% include 'ClientHome/header.html.twig' with {'page_title': 'Activites'} %}
+    <input type="text" id="search-input" placeholder="Search activities by name..." autocomplete="off">
+    <div id="search-results"></div>
+
+    <section class="collection-grid collection-masonary">
+        <div class="container">
+            <div class="collection-grid__top">
+                <div class="block-title text-left">
+                    <p>Gallery of Activities</p>
+                    <h3>Explore the Activities</h3>
+                </div>
+            </div>
+            <div class="row high-gutter filter-layout masonary-layout">
+                {% if activites is not empty %}
+                    {% for activite in activites %}
+                        <div class="col-lg-4 col-md-6 filter-item masonary-item {{ activite.typeAct|lower }}">
+                            <div class="collection-grid__single">
+                                <div class="image-container">
+                                    <img src="{{ asset('uploads/posters/' ~ activite.posterurl) }}" alt="{{ activite.nomAct }}" width="300" height="300">
+                                
+                                    {% if activite.nomAct|lower == 'puzzle' %}
+                                        <a href="{{ path('app_puzzle2') }}" class="btn btn-primary btn-participate">Participate</a>
+                                    {% elseif activite.nomAct|lower == 'quiz' %}
+                                        <a href="{{ path('quiz_question') }}" class="btn btn-primary btn-participate">Start Quiz</a>
+
+                                    {% else %}
+                                        <div class="overlay coming-soon">Coming Soon</div>
+                                    {% endif %}
+                                </div>
+                                <div class="collection-grid__content">
+                                    <h3><a href="{{ path('app_activite_show', {'idActivite': activite.idActivite}) }}">{{ activite.nomAct }}</a></h3>
+                                    <p>{{ activite.typeAct }}</p>
+                                      <a href="{{ path('activity_details', {'idActivite': activite.idActivite}) }}">Details</a> 
+    <li>
+                </li>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No activities to display.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+ 
+{% endblock %}
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const inputField = document.getElementById('search-input');
+    const resultsContainer = document.getElementById('search-results');
+
+    inputField.addEventListener('input', function() {
+        const searchTerm = inputField.value.trim();
+        if (searchTerm.length > 2) {
+            fetch('{{ path('app_activite_search') }}?query=' + encodeURIComponent(searchTerm))
+                .then(response => response.json()) // Expecting JSON response
+                .then(data => {
+                    resultsContainer.innerHTML = ''; // Clear previous results
+                    data.activites.forEach(activite => {
+                        // Assuming you want to display the name of each activity
+                        resultsContainer.innerHTML += `<p>${activite.nomAct}</p>`;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    resultsContainer.innerHTML = '<p>Error loading activities.</p>';
+                });
+        } else {
+            resultsContainer.innerHTML = ''; // Clear results if input is less than 3 characters
+        }
+    });
+});
+</script>
+{% endblock %}

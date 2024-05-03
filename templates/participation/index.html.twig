@@ -1,0 +1,100 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Participations{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .table {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .table thead th {
+        background-color: #343a40;
+        color: white;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .btn {
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        transition: all 0.3s ease;
+        color: #fff;
+        border: none;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        box-shadow: 0 8px 15px rgba(0, 123, 255, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+        background-color: #6c757d;
+    }
+
+    .btn-secondary:hover {
+        background-color: #545b62;
+        box-shadow: 0 8px 15px rgba(108, 117, 125, 0.5);
+        transform: translateY(-2px);
+    }
+
+    .btn-success {
+        background-color: #28a745;
+    }
+
+    .btn-success:hover {
+        background-color: #1e7e34;
+        box-shadow: 0 8px 15px rgba(40, 167, 69, 0.5);
+        transform: translateY(-2px);
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Participations</h1>
+<a href="{{ path('app_activite_index') }}" class="btn btn-sm btn-primary">Back to Activities</a>
+
+  
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Activity ID</th>
+                <th scope="col">User ID</th>
+                <th scope="col">Score</th>
+                <th scope="col">Participation Date</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for participation in participations %}
+            <tr>
+                <td>{{ participation.idParticipation }}</td>
+                <td>{{ participation.idActivite }}</td>
+                <td>{{ participation.utilisateurId }}</td>
+                <td>{{ participation.score }}</td>
+                <td>{{ participation.participationDate ? participation.participationDate|date('Y-m-d') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_participation_show', {'idParticipation': participation.idParticipation}) }}" class="btn btn-primary btn-sm">Show</a>
+                    <a href="{{ path('app_participation_edit', {'idParticipation': participation.idParticipation}) }}" class="btn btn-secondary btn-sm">Edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6" class="text-center">No records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

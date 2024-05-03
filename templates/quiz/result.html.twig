@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Quiz Results{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Quiz Results</h1>
+    <p>You answered {{ correctAnswers }} out of {{ totalQuestions }} questions correctly! {{remark}}</p>
+    <a href="{{ path('quiz_index') }}">Try Again</a>
+</div>
+{% endblock %}

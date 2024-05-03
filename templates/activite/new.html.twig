@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Activite{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .card {
+        border: none;
+        border-radius: 0.375rem;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .card-header {
+        background-color: #5e72e4; /* Primary color */
+        color: white;
+        padding: 10px 20px;
+    }
+    .card-body {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 0 0 0.375rem 0.375rem;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+    }
+    input[type='text'],
+    input[type='date'],
+    select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        display: block;
+        font-size: 16px;
+    }
+   .btn-custom {
+    background-color: #4a90e2; /* A pleasant blue shade */
+    color: #ffffff;
+    padding: 8px 20px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-decoration: none; /* Removes underline from links */
+}
+
+.btn-custom:hover, .btn-custom:focus {
+    background-color: #357ABD; /* A slightly darker blue on hover/focus */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    text-decoration: none; /* Ensures text remains non-underlined */
+}
+
+.btn-custom:active {
+    background-color: #2a5b8d; /* Even darker for the active state */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) inset; /* Inner shadow to give a "pressed" effect */
+}
+
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <div class="card">
+                <div class="card-header">
+                    Create New Activite
+                </div>
+                <div class="card-body">
+                    {{ include('activite/_form.html.twig') }}
+                    <a href="{{ path('app_activite_index') }}" class="btn btn-secondary mt-4">Back to List</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

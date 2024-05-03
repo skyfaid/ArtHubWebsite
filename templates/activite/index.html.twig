@@ -1,0 +1,91 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Activite Index{% endblock %}
+
+{% block body %}
+
+<div class="main-content position-relative max-height-vh-100 h-100">
+    <!-- Navbar -->
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" navbar-scroll="true">
+        <div class="container-fluid py-1 px-3">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Activite Index</li>
+                </ol>
+                <h6 class="font-weight-bolder mb-0">Activite Management</h6>
+            </nav>
+            <div class="col-lg-6 col-5 text-right">
+    <a href="{{ path('app_activite_new') }}" class="btn btn-sm btn-custom" style="color: white;">Create New Activite</a>
+
+    <a href="{{ path('app_participation_index') }}" class="btn btn-primary">Manage Participation</a>
+</div>
+<th scope="col" class="text-center">
+    ID
+    <div class="sort-icons">
+        <a href="{{ path('app_activite_index', { 'sort': 'asc' }) }}" class="sort-asc">
+            ↓
+        </a>
+        <a href="{{ path('app_activite_index', { 'sort': 'desc' }) }}" class="sort-desc">
+            ↑
+        </a>
+    </div>
+</th>
+
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="container-fluid py-4">
+        <div class="row">
+            <div class="col">
+                <div class="card mb-4">
+                    <div class="card-header pb-0">
+                        <h6 class="mb-0">Activite List</h6>
+                    </div>
+                    <div class="card-body px-4 pt-0 pb-2">
+                        <div class="table-responsive">
+                            <table class="table align-items-center table-flush">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Start Date</th>
+                                        <th scope="col">End Date</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Places</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Poster URL</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for activite in activites %}
+                                    <tr>
+                                        <td>{{ activite.idActivite }}</td>
+                                        <td>{{ activite.nomAct }}</td>
+                                        <td>{{ activite.datedebut ? activite.datedebut|date('Y-m-d') : '' }}</td>
+                                        <td>{{ activite.datefin ?   activite.datefin|date('Y-m-d') : '' }}</td>
+                                        <td>{{ activite.lieu }}</td>
+                                        <td>{{ activite.nbrePlaces }}</td>
+                                        <td>{{ activite.typeAct }}</td>
+                                        <td>{{ activite.posterurl }}</td>
+                                        <td>
+                                            <a href="{{ path('app_activite_show', {'idActivite': activite.idActivite}) }}" class="btn btn-primary btn-sm">Show</a>
+                                            <a href="{{ path('app_activite_edit', {'idActivite': activite.idActivite}) }}" class="btn btn-secondary btn-sm">Edit</a>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="9" class="text-center">No records found</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

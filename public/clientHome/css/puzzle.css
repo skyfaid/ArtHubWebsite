@@ -1,0 +1,40 @@
+/* Custom CSS to complement Tailwind */
+
+
+#title {
+    /* Set the dimensions to a smaller size that fits your design */
+    width: 100px; /* Example size - adjust as needed */
+    height: 100px; /* This will maintain the aspect ratio of the image */
+    margin: 0 auto; /* Centers the logo */
+    display: block; /* Ensures that the image is block-level for margin to take effect */
+  }
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+    color: #717171;
+  }
+  
+  #title {
+    height: 150px;
+    width: 400px;
+  }
+  
+  #board {
+    width: 360px;
+    height: 360px;
+    background-color: lightblue;
+    border: 10px solid #000000;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  #board img {
+    width: 118px;
+    height: 118px;
+    border: 1px solid   #000000;
+    cursor: pointer; /* If you want the puzzle pieces to look clickable */
+    margin: -1px; /* This helps in managing the spacing created by the borders */
+  }
+  

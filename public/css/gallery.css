@@ -1,0 +1,101 @@
+/* Container holding the image and the text */
+.image-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+/* Add hover effect */
+.image-container:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+/* Bottom left text */
+.btn-participate {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background-color: #000000;
+    color: white;
+    padding: 8px 16px;
+    transition: visibility 0s, opacity 0.5s linear;
+    visibility: hidden;
+    opacity: 0;
+}
+
+/* Show button on hover */
+.image-container:hover .btn-participate {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Shine effect on hover */
+.image-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    display: block;
+    width: 150%;
+    height: 150%;
+    background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.5) 50%, rgba(255,255,255,0) 100%);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none; /* Allows clicks to pass through */
+    opacity: 0;
+}
+
+.image-container:hover::after {
+    opacity: 1; /* Show the shine effect on hover */
+    transform: translate(-50%, -50%) rotate(45deg) translateX(-100%);
+}
+
+/* Darken the image on hover or as a default state */
+.image-container .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.image-container:hover .overlay {
+    opacity: 1; /* Make overlay visible on hover */
+}
+
+.coming-soon {
+    font-size: 24px; /* Larger text size for visibility */
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.sort-icons {
+    display: inline-block;
+    margin-left: 5px;
+}
+
+.sort-icons a {
+    text-decoration: none;
+    color: #333;
+    font-size: 0.8rem;
+    margin: 0 2px;
+    display: inline-block;
+    transition: color 0.2s;
+}
+
+.sort-icons a:hover,
+.sort-icons a.sort-active {
+    color: #007bff; /* or any other color to indicate active state */
+}
+
+/* Optional: if you have the current sort state available in Twig, you can add a class 'sort-active' to the corresponding link */
