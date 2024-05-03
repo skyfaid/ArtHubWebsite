@@ -161,8 +161,6 @@ const preloadedTimeLeft = {{ timeLeft | json_encode }}; // Make sure this line i
 
 document.addEventListener('DOMContentLoaded', function() {
 
-   
-
     const rouletteLink = document.querySelector('.header__roulette a');
     const mainContent = document.querySelector('.event-three'); // Assuming this is the main content container ID
     const winSound=new Audio('{{ asset('uploads/winsoundmain.mp3') }}'); // Path to your win sound effect
