@@ -2,7 +2,9 @@
 
 {% block title %}Home - ArtHub
 {% endblock %}
-
+{% block stylesheets %}
+ <link rel="stylesheet" href="{{ asset('css/museum.css') }}">
+{% endblock %}
 {% block body %}
 
 	<div class="preloader">
@@ -37,8 +39,9 @@
 									<li>
 										<a href="">About Us</a>
 									</li>
+									
 									<li>
-										<a href="">Team</a>
+										<a href="">Team</a>	
 									</li>
 									<li>
 										<a href="">FAQ</a>
@@ -51,6 +54,7 @@
 							<li>
 								<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_collection_client') : path('app_login') }}">Collection</a>
 							</li>
+							
 							<li class="dropdown">
 								<a href="#">Explore</a>
 								<ul>
@@ -148,7 +152,12 @@
 	</div>
 
 
-
+	<div class="container">
+    <h1>Explore Our Virtual Museum</h1>
+    <div class="virtual-museum-container">
+        <iframe class="virtual-museum" src="https://www.artsteps.com/embed/6626a875f4f66ff4c90264c4/560/315" frameborder="100" allowfullscreen></iframe>
+    </div>
+</div>
 
 
 
@@ -160,9 +169,17 @@
 			<div class="block-title-two text-center">
 				<div class="block-title-two__line"></div>
 				<!-- /.block-title-two__line -->
+
+
+
+
+		
+
 				<p>What’s Going on</p>
 				<h3>Currently On View</h3>
 			</div>
+			
+
 			<!-- /.block-title-two -->
 			<div class="collection-two__carousel shadowed__carousel thm__owl-carousel owl-carousel owl-theme owl-loaded owl-drag" data-options="{
 								&quot;loop&quot;: true, &quot;margin&quot;: 40, &quot;autoplay&quot;: true, &quot;autoplayTimeout&quot;: 5000, &quot;autoplayHoverPause&quot;: true, &quot;items&quot;: 5, &quot;smartSpeed&quot;: 700, &quot;dots&quot;: false, &quot;nav&quot;: true, &quot;responsive&quot;: {
@@ -209,6 +226,7 @@
 								<!-- /.collection-two__single -->
 							</div>
 						</div>
+						
 						<div class="owl-item cloned" style="width: 363.333px; margin-right: 40px;">
 							<div class="item">
 								<div class="collection-two__single">
