@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View Reclamation{% endblock %}
+
+{% block stylesheets %}
+<style>
+
+
+   /* Table Styles */
+    .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .info-table th,
+    .info-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .info-table th {
+        background-color: #f2f2f2;
+        color: #333;
+    }
+    .info-table tr:nth-child(even){background-color: #f9f9f9;}
+
+    /* Image Styles */
+    .reclamation-image {
+        height: auto;
+        max-width: 300px; /* Medium size image */
+        display: block;
+        margin: 0 auto; /* Center image in the cell */
+    }
+
+    .btn-container {
+        margin-top: 20px; /* Space above the button container */
+    }
+    .btn {
+        border-radius: 0.25rem; /* Rounded corners for buttons */
+        font-size: 1rem; /* Font size for buttons */
+        padding: 0.75rem 1.25rem; /* Padding for buttons */
+        display: block; /* Each button on a new line */
+        width: 100%; /* Full width buttons */
+        margin-bottom: 10px; /* Space between buttons */
+        text-align: center; /* Center the text inside the buttons */
+    }
+</style>
+{% block body %}
+{% include 'ClientHome/header.html.twig'  %}
+
+<h1>View Reclamation</h1>
+
+<table class="table">
+    <tbody>
+
+        <tr>
+            <th>Title</th>
+            <td>{{ reclamation.getOeuvre().getTitre() }}</td>
+        </tr>
+         <tr>
+                <th>Phone Number</th>
+                <td>{{ reclamation.phoneNumber }}</td>
+            </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ reclamation.getDescription() }}</td>
+        </tr>
+        <tr>
+            <th>Image</th>
+            <td>
+                <img src="{{ asset('uploads/' ~ reclamation.getProductPng()) }}" alt="Reclamation Image"/>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="btn-container">
+    <a href="{{ path('app_reclamation_index') }}" class="btn btn-outline-primary">
+        <i class="fa-solid fa-arrow-left"></i> Back
+    </a>
+    <a href="{{ path('app_reclamation_edit', {'ReclamationID': reclamation.getReclamationID()}) }}" class="btn btn-info">
+        Edit
+    </a>
+    {{ include('reclamation/_delete_form.html.twig', {'ReclamationID': reclamation.getReclamationID()}) }}
+</div>
+{% endblock %}
+
+
+{% endblock %}

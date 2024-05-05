@@ -1,0 +1,64 @@
+{# templates/reclamation/statistics.html.twig #}
+{% extends 'baseAdmin.html.twig' %}
+{% block title %}Oeuvre Reclamation Statistics{% endblock %}
+
+{% block body %}
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+    <div style="width: 800px; height: 400px; padding: 20px; background-color: #fff; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+        <canvas id="reclamationChart"></canvas>
+    </div>
+</div>
+
+<!-- Load Chart.js from CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Load custom JavaScript files for colors and chart logic -->
+<script src="{{ asset('js/chartjsColors.js') }}"></script>
+<script src="{{ asset('js/reclamation_chart.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('reclamationChart').getContext('2d');
+    const titles = {{ titles|json_encode|raw }};
+    const counts = {{ counts|json_encode|raw }}; 
+
+    const myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: titles,
+            datasets: [{
+                label: 'Percentage of Reclamations',
+                data: counts,
+                backgroundColor: chartjsColors.backgroundColors,
+                borderColor: chartjsColors.borderColors,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        callback: function(value) {
+                            return value.toFixed(2) + '%'; // Format the y-axis ticks as percentages with two decimal places
+                        },
+                        suggestedMax: 100 // Suggest that the maximum value is 100%
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true, // Control whether the legend should be displayed
+                },
+                title: {
+                    display: true,
+                    text: 'Worst product based on Reclamations',
+                    font: {
+                        size: 18
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

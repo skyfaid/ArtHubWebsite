@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Reclamation Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+         h1 {
+        color: #4CAF50; /* A green color to represent an accepted state */
+        text-align: center; /* Center the title */
+        font-family: 'Arial', sans-serif; /* Use Arial font */
+        margin-top: 20px; /* Add some space above the title */
+    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+        <h1>your Reclamation has been accepted ✅</h1>
+<br>
+<br>
+<br>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Oeuvre Title</th>
+                <th>Reclamation Description</th>
+                <th>Admin Feedback</th>
+                <th>Refund Amount</th>
+                <th>Date getDateResolved</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ reclamation.getOeuvre().getTitre() }}</td>
+                <td>{{ reclamation.getDescription() }}</td>
+               <td>{{ reclamation.getPhoneNumber() }}</td>
+               <td>{{ reclamation.getStatus() }}</td>
+        <td>{{ reclamation.getDateSubmitted()|date('Y-m-d') }}</td>
+
+                {{ solution.getAdminFeedback() }}
+               {{ solution.getRefundAmount() }}
+              {{ solution.getDateResolved()|date('Y-m-d') }}
+            </tr>
+        </tbody>
+    </table>
+            <h1>chack your Paypal account for your Refund Money </h1>
+
+</body>
+</html>

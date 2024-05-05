@@ -77,7 +77,7 @@
 								<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_articles') : path('app_login') }}">Blog</a>
 							</li>
 							<li>
-								<a href="{{ path('app_client_contact') }}">Contact</a>
+								<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_reclamation_index') : path('app_login') }} ">Contact</a>
 							</li>
 						</ul>
 						<!-- /.main-nav__navigation-box -->

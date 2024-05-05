@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Solution{% endblock %}
+
+{% block body %}
+    <h1>Solution</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Solutionid</th>
+                <td>{{ solution.solutionid }}</td>
+            </tr>
+            <tr>
+                <th>UtilisateurId</th>
+                <td>{{ solution.utilisateurId }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ solution.status }}</td>
+            </tr>
+            <tr>
+                <th>Refundamount</th>
+                <td>{{ solution.refundamount }}</td>
+            </tr>
+            <tr>
+                <th>Adminfeedback</th>
+                <td>{{ solution.adminfeedback }}</td>
+            </tr>
+            <tr>
+                <th>Dateresolved</th>
+                <td>{{ solution.dateresolved ? solution.dateresolved|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_solution_index') }}">back to list</a>
+
+    <a href="{{ path('app_solution_edit', {'solutionid': solution.solutionid}) }}">edit</a>
+
+    {{ include('solution/_delete_form.html.twig') }}
+{% endblock %}

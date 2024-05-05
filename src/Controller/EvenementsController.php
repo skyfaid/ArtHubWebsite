@@ -197,38 +197,6 @@ public function edit(Request $request, Evenements $evenement, EntityManagerInter
     }
 
 
-/*#[Route('/events/front', name: 'event_list', methods: ['GET'])]  the latest 
-public function listEvents(EntityManagerInterface $entityManager, ParticipantsRepository $participantsRepository,SpinsRepository $spinsRepository): Response
-{
-    $evenements = $entityManager->getRepository(Evenements::class)->findAll();
-    $nearestEvent = $entityManager->getRepository(Evenements::class)->findNearestNextEvent();
-
-    $user = $this->getUser();
-    $userId = $user ? $user->getUtilisateurId() : null;
-
-    $participationStatus = [];
-    foreach ($evenements as $evenement) {
-        $participationStatus[$evenement->getId()] = $participantsRepository->isUserParticipating($evenement->getId(), $userId);
-    }
-
-    $countdown = null;
-    if ($nearestEvent) {
-        $now = new \DateTime();
-        $countdown = $nearestEvent->getDatedebut()->diff($now)->format('%a days %h hours %i minutes %s seconds');
-    }
-
-    // Get time until the next spin is allowed
-    $timeLeft = $userId ? $spinsRepository->getTimeUntilNextSpin($userId) : null;
-
-    return $this->render('evenements/eventlist.html.twig', [
-        'evenements' => $evenements,
-        'nearestEvent' => $nearestEvent,
-        'countdown' => $countdown,
-        'participationStatus' => $participationStatus,
-        'timeLeft' => $timeLeft // pass the time left to the template
-    ]);
-}*/
-
 #[Route('/events/front', name: 'event_list', methods: ['GET'])]
 public function listEvents(EntityManagerInterface $entityManager, ParticipantsRepository $participantsRepository, SpinsRepository $spinsRepository, EvenementsRepository $evenementsRepository): Response
 {
@@ -288,7 +256,6 @@ public function eventPdf(int $id, EvenementsRepository $evenementsRepository, Pa
 }
 
 
-
     #[Route('/details/{id}', name: 'app_evenements_details', methods: ['GET'])]
     public function details(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository): Response
     {
@@ -321,8 +288,6 @@ public function eventPdf(int $id, EvenementsRepository $evenementsRepository, Pa
     }
     
 
-   
-
 
     #[Route('/events/participate/{id}', name: 'app_evenements_participate', methods: ['POST'])]
 public function participate(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository, DiscordNotifier $discordNotifier): Response {
@@ -347,44 +312,10 @@ public function participate(int $id, EvenementsRepository $evenementsRepository,
             $discordNotifier->sendNotification($message);
         }
 
-
-
-
-
-
-
         return $this->redirectToRoute('event_list');
     }
     return $this->redirectToRoute('event_list');
 }
-
-
-
-
-
-
-
-
-
-
-
-  /*  #[Route('/events/participate/{id}', name: 'app_evenements_participate', methods: ['POST'])]
-    public function participate(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository): Response {
-        if ($evenementsRepository->participateInEvent($id, 100)) {
-            $participantsRepository->addParticipant($id, 100);
-            return $this->redirectToRoute('event_list');
-        }
-        return $this->redirectToRoute('event_list');
-    }*/
-    
-    /*#[Route('/events/quit/{id}', name: 'app_evenements_quit', methods: ['POST'])]
-    public function quit(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository): Response {
-        if ($evenementsRepository->quitEvent($id, 100)) {
-            $participantsRepository->removeParticipant($id, 100);
-            return $this->redirectToRoute('event_list');
-        }
-        return $this->redirectToRoute('event_list');
-    }*/
 
 
     // Method to handle quitting an event
@@ -432,6 +363,59 @@ if ($event && $user instanceof Utilisateurs) {
 
 
 
+
+
+
+
+  /*  #[Route('/events/participate/{id}', name: 'app_evenements_participate', methods: ['POST'])]
+    public function participate(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository): Response {
+        if ($evenementsRepository->participateInEvent($id, 100)) {
+            $participantsRepository->addParticipant($id, 100);
+            return $this->redirectToRoute('event_list');
+        }
+        return $this->redirectToRoute('event_list');
+    }*/
+    
+    /*#[Route('/events/quit/{id}', name: 'app_evenements_quit', methods: ['POST'])]
+    public function quit(int $id, EvenementsRepository $evenementsRepository, ParticipantsRepository $participantsRepository): Response {
+        if ($evenementsRepository->quitEvent($id, 100)) {
+            $participantsRepository->removeParticipant($id, 100);
+            return $this->redirectToRoute('event_list');
+        }
+        return $this->redirectToRoute('event_list');
+    }*/
+
+/*#[Route('/events/front', name: 'event_list', methods: ['GET'])]  the latest 
+public function listEvents(EntityManagerInterface $entityManager, ParticipantsRepository $participantsRepository,SpinsRepository $spinsRepository): Response
+{
+    $evenements = $entityManager->getRepository(Evenements::class)->findAll();
+    $nearestEvent = $entityManager->getRepository(Evenements::class)->findNearestNextEvent();
+
+    $user = $this->getUser();
+    $userId = $user ? $user->getUtilisateurId() : null;
+
+    $participationStatus = [];
+    foreach ($evenements as $evenement) {
+        $participationStatus[$evenement->getId()] = $participantsRepository->isUserParticipating($evenement->getId(), $userId);
+    }
+
+    $countdown = null;
+    if ($nearestEvent) {
+        $now = new \DateTime();
+        $countdown = $nearestEvent->getDatedebut()->diff($now)->format('%a days %h hours %i minutes %s seconds');
+    }
+
+    // Get time until the next spin is allowed
+    $timeLeft = $userId ? $spinsRepository->getTimeUntilNextSpin($userId) : null;
+
+    return $this->render('evenements/eventlist.html.twig', [
+        'evenements' => $evenements,
+        'nearestEvent' => $nearestEvent,
+        'countdown' => $countdown,
+        'participationStatus' => $participationStatus,
+        'timeLeft' => $timeLeft // pass the time left to the template
+    ]);
+}*/
 
 
 }

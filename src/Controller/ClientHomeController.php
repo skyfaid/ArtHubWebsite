@@ -20,12 +20,23 @@ class ClientHomeController extends AbstractController
         ]);
     }
    
-    #[Route('/home/events', name: 'app_client_event')]
+    /*#[Route('/home/events', name: 'app_client_event')]
     public function events(): Response
     {
         return $this->render('evenements/eventlist.html.twig', [
             'controller_name' => 'EvenementsController',
         ]);
+    }*/
+    
+    #[Route('/home/events', name: 'app_client_event')]
+    public function events(Request $request, EntityManagerInterface $entityManager, SessionInterface $session): Response
+    {
+        $response = $this->forward('App\Controller\EvenementsController::listEvents', [
+            'entityManager' => $entityManager,
+            'session' => $session,
+        ]);
+    
+        return $response;
     }
 
     #[Route('/home/activities', name: 'app_client_activity')]

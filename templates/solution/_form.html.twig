@@ -1,0 +1,70 @@
+{# templates/solution/_form.html.twig #}
+{% block stylesheets %}
+<style>
+    .form-container {
+        width: 100%; /* Adjust as needed */
+        max-width: 600px; /* Adjust as needed */
+        margin: auto; /* Center the form */
+    }
+    .form-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1em;
+    }
+    .form-row > label {
+        flex-basis: 20%; /* Adjust the width of the label */
+        margin-right: 1em; /* Provide space between the label and the field */
+    }
+    .form-row > div {
+        flex-grow: 1;
+    }
+    input, select, textarea {
+        width: 100%;
+        padding: 0.5em;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+    .form-submit-button {
+        background-color: #5e72e4; /* Primary color */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 1em;
+        cursor: pointer;
+        border-radius: 4px;
+        text-align: center;
+        display: block; /* Ensure it's block to fit full width */
+        width: 100%; /* Full width button */
+    }
+</style>
+{% endblock %}
+
+{% block form %}
+<div class="form-container">
+    {{ form_start(form) }}
+    <div class="form-row">
+        <label>{{ form_label(form.status) }}</label>
+        <div>
+            {{ form_widget(form.status) }}
+            {{ form_errors(form.status) }}
+        </div>
+    </div>
+    <div class="form-row">
+        <label>{{ form_label(form.refundamount) }}</label>
+        <div>
+            {{ form_widget(form.refundamount) }}
+            {{ form_errors(form.refundamount) }}
+        </div>
+    </div>
+    <div class="form-row">
+        <label>{{ form_label(form.adminfeedback) }}</label>
+        <div>
+            {{ form_widget(form.adminfeedback) }}
+            {{ form_errors(form.adminfeedback) }}
+        </div>
+    </div>
+    <button type="submit" class="form-submit-button">{{ button_label|default('Save') }}</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
