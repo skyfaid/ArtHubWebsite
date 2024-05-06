@@ -42,6 +42,10 @@ class QrCodeController extends AbstractController
             ->roundBlockSizeMode(RoundBlockSizeMode::Margin)
             ->validateResult(false)
             ->build();
+   // Clear all output buffers
+   while (ob_get_level()) {
+    ob_end_clean();
+}
 
         // Save the QR code as an image
         $qrCodePath = $this->getParameter('kernel.project_dir') . '/public/images/qrcodes/qrcode_' . $activityId . '.png';
