@@ -46,6 +46,7 @@ class QrCodeController extends AbstractController
    while (ob_get_level()) {
     ob_end_clean();
 }
+//qrcode
 
         // Save the QR code as an image
         $qrCodePath = $this->getParameter('kernel.project_dir') . '/public/images/qrcodes/qrcode_' . $activityId . '.png';
