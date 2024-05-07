@@ -1,7 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Quiz Question{% endblock %}
-
+{% block stylesheets %}
+<style>
+    body, html {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        margin-top: 50px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    h1 {
+        color: #333;
+    }
+    form {
+        margin-top: 20px;
+    }
+    div {
+        margin-bottom: 10px;
+    }
+    input[type="radio"] {
+        margin-right: 10px;
+    }
+    button, .btn-back {
+        background-color: #007BFF;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    button:hover, .btn-back:hover {
+        background-color: #0056b3;
+    }
+    .btn-back {
+        display: block;
+        text-align: center;
+        text-decoration: none;
+    }
+</style>
+{% endblock %}
 {% block body %}
 <div class="container">
     <h1>Question {{ questionIndex + 1 }} of {{ totalQuestions }}</h1>
@@ -16,5 +65,17 @@
         {% endfor %}
         <button type="submit">Submit Answer</button>
     </form>
+        <a href="{{ path('activite_gallery') }}" class="btn-back">Back to Activities</a>
+
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var backButton = document.querySelector('.btn-back');
+    backButton.addEventListener('click', function(event) {
+        if (!confirm('Are you sure you want to quit the quiz and go back to activities?')) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
 {% endblock %}

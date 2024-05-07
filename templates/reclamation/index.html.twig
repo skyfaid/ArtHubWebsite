@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Reclamation Index{% endblock %}
+{% block title %}Reclamation List{% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
@@ -40,7 +40,7 @@
 
 <div class="container mt-5 mb-5">
     <div class="table-container">
-        <h1 class="text-center mb-4">Reclamation Index</h1>
+        <h1 class="text-center mb-4">Reclamation List</h1>
 
         <table class="table table-hover">
             <thead class="thead-dark">
@@ -52,6 +52,7 @@
                     <th scope="col">Date Submitted</th>
                     <th scope="col">Product Image</th>
                     <th scope="col">Actions</th>
+                    <th scope="col">Claim</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,12 +71,16 @@
                         <a href="{{ path('app_reclamation_edit', {'ReclamationID': reclamation.getReclamationID()}) }}" class="btn btn-info btn-sm">
                             <i class="fa-regular fa-pen-to-square"></i> Edit
                         </a>
-                       {% if reclamation.status == 'accepted' %}
+                       
+
+                    </td>
+                    <td 
+                     {% if reclamation.status == 'accepted' %}
                            <a href="{{ path('app_reclamation_pdf', {'ReclamationID': reclamation.getReclamationID()}) }}" class="btn btn-success btn-sm claim-btn">
                        <i class="fa-brands fa-cc-paypal  fa-2xl"></i>Claim
                        </a>
                         {% endif %}
-                    </td>
+                        </td>
                 </tr>
                 {% else %}
                 <tr>

@@ -1,11 +1,63 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Quiz Results{% endblock %}
-
+{% block stylesheets %}
+<style>
+    body, html {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+    }
+    .container {
+        background: white;
+        padding: 20px;
+        margin-top: 50px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    h1 {
+        color: #333;
+    }
+    p {
+        font-size: 16px;
+        color: #666;
+    }
+    a, .btn-back {
+        display: inline-block;
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+    }
+    a:hover, .btn-back:hover {
+        background-color: #0056b3;
+    }
+    .btn-back {
+        text-align: center;
+    }
 {% block body %}
 <div class="container">
     <h1>Quiz Results</h1>
     <p>You answered {{ correctAnswers }} out of {{ totalQuestions }} questions correctly! {{remark}}</p>
     <a href="{{ path('quiz_index') }}">Try Again</a>
+        <a href="{{ path('activite_gallery') }}" class="btn-back">Back to Activities</a>
+
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var backButton = document.querySelector('.btn-back');
+    backButton.addEventListener('click', function(event) {
+        if (!confirm('Are you sure you want to quit the quiz and go back to activities?')) {
+            event.preventDefault();
+        }
+    });
+});
+</script>
 {% endblock %}
