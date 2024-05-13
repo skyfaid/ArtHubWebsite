@@ -153,34 +153,7 @@
 
 
 
-<div class="background-music">
-    <audio id="backgroundMusic" loop >
-        <source src="{{asset('images/Mozart music 15 mins.mp3')}}" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-</div>
 
-<script>
-    window.addEventListener('load', function() {
-        const audio = document.getElementById('backgroundMusic');
-        audio.play()
-            .then(() => {
-                console.log("Audio started successfully");
-            })
-            .catch(error => {
-                console.log("Autoplay was prevented. Showing fallback UI.");
-                // Optionally, show a UI element to let the user manually start playback
-                let playButton = document.createElement('button');
-                playButton.innerHTML = "Play Audio";
-                playButton.onclick = function() {
-                    audio.play()
-                        .then(() => console.log("Manual play successful"))
-                        .catch(e => console.log("Failed to start audio on manual play", e));
-                };
-                document.body.appendChild(playButton);
-            });
-    });
-</script>
 
 
 
@@ -190,7 +163,25 @@
         <iframe class="virtual-museum" src="https://www.artsteps.com/embed/6626a875f4f66ff4c90264c4/560/315" frameborder="100" width=2500px height= 900  allowfullscreen></iframe>
     </div>
 </div>
+<script>
+    let hasPlayed = false; // Flag to ensure audio plays only once
 
+    function playAudioOnMouseMove() {
+        if (!hasPlayed) {
+            const audio = document.getElementById('backgroundMusic');
+            audio.play();
+            hasPlayed = true; // Set the flag so it doesn't play repeatedly
+        }
+    }
+
+    document.addEventListener('mousemove', playAudioOnMouseMove);
+</script>
+<div class="background-music">
+    <audio id="backgroundMusic" loop controls>
+        <source src="{{asset('images/bass.mp3')}}" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+</div>
 
 	<section class="collection-two collection-two__home-three">
 		<img src="{{asset('images/collection-2-sculpture.png')}}" class="collection-two__scupture" alt="">
@@ -1124,7 +1115,7 @@
 						</div>
 						<!-- /.team-one__image -->
 						<div class="team-one__content">
-							<h3>Violet Jones</h3>
+							<h3>Arij Nahdi</h3>
 							<p>Developer</p>
 						</div>
 						<!-- /.team-one__content -->
@@ -1137,7 +1128,7 @@
 						<div class="team-one__image">
 							<img src="{{asset('images/alaa2.jpg')}}" height="319" width="319" alt="">
 							<div class="team-one__social">
-								<a href="#" class="fab fa-facebook-f"></a>
+								<a href="https://www.facebook.com/hebbssss/" class="fab fa-facebook-f"></a>
 								<a href="#" class="fab fa-twitter"></a>
 								<a href="#" class="fab fa-linkedin-in"></a>
 								<a href="#" class="fab fa-google-plus-g"></a>
@@ -1146,8 +1137,8 @@
 						</div>
 						<!-- /.team-one__image -->
 						<div class="team-one__content">
-							<h3>Sarah Boyd</h3>
-							<p>Developer</p>
+							<h3>Alaa Bouchakour</h3>
+							<p>Designer/Developer</p>
 						</div>
 						<!-- /.team-one__content -->
 
@@ -1158,7 +1149,7 @@
 				<div class="col-lg-4">
 					<div class="team-one__single">
 						<div class="team-one__image">
-							<img src="{{asset('images/387344885_2434588626732788_7212528996158818019_n.jpg')}}" height="319" width="319" alt="">
+							<img src="{{asset('images/sayfounito.jpg')}}" height="319" width="319" alt="">
 							<div class="team-one__social">
 								<a href="#" class="fab fa-twitter"></a>
 								<a href="#" class="fab fa-linkedin-in"></a>
@@ -1168,7 +1159,7 @@
 						</div>
 						<!-- /.team-one__image -->
 						<div class="team-one__content">
-							<h3>Marguerite Holt</h3>
+							<h3>Sayf Thabet</h3>
 							<p>Developer</p>
 						</div>
 						<!-- /.team-one__content -->
@@ -1229,7 +1220,30 @@
 					<!-- /.team-one__single -->
 				</div>
 				<!-- /.col-lg-4 -->
+<!-- /.col-lg-5 -->
+				<div class="col-lg-4">
+					<div class="team-one__single">
+						<div class="team-one__image">
+							<img src="{{asset('images/raslenito.jpg')}}" height="367" width="319" alt="">
+							<div class="team-one__social">
+								<a href="https://www.facebook.com/mootaz.jebalia/" class="fab fa-facebook-f"></a>
+								<a href="https://twitter.com/ThePrimeagen" class="fab fa-twitter"></a>
+								<a href="https://www.linkedin.com/in/theprimeagen-multi-billion-9699184a/" class="fab fa-linkedin-in"></a>
+								<a href="#" class="fab fa-google-plus-g"></a>
+							</div>
+							<!-- /.team-one__social -->
+						</div>
+						<!-- /.team-one__image -->
+						<div class="team-one__content">
+							<h3>Raslen Ferchichi</h3>
+							<p>Developer</p>
+						</div>
+						<!-- /.team-one__content -->
 
+					</div>
+					<!-- /.team-one__single -->
+				</div>
+				<!-- /.col-lg-5 -->
 	<!-- /.col-lg-5 -->
 
 
