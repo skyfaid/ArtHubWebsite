@@ -50,11 +50,8 @@ public function new(Request $request, EntityManagerInterface $entityManager, int
         throw $this->createNotFoundException('No reclamation found for id ' . $reclamationId);
     }
 
-    $user = $entityManager->getRepository(Utilisateurs::class)->find(1); // Adjust as necessary for your user retrieval logic
-    if (!$user) {
-        $this->addFlash('error', 'No user found with ID 1');
-        return $this->redirectToRoute('app_solution_index');
-    }
+    $user = $entityManager->getRepository(Utilisateurs::class)->find($reclamation->getUtilisateurId()); // Adjust as necessary for your user retrieval logic
+   
 
     $solution = new Solution();
     $solution->setUtilisateur($user);

@@ -5,8 +5,8 @@
 
 {% block body %}
 <link rel="stylesheet" href="{{ asset('css/gallery.css') }}">
-    {% include 'ClientHome/header.html.twig' with {'page_title': 'Activites'} %}
-    <input type="text" id="search-input" placeholder="Search activities by name..." autocomplete="off">
+    {% include 'ClientHome/header.html.twig' with {'page_title': 'Activities'} %}
+    <input type="text" id="search-input" placeholder="Search activities by name..." autocomplete="on">
     <div id="search-results"></div>
 
     <section class="collection-grid collection-masonary">
@@ -37,9 +37,12 @@
                                 <div class="collection-grid__content">
                                     <h3><a href="{{ path('app_activite_show', {'idActivite': activite.idActivite}) }}">{{ activite.nomAct }}</a></h3>
                                     <p>{{ activite.typeAct }}</p>
-                                      <a href="{{ path('activity_details', {'idActivite': activite.idActivite}) }}">Details</a> 
-    <li>
-                </li>
+                                 
+                                     {{ activite.datedebut|date('l, M d, Y')}}
+                                     <p> and it ends </p>
+                                     {{activite.datefin|date('l, M d, Y')}}
+                                                                         
+                                      <a href="{{ path('activity_details', {'idActivite': activite.idActivite}) }}"><button class="bn30">details</button></a> 
                                 </div>
                             </div>
                         </div>
@@ -54,29 +57,31 @@
 {% endblock %}
 {% block javascripts %}
 <script>
-document.addEventListener('DOMContentLoaded', function() {
+ document.addEventListener('DOMContentLoaded', function() {
     const inputField = document.getElementById('search-input');
     const resultsContainer = document.getElementById('search-results');
-
+    let timeout = null;
     inputField.addEventListener('input', function() {
+        clearTimeout(timeout);
         const searchTerm = inputField.value.trim();
-        if (searchTerm.length > 2) {
-            fetch('{{ path('app_activite_search') }}?query=' + encodeURIComponent(searchTerm))
-                .then(response => response.json()) // Expecting JSON response
-                .then(data => {
-                    resultsContainer.innerHTML = ''; // Clear previous results
-                    data.activites.forEach(activite => {
-                        // Assuming you want to display the name of each activity
-                        resultsContainer.innerHTML += `<p>${activite.nomAct}</p>`;
+        timeout = setTimeout(() => {
+            if (searchTerm.length > 2) {
+                fetch('{{ path('app_activite_search') }}?query=' + encodeURIComponent(searchTerm))
+                    .then(response => response.json())
+                    .then(data => {
+                        resultsContainer.innerHTML = '';
+                        data.activites.forEach(activite => {
+                            resultsContainer.innerHTML += `<p>${activite.nomAct}</p>`;
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        resultsContainer.innerHTML = '<p>Error loading activities.</p>';
                     });
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    resultsContainer.innerHTML = '<p>Error loading activities.</p>';
-                });
-        } else {
-            resultsContainer.innerHTML = ''; // Clear results if input is less than 3 characters
-        }
+            } else {
+                resultsContainer.innerHTML = '';
+            }
+        }, 300); // Debounce time is 300ms
     });
 });
 </script>

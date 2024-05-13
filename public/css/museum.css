@@ -1,17 +1,22 @@
-.virtual-museum-container {
-    position: relative;
-    width: 100%; /* Keep width responsive */
-    height: 600px; /* Fixed height in pixels */
-    z-index: 1;
-    padding-top: 50px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    border: 1px solid #ddd;
-    margin: 20px 0;
-}
 
-.virtual-museum {
-    width: 100%;
-    height: 100%;
-    border: none;
-    outline: none;
-}
+.container-museum {
+    display: flex;
+    flex-direction: column;   /* Stack children vertically */
+    align-items: center;      /* Center children horizontally */
+    justify-content: center;  /* Center children vertically if there's enough space */
+    min-height: 100vh;        /* Optional: Makes the container take at least the full height of the viewport */
+    text-align: center;       /* Centers the text inside the container */
+  }
+  
+  .virtual-museum-container {
+    width: 2100px;            /* Width of the iframe */
+    height: 800px;            /* Height of the iframe */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);  /* Optional: Adds some shadow for better visibility */
+  }
+  
+  .virtual-museum {
+    width: 100%;              /* Takes the full width of the parent container */
+    height: 100%;             /* Takes the full height of the parent container */
+    border: none;             /* Removes the border */
+  }
+  
