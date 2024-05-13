@@ -3,8 +3,9 @@ security:
 
     password_hashers:
         App\Entity\Utilisateurs:
-            algorithm: bcrypt
+            algorithm: auto
             cost: 12 # Adjust the cost factor as needed for your testing environment
+            hash_algorithm: bcrypt
 
     providers:
         app_user_provider: # This replaces 'users_in_memory' to use your entity for user authentication
