@@ -153,16 +153,41 @@
 
 
 
+<div class="background-music">
+    <audio id="backgroundMusic" loop >
+        <source src="{{asset('images/Mozart music 15 mins.mp3')}}" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+</div>
 
-
-
+<script>
+    window.addEventListener('load', function() {
+        const audio = document.getElementById('backgroundMusic');
+        audio.play()
+            .then(() => {
+                console.log("Audio started successfully");
+            })
+            .catch(error => {
+                console.log("Autoplay was prevented. Showing fallback UI.");
+                // Optionally, show a UI element to let the user manually start playback
+                let playButton = document.createElement('button');
+                playButton.innerHTML = "Play Audio";
+                playButton.onclick = function() {
+                    audio.play()
+                        .then(() => console.log("Manual play successful"))
+                        .catch(e => console.log("Failed to start audio on manual play", e));
+                };
+                document.body.appendChild(playButton);
+            });
+    });
+</script>
 
 
 
 	<div class="container-museum">
     <h1>Explore Our Virtual Museum</h1>
     <div class="virtual-museum-container">
-        <iframe class="virtual-museum" src="https://www.artsteps.com/embed/6626a875f4f66ff4c90264c4/560/315" frameborder="100" width=2500px height= 800  allowfullscreen></iframe>
+        <iframe class="virtual-museum" src="https://www.artsteps.com/embed/6626a875f4f66ff4c90264c4/560/315" frameborder="100" width=2500px height= 900  allowfullscreen></iframe>
     </div>
 </div>
 
@@ -198,7 +223,8 @@
 								}
 							}">
 			
-				
+
+
 				<!-- /.item -->
 					<div class="owl-stage-outer"> <div class="owl-stage" style="transform: translate3d(-2823px, 0px, 0px); transition: all 0.7s ease 0s; width: 7664px;">
 						<div class="owl-item cloned" style="width: 363.333px; margin-right: 40px;">
