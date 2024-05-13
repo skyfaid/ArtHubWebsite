@@ -1,11 +1,14 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home - ArtHub
-{% endblock %}
+{% block title %}Home - ArtHub{% endblock %}
 {% block stylesheets %}
  <link rel="stylesheet" href="{{ asset('css/museum.css') }}">
 {% endblock %}
+
+
 {% block body %}
+
+
 
 	<div class="preloader">
 		<div class="lds-ripple">
@@ -15,8 +18,41 @@
 	</div>
 	<!-- /.preloader -->
 
+<audio id="aloulou-sound" loop autoplay>
+    <source src="{{ asset('uploads/casino song.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+     </audio>
+
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Now bind event listeners for the sound controls
+let soundButton = document.querySelector('.btn-toggle-sound');
+const audio = document.querySelector('#aloulou-sound');
+
+if (soundButton) {
+ soundButton.addEventListener('click', function() {
+ if (!audio.paused) {
+     audio.pause();
+     soundButton.querySelector('img').src = '{{ asset('uploads/sound-off.png') }}';
+     } else {
+     audio.play();
+     soundButton.querySelector('img').src = '{{ asset('uploads/sound-on.png') }}';
+     }
+ });
+}
+
+});
+</script>
+
+
 	<div class="page-wrapper">
 		<nav class="main-nav-one stricky main-nav-one__home-three original">
+		<div class="website-controls">
+        <button type="button" class="btn-toggle-sound">
+          <img src="{{ asset('uploads/sound-on.png') }}" alt="Sound" id="sound-icon" style= "width :30px; height:30px;">
+        </button>
 			<div class="container">
 				<div class="inner-container">
 					<div class="logo-box">
@@ -29,6 +65,7 @@
 					</div>
 					<!-- /.logo-box -->
 					<div class="main-nav__main-navigation">
+					
 						<ul class="main-nav__navigation-box">
 							<li>
 								<a href="{{ path('app_client_home') }}">Home</a>
@@ -985,7 +1022,7 @@
 				<span class="block-title-two__line"></span>
 				<!-- /.block-title-two__line -->
 				<p>What’s Going on</p>
-				<h3>Our Upcoming Event</h3>
+				<h3>Our Upcoming Events</h3>
 			</div>
 			<!-- /.block-title-two -->
 			<div class="row">
@@ -1496,5 +1533,15 @@
 		<!-- /.container -->
 	</section>
 	<!-- /.cta-one -->
+
+<style>
+
+.btn-toggle-sound {
+  background: none; /* Removes the background */
+  border: none; /* Removes the border */
+  padding: 0; /* Removes padding */
+  outline: none; /* Removes outline */
+}
+</style>
 
 {% endblock %}
