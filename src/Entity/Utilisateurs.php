@@ -60,7 +60,7 @@ class Utilisateurs implements UserInterface
     private ?int $utilisateurId = null;
 
     #[Assert\NotBlank(message: 'The username cannot be blank')]
-    #[UniqueUserConstraint]
+    //$nom#[UniqueUserConstraint]
     #[Assert\Regex(pattern: '/^[a-zA-Z]{3}[a-zA-Z0-9]*$/', message: 'The username must start with at least 3 alphabetic characters ')]
     #[ORM\Column(type: "string", length: 50)]
     private string $pseudo;
@@ -77,7 +77,7 @@ class Utilisateurs implements UserInterface
     #[ORM\Column(type: "string", length: 50)]
     private string $nom;
 
-    #[UniqueUserConstraint]
+    //#[UniqueUserConstraint]
     #[Assert\NotBlank(message: 'The email address is required')]
     #[Assert\Email(message: 'Please enter a valid email address')]
     #[ORM\Column(type: "string", length: 100)]
