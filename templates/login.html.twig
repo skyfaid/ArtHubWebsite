@@ -29,6 +29,13 @@
             </div>
         </div>
     </div>
+  
+{% for message in app.session.flashbag.get('error') %}
+    <div class="alert alert-danger">
+        {{ message }}
+    </div>
+{% endfor %}
+
 </section>
 
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>

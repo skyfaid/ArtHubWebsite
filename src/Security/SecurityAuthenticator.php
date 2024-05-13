@@ -56,8 +56,9 @@ class SecurityAuthenticator extends AbstractLoginFormAuthenticator
     
         // Check if the user is active
         if (!$user->isEstactif()) {
-            //$this->session->getFlashBag()->add('error', ' inactive account.');
+            $this->session->getFlashBag()->add('error', ' inactive account.');
             throw new CustomUserMessageAuthenticationException('Inactive account.');
+            
         }
     
         // ReCAPTCHA verification
