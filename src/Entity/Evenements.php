@@ -59,6 +59,10 @@ class Evenements
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private ?bool $isExclusive = false;
 
+    public function __construct()
+    {
+        $this->datedebut = new \DateTime(); // Default to the current time
+    }
 // Getter and Setter for isExclusive
 public function getIsExclusive(): ?bool
 {

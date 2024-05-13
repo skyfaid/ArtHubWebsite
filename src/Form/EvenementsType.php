@@ -27,6 +27,7 @@ class EvenementsType extends AbstractType
             ->add('datedebut', DateTimeType::class, [
                 'widget' => 'single_text',
                 'input' => 'datetime',
+                'data' => (isset($options['data']) && $options['data']->getDatedebut() !== null) ? $options['data']->getDatedebut() : new \DateTime('now'),
                 'constraints' => [
                     new GreaterThanOrEqual([
                         'value' => new \DateTime('today'),
