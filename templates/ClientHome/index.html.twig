@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Home - ArtHub
-{% endblock %}
+{% block title %}Home - ArtHub{% endblock %}
 {% block stylesheets %}
  <link rel="stylesheet" href="{{ asset('css/museum.css') }}">
 {% endblock %}
@@ -24,10 +23,7 @@
     Your browser does not support the audio element.
      </audio>
 
-<div class="website-controls">
-        <button type="button" class="btn-toggle-sound">
-          <img src="{{ asset('uploads/sound-on.png') }}" alt="Sound" id="sound-icon" style= "width :30px; height:30px;">
-        </button>
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -53,6 +49,10 @@ if (soundButton) {
 
 	<div class="page-wrapper">
 		<nav class="main-nav-one stricky main-nav-one__home-three original">
+		<div class="website-controls">
+        <button type="button" class="btn-toggle-sound">
+          <img src="{{ asset('uploads/sound-on.png') }}" alt="Sound" id="sound-icon" style= "width :30px; height:30px;">
+        </button>
 			<div class="container">
 				<div class="inner-container">
 					<div class="logo-box">
@@ -65,6 +65,7 @@ if (soundButton) {
 					</div>
 					<!-- /.logo-box -->
 					<div class="main-nav__main-navigation">
+					
 						<ul class="main-nav__navigation-box">
 							<li>
 								<a href="{{ path('app_client_home') }}">Home</a>
@@ -1004,7 +1005,7 @@ if (soundButton) {
 				<span class="block-title-two__line"></span>
 				<!-- /.block-title-two__line -->
 				<p>What’s Going on</p>
-				<h3>Our Upcoming Event</h3>
+				<h3>Our Upcoming Events</h3>
 			</div>
 			<!-- /.block-title-two -->
 			<div class="row">
@@ -1493,5 +1494,14 @@ if (soundButton) {
 	</section>
 	<!-- /.cta-one -->
 
+<style>
+
+.btn-toggle-sound {
+  background: none; /* Removes the background */
+  border: none; /* Removes the border */
+  padding: 0; /* Removes padding */
+  outline: none; /* Removes outline */
+}
+</style>
 
 {% endblock %}
