@@ -19,7 +19,7 @@
 	<!-- /.preloader -->
 
 <audio id="aloulou-sound" loop autoplay>
-    <source src="{{ asset('uploads/casino song.mp3') }}" type="audio/mpeg">
+    <source src="{{ asset('images/Mozart music 15 mins.mp3') }}" type="audio/mpeg">
     Your browser does not support the audio element.
      </audio>
 
@@ -200,34 +200,15 @@ if (soundButton) {
         <iframe class="virtual-museum" src="https://www.artsteps.com/embed/6626a875f4f66ff4c90264c4/560/315" frameborder="100" width=2500px height= 900  allowfullscreen></iframe>
     </div>
 </div>
-<script>
-    let hasPlayed = false; // Flag to ensure audio plays only once
 
-    function playAudioOnMouseMove() {
-        if (!hasPlayed) {
-            const audio = document.getElementById('backgroundMusic');
-            audio.play();
-            hasPlayed = true; // Set the flag so it doesn't play repeatedly
-        }
-    }
 
-    document.addEventListener('mousemove', playAudioOnMouseMove);
-</script>
-<div class="background-music">
-    <audio id="backgroundMusic" loop controls>
-        <source src="{{asset('images/bass.mp3')}}" type="audio/mp3">
-        Your browser does not support the audio element.
-    </audio>
-</div>
 
 	<section class="collection-two collection-two__home-three">
 		<img src="{{asset('images/collection-2-sculpture.png')}}" class="collection-two__scupture" alt="">
 		<div class="container">
 			<div class="block-title-two text-center">
 			
-				<!-- /.block-title-two__line -->
-
-
+				
 
 
 		
