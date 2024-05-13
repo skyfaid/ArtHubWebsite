@@ -5,7 +5,11 @@
 {% block stylesheets %}
  <link rel="stylesheet" href="{{ asset('css/museum.css') }}">
 {% endblock %}
+
+
 {% block body %}
+
+
 
 	<div class="preloader">
 		<div class="lds-ripple">
@@ -14,6 +18,38 @@
 		</div>
 	</div>
 	<!-- /.preloader -->
+
+<audio id="aloulou-sound" loop autoplay>
+    <source src="{{ asset('uploads/casino song.mp3') }}" type="audio/mpeg">
+    Your browser does not support the audio element.
+     </audio>
+
+<div class="website-controls">
+        <button type="button" class="btn-toggle-sound">
+          <img src="{{ asset('uploads/sound-on.png') }}" alt="Sound" id="sound-icon" style= "width :30px; height:30px;">
+        </button>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+// Now bind event listeners for the sound controls
+let soundButton = document.querySelector('.btn-toggle-sound');
+const audio = document.querySelector('#aloulou-sound');
+
+if (soundButton) {
+ soundButton.addEventListener('click', function() {
+ if (!audio.paused) {
+     audio.pause();
+     soundButton.querySelector('img').src = '{{ asset('uploads/sound-off.png') }}';
+     } else {
+     audio.play();
+     soundButton.querySelector('img').src = '{{ asset('uploads/sound-on.png') }}';
+     }
+ });
+}
+
+});
+</script>
+
 
 	<div class="page-wrapper">
 		<nav class="main-nav-one stricky main-nav-one__home-three original">
@@ -1456,5 +1492,6 @@
 		<!-- /.container -->
 	</section>
 	<!-- /.cta-one -->
+
 
 {% endblock %}
