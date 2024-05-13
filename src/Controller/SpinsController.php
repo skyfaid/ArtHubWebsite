@@ -72,7 +72,7 @@ public function recordSpin(SpinsRepository $spinsRepository, EntityManagerInterf
     try {
         $spinsRepository->recordSpin($user->getUtilisateurId());
         $exclusiveEvents = $entityManager->getRepository(Evenements::class)->findExclusiveEvents();
-        if (!empty($exclusiveEvents) && rand(1, 100) <= 30) { 
+        if (!empty($exclusiveEvents) && rand(1, 100) <= 50) { 
             $wonEvent = $exclusiveEvents[array_rand($exclusiveEvents)];
             $access = new EventAccess();
             $access->setUser($user);
