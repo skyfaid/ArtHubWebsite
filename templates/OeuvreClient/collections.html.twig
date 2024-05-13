@@ -25,7 +25,7 @@
            <div class="collection-grid__image">
             
               {# Utilisez les attributs width et height directement sur les images #}
-              <img src="/uploads/{{ oeuvre.posterurl }}" alt="{{ oeuvre.titre }}"  class="collection-grid__link">
+              <img src="{{ asset('uploads/' ~ oeuvre.posterUrl) }}" alt="{{ oeuvre.titre }}"  class="collection-grid__link">
             
              </div>
              

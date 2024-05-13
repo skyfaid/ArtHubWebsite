@@ -87,7 +87,7 @@
 						<a href="#" class="search-popup__toggler">
 							<i class="muzex-icon-search"></i>
 						</a>
-						<a class="sidemenu-icon side-content__toggler" href="#">
+						<a class="sidemenu-icon side-content__toggler" href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_cart') : path('app_login') }}">
 							<i class="muzex-icon-menu"></i>
 						</a>
 					</div>
